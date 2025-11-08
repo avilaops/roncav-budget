@@ -17,6 +17,23 @@
             <converters:BoolToColorConverter x:Key="BoolToColorConverter" />
             <converters:PercentToProgressConverter x:Key="PercentToProgressConverter" />
             <converters:PercentToColorConverter x:Key="PercentToColorConverter" />
+
+            <!-- Apple Design System Colors -->
+            <Color x:Key="SystemBlue">#007AFF</Color>
+            <Color x:Key="SystemGreen">#34C759</Color>
+            <Color x:Key="SystemRed">#FF3B30</Color>
+            <Color x:Key="SystemOrange">#FF9500</Color>
+            <Color x:Key="SystemPurple">#AF52DE</Color>
+            <Color x:Key="SystemGray">#8E8E93</Color>
+
+            <!-- Backgrounds -->
+            <Color x:Key="BackgroundPrimary">#FFFFFF</Color>
+            <Color x:Key="BackgroundSecondary">#F2F2F7</Color>
+
+            <!-- Labels -->
+            <Color x:Key="LabelPrimary">#000000</Color>
+            <Color x:Key="LabelSecondary">#8E8E93</Color>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -1,266 +1,231 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-   xmlns:viewmodels="clr-namespace:roncav_budget.ViewModels"
-      xmlns:models="clr-namespace:roncav_budget.Models"
-       x:Class="roncav_budget.Views.DashboardPage"
+  xmlns:viewmodels="clr-namespace:roncav_budget.ViewModels"
+ xmlns:models="clr-namespace:roncav_budget.Models"
+  x:Class="roncav_budget.Views.DashboardPage"
      x:DataType="viewmodels:DashboardViewModel"
-    Title="Dashboard">
+     Title="Resumo"
+  BackgroundColor="#F2F2F7">
 
     <ScrollView>
-        <VerticalStackLayout Padding="16" Spacing="20">
+      <VerticalStackLayout Padding="20" Spacing="24">
 
-     <!-- Cabeçalho com Saldo Total -->
-  <Frame BackgroundColor="#2196F3" 
-                CornerRadius="15"
-       Padding="20"
-          HasShadow="True">
-       <VerticalStackLayout Spacing="8">
-     <Label Text="?? Saldo Total" 
-    FontSize="18"
- TextColor="White"
-      FontAttributes="Bold"/>
-   <Label Text="{Binding SaldoTotalFormatado}"
-   FontSize="36"
-      TextColor="White"
-        FontAttributes="Bold"/>
-                <Label Text="{Binding MesAtual}"
-     FontSize="14"
-      TextColor="White"
-     Opacity="0.9"/>
-  </VerticalStackLayout>
-  </Frame>
-
-       <!-- Resumo Mensal -->
-     <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-  <!-- Receitas -->
-   <Frame Grid.Column="0" 
-           BackgroundColor="#4CAF50"
-CornerRadius="12"
-      Padding="16">
-     <VerticalStackLayout Spacing="4">
-             <Label Text="?? Receitas"
-      FontSize="14"
-  TextColor="White"/>
-       <Label Text="{Binding ReceitasMesFormatado}"
-    FontSize="24"
-               TextColor="White"
-   FontAttributes="Bold"/>
-    </VerticalStackLayout>
-     </Frame>
-
-     <!-- Despesas -->
-      <Frame Grid.Column="1" 
-  BackgroundColor="#F44336"
-      CornerRadius="12"
-  Padding="16">
-     <VerticalStackLayout Spacing="4">
-               <Label Text="?? Despesas"
-       FontSize="14"
-     TextColor="White"/>
-       <Label Text="{Binding DespesasMesFormatado}"
-          FontSize="24"
-      TextColor="White"
-  FontAttributes="Bold"/>
-    </VerticalStackLayout>
-     </Frame>
-</Grid>
-
-    <!-- Saldo do Mês -->
-    <Frame BackgroundColor="{Binding SaldoMes, Converter={StaticResource SaldoToColorConverter}}"
-        CornerRadius="12"
-           Padding="16"
-       Margin="0,0,0,10">
-                <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
-             <Label Text="?? Saldo do Mês:"
-      FontSize="16"
-     TextColor="White"
-       FontAttributes="Bold"/>
-   <Label Text="{Binding SaldoMesFormatado}"
-   FontSize="16"
-      TextColor="White"
-     FontAttributes="Bold"/>
-       </HorizontalStackLayout>
-    </Frame>
-
- <!-- Contas -->
-  <VerticalStackLayout Spacing="10">
-   <HorizontalStackLayout HorizontalOptions="SpaceBetween">
-      <Label Text="?? Minhas Contas"
-     FontSize="20"
-      FontAttributes="Bold"/>
-       <Button Text="Ver Todas" 
-         FontSize="12"
-      BackgroundColor="Transparent"
-      TextColor="#2196F3"/>
-       </HorizontalStackLayout>
-
-    <CollectionView ItemsSource="{Binding Contas}"
-     SelectionMode="None">
-                <CollectionView.ItemTemplate>
- <DataTemplate x:DataType="models:Conta">
-   <Frame Margin="0,0,0,8"
-             Padding="12"
-    CornerRadius="10"
-   BackgroundColor="#F5F5F5">
-               <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
-       <Label Grid.Column="0"
-     Text="{Binding TipoIcone}"
-           FontSize="24"
-     VerticalOptions="Center"/>
-  
-              <VerticalStackLayout Grid.Column="1" Spacing="2">
-     <Label Text="{Binding Nome}"
-           FontSize="16"
-     FontAttributes="Bold"/>
-       <Label Text="{Binding TipoConta}"
-       FontSize="12"
-        TextColor="Gray"/>
-        </VerticalStackLayout>
-
-   <Label Grid.Column="2"
-           Text="{Binding SaldoFormatado}"
-       FontSize="16"
+    <!-- Header com Saudacao -->
+      <VerticalStackLayout Spacing="4">
+            <Label Text="Olá!" 
+          FontSize="34"
      FontAttributes="Bold"
-       VerticalOptions="Center"
-       TextColor="#2196F3"/>
-    </Grid>
-         </Frame>
-           </DataTemplate>
-            </CollectionView.ItemTemplate>
-       </CollectionView>
-        </VerticalStackLayout>
-
-  <!-- Transações Recentes -->
- <VerticalStackLayout Spacing="10">
-    <HorizontalStackLayout HorizontalOptions="SpaceBetween">
-     <Label Text="?? Transações Recentes"
-          FontSize="20"
-    FontAttributes="Bold"/>
-   <Button Text="Ver Todas"
-             FontSize="12"
-  BackgroundColor="Transparent"
-     TextColor="#2196F3"/>
-   </HorizontalStackLayout>
-
-       <CollectionView ItemsSource="{Binding TransacoesRecentes}"
-     SelectionMode="None">
-   <CollectionView.ItemTemplate>
-   <DataTemplate x:DataType="models:Transacao">
-  <Frame Margin="0,0,0,8"
-     Padding="12"
-     CornerRadius="10"
-       BackgroundColor="#F5F5F5">
-          <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
-        <Label Grid.Column="0"
-      Text="{Binding TipoIcone}"
-       FontSize="24"
-   VerticalOptions="Center"/>
-
-    <VerticalStackLayout Grid.Column="1" Spacing="2">
-        <Label Text="{Binding Descricao}"
-      FontSize="14"
-   FontAttributes="Bold"/>
-<Label Text="{Binding DataFormatada}"
-     FontSize="12"
-         TextColor="Gray"/>
-       <HorizontalStackLayout Spacing="4">
-       <Label Text="{Binding FormaPagamentoIcone}"
-         FontSize="10"/>
-     <Label Text="{Binding FormaPagamento}"
-                FontSize="10"
-         TextColor="Gray"/>
-  </HorizontalStackLayout>
-       </VerticalStackLayout>
-
-     <Label Grid.Column="2"
-         Text="{Binding ValorFormatado}"
-  FontSize="16"
-        FontAttributes="Bold"
-        VerticalOptions="Center"
-      TextColor="{Binding Tipo, Converter={StaticResource TipoToColorConverter}}"/>
-            </Grid>
-           </Frame>
-      </DataTemplate>
-      </CollectionView.ItemTemplate>
-      </CollectionView>
-            </VerticalStackLayout>
-
-         <!-- Orçamentos do Mês -->
-     <VerticalStackLayout Spacing="10">
-      <Label Text="?? Orçamentos do Mês"
-       FontSize="20"
-     FontAttributes="Bold"/>
-
-       <CollectionView ItemsSource="{Binding OrcamentosMes}"
-     SelectionMode="None">
- <CollectionView.ItemTemplate>
-  <DataTemplate x:DataType="models:Orcamento">
-           <Frame Margin="0,0,0,8"
-     Padding="12"
-     CornerRadius="10"
-        BackgroundColor="#F5F5F5">
-              <VerticalStackLayout Spacing="8">
-    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
-  <Label Grid.Column="0"
-         Text="Categoria"
-   FontSize="14"
-   FontAttributes="Bold"/>
-      <Label Grid.Column="1"
-   Text="{Binding StatusOrcamento}"
-    FontSize="12"/>
-     </Grid>
-
-          <ProgressBar Progress="{Binding PercentualGasto, Converter={StaticResource PercentToProgressConverter}}"
-     ProgressColor="{Binding PercentualGasto, Converter={StaticResource PercentToColorConverter}}"/>
-
-<Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
-         <VerticalStackLayout Grid.Column="0" Spacing="2">
-               <Label Text="Planejado"
-   FontSize="10"
-    TextColor="Gray"/>
-       <Label Text="{Binding ValorPlanejadoFormatado}"
- FontSize="12"
-      FontAttributes="Bold"/>
-          </VerticalStackLayout>
-
- <VerticalStackLayout Grid.Column="1" Spacing="2">
-       <Label Text="Gasto"
-      FontSize="10"
- TextColor="Gray"/>
-              <Label Text="{Binding ValorGastoFormatado}"
-         FontSize="12"
- FontAttributes="Bold"
-             TextColor="#F44336"/>
-     </VerticalStackLayout>
-
-       <VerticalStackLayout Grid.Column="2" Spacing="2">
-       <Label Text="Restante"
-      FontSize="10"
-       TextColor="Gray"/>
-<Label Text="{Binding ValorRestanteFormatado}"
-              FontSize="12"
-       FontAttributes="Bold"
-           TextColor="#4CAF50"/>
-        </VerticalStackLayout>
- </Grid>
-                  </VerticalStackLayout>
-         </Frame>
-    </DataTemplate>
-      </CollectionView.ItemTemplate>
-    </CollectionView>
+     TextColor="#000000"/>
+          <Label Text="{Binding MesAtual}"
+            FontSize="17"
+            TextColor="#8E8E93"/>
       </VerticalStackLayout>
 
- <!-- Botão de Atualizar -->
-   <Button Text="?? Atualizar Dados"
- Command="{Binding CarregarDadosCommand}"
-        BackgroundColor="#2196F3"
-     TextColor="White"
-         CornerRadius="12"
- Padding="16"
-                    Margin="0,10,0,20"/>
+    <!-- Card Principal - Saldo Total -->
+  <Border BackgroundColor="#007AFF"
+ StrokeThickness="0"
+        StrokeShape="RoundRectangle 20">
+      <Border.Shadow>
+     <Shadow Brush="#000000"
+      Offset="0,8"
+          Radius="20"
+     Opacity="0.15"/>
+ </Border.Shadow>
+         
+           <Grid Padding="24" RowSpacing="16">
+ <Grid.RowDefinitions>
+    <RowDefinition Height="Auto"/>
+         <RowDefinition Height="Auto"/>
+  <RowDefinition Height="Auto"/>
+                 </Grid.RowDefinitions>
 
+         <Label Grid.Row="0"
+          Text="Saldo Total"
+  FontSize="15"
+              TextColor="White"
+          Opacity="0.8"/>
+
+ <Label Grid.Row="1"
+     Text="{Binding SaldoTotalFormatado}"
+     FontSize="40"
+              FontAttributes="Bold"
+    TextColor="White"/>
+
+        <Grid Grid.Row="2" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+     <Border Grid.Column="0"
+         BackgroundColor="#FFFFFF"
+       StrokeThickness="0"
+       Padding="12,6"
+       StrokeShape="RoundRectangle 8"
+ Opacity="0.2">
+             <Label Text="Ver Detalhes" 
+       FontSize="13"
+TextColor="White"/>
+                </Border>
+   </Grid>
+         </Grid>
+            </Border>
+
+          <!-- Cards de Receitas e Despesas -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+     <!-- Receitas -->
+                <Border Grid.Column="0"
+        BackgroundColor="White"
+            StrokeThickness="0"
+          StrokeShape="RoundRectangle 16">
+        <Border.Shadow>
+         <Shadow Brush="#000000"
+Offset="0,4"
+     Radius="12"
+       Opacity="0.08"/>
+      </Border.Shadow>
+         
+    <VerticalStackLayout Padding="20" Spacing="12">
+         <Label Text="&#x1F4C8;"
+         FontSize="28"/>
+ <Label Text="Receitas"
+           FontSize="15"
+TextColor="#8E8E93"/>
+   <Label Text="{Binding ReceitasMesFormatado}"
+     FontSize="24"
+    FontAttributes="Bold"
+         TextColor="#34C759"/>
+            </VerticalStackLayout>
+         </Border>
+
+              <!-- Despesas -->
+                <Border Grid.Column="1"
+   BackgroundColor="White"
+            StrokeThickness="0"
+    StrokeShape="RoundRectangle 16">
+                 <Border.Shadow>
+  <Shadow Brush="#000000"
+           Offset="0,4"
+   Radius="12"
+      Opacity="0.08"/>
+          </Border.Shadow>
+  
+               <VerticalStackLayout Padding="20" Spacing="12">
+          <Label Text="&#x1F4C9;"
+   FontSize="28"/>
+        <Label Text="Despesas"
+     FontSize="15"
+    TextColor="#8E8E93"/>
+           <Label Text="{Binding DespesasMesFormatado}"
+            FontSize="24"
+ FontAttributes="Bold"
+     TextColor="#FF3B30"/>
      </VerticalStackLayout>
+   </Border>
+       </Grid>
+
+        <!-- Saldo do Mes -->
+   <Border BackgroundColor="White"
+      StrokeThickness="0"
+        StrokeShape="RoundRectangle 16">
+      <Border.Shadow>
+   <Shadow Brush="#000000"
+               Offset="0,4"
+Radius="12"
+       Opacity="0.08"/>
+ </Border.Shadow>
+          
+<Grid Padding="20" ColumnDefinitions="*,Auto">
+       <VerticalStackLayout Grid.Column="0" Spacing="4">
+           <Label Text="Saldo do Mês"
+ FontSize="17"
+        FontAttributes="Bold"
+     TextColor="#000000"/>
+                <Label Text="Diferença entre receitas e despesas"
+     FontSize="13"
+            TextColor="#8E8E93"/>
+       </VerticalStackLayout>
+   
+         <Label Grid.Column="1"
+  Text="{Binding SaldoMesFormatado}"
+    FontSize="28"
+     FontAttributes="Bold"
+            VerticalOptions="Center"
+       TextColor="{Binding SaldoMes, Converter={StaticResource SaldoToColorConverter}}"/>
+        </Grid>
+            </Border>
+
+      <!-- Secao: Minhas Contas -->
+   <VerticalStackLayout Spacing="16">
+                <Label Text="Minhas Contas"
+   FontSize="22"
+               FontAttributes="Bold"
+         TextColor="#000000"/>
+
+   <CollectionView ItemsSource="{Binding Contas}"
+              SelectionMode="None">
+    <CollectionView.ItemTemplate>
+       <DataTemplate x:DataType="models:Conta">
+   <Border BackgroundColor="White"
+       StrokeThickness="0"
+    Margin="0,0,0,12"
+        StrokeShape="RoundRectangle 12">
+              <Border.Shadow>
+        <Shadow Brush="#000000"
+   Offset="0,2"
+           Radius="8"
+        Opacity="0.06"/>
+         </Border.Shadow>
+        
+     <Grid Padding="16" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="16">
+                <Border Grid.Column="0"
+        BackgroundColor="#F2F2F7"
+         WidthRequest="48"
+         HeightRequest="48"
+  StrokeThickness="0"
+  StrokeShape="RoundRectangle 12">
+            <Label Text="{Binding TipoIcone}"
+    FontSize="24"
+            HorizontalOptions="Center"
+  VerticalOptions="Center"/>
+      </Border>
+
+              <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+    <Label Text="{Binding Nome}"
+           FontSize="17"
+            FontAttributes="Bold"
+              TextColor="#000000"/>
+        <Label Text="{Binding TipoConta}"
+        FontSize="13"
+        TextColor="#8E8E93"/>
+         </VerticalStackLayout>
+
+          <Label Grid.Column="2"
+         Text="{Binding SaldoFormatado}"
+          FontSize="20"
+    FontAttributes="Bold"
+   VerticalOptions="Center"
+         TextColor="#007AFF"/>
+  </Grid>
+    </Border>
+      </DataTemplate>
+       </CollectionView.ItemTemplate>
+    </CollectionView>
+     </VerticalStackLayout>
+
+            <!-- Botao Atualizar com estilo iOS -->
+      <Border BackgroundColor="#007AFF"
+          StrokeThickness="0"
+      StrokeShape="RoundRectangle 14">
+                <Border.GestureRecognizers>
+       <TapGestureRecognizer Command="{Binding CarregarDadosCommand}"/>
+       </Border.GestureRecognizers>
+    
+    <Label Text="&#x1F504; Atualizar Dados"
+      FontSize="17"
+    FontAttributes="Bold"
+       TextColor="White"
+ HorizontalOptions="Center"
+            Padding="0,16"/>
+      </Border>
+
+  </VerticalStackLayout>
     </ScrollView>
 
 </ContentPage>

@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using roncav_budget.Models;
 using roncav_budget.Services;
+using roncav_budget.Data;
 using System.Collections.ObjectModel;
 
 namespace roncav_budget.ViewModels;
@@ -9,6 +10,7 @@ namespace roncav_budget.ViewModels;
 public partial class DashboardViewModel : ObservableObject
 {
     private readonly DatabaseService _databaseService;
+    private static bool _dadosExemploCarregados = false;
 
     [ObservableProperty]
     private decimal _saldoTotal;
@@ -34,8 +36,8 @@ public partial class DashboardViewModel : ObservableObject
 
  public DashboardViewModel(DatabaseService databaseService)
     {
-        _databaseService = databaseService;
-        MesAtual = DateTime.Now.ToString("MMMM/yyyy");
+    _databaseService = databaseService;
+MesAtual = DateTime.Now.ToString("MMMM/yyyy");
     }
 
     [RelayCommand]
@@ -43,8 +45,15 @@ public partial class DashboardViewModel : ObservableObject
     {
         IsLoading = true;
 
-        try
+   try
         {
+         // Carregar dados de exemplo na primeira vez
+       if (!_dadosExemploCarregados)
+      {
+     await DadosDeExemplo.PopularDadosExemploAsync(_databaseService);
+       _dadosExemploCarregados = true;
+            }
+
             // Carregar saldo total
             SaldoTotal = await _databaseService.ObterSaldoTotalAsync();
 
@@ -82,7 +91,7 @@ public partial class DashboardViewModel : ObservableObject
           OrcamentosMes.Add(orcamento);
     }
         }
-    catch (Exception ex)
+        catch (Exception ex)
         {
        await Application.Current!.MainPage!.DisplayAlert("Erro", $"Erro ao carregar dados: {ex.Message}", "OK");
         }

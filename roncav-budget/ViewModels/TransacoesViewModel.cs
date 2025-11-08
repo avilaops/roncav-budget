@@ -26,7 +26,7 @@ public partial class TransacoesViewModel : ObservableObject
     public ObservableCollection<Conta> Contas { get; } = new();
     public ObservableCollection<Categoria> Categorias { get; } = new();
 
-    public DashboardViewModel(DatabaseService databaseService)
+    public TransacoesViewModel(DatabaseService databaseService)
     {
         _databaseService = databaseService;
     }

@@ -2,228 +2,272 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
  xmlns:viewmodels="clr-namespace:roncav_budget.ViewModels"
-      xmlns:models="clr-namespace:roncav_budget.Models"
+        xmlns:models="clr-namespace:roncav_budget.Models"
     x:Class="roncav_budget.Views.TransacoesPage"
-        x:DataType="viewmodels:TransacoesViewModel"
-  Title="Transações">
+       x:DataType="viewmodels:TransacoesViewModel"
+  Title="Transacoes"
+     BackgroundColor="#F2F2F7">
 
-    <Grid RowDefinitions="Auto,*,Auto">
- 
-<!-- Filtros -->
-    <Frame Grid.Row="0" 
-    Padding="16"
-   Margin="10"
-      CornerRadius="12"
-   BackgroundColor="#F5F5F5">
- <VerticalStackLayout Spacing="12">
-     
+ <Grid RowDefinitions="Auto,*,Auto">
+        
+   <!-- Filtros em estilo iOS -->
+       <Border Grid.Row="0"
+       BackgroundColor="White"
+      StrokeThickness="0"
+      Margin="20,20,20,16"
+        StrokeShape="RoundRectangle 16">
+     <Border.Shadow>
+   <Shadow Brush="#000000"
+         Offset="0,4"
+        Radius="12"
+      Opacity="0.08"/>
+          </Border.Shadow>
+
+      <VerticalStackLayout Padding="20" Spacing="20">
        <!-- Filtro de Tipo -->
-         <Label Text="?? Tipo de Transação" FontSize="14" FontAttributes="Bold"/>
-      <HorizontalStackLayout Spacing="8">
-      <Button Text="Todas" 
-        Command="{Binding CarregarTransacoesCommand}"
-    CommandParameter="Todas"
-        BackgroundColor="#2196F3"
-  TextColor="White"
-     WidthRequest="100"/>
-     <Button Text="?? Receitas" 
-     Command="{Binding CarregarTransacoesCommand}"
-            CommandParameter="Receita"
-        BackgroundColor="#4CAF50"
- TextColor="White"
-    WidthRequest="100"/>
-     <Button Text="?? Despesas" 
-          Command="{Binding CarregarTransacoesCommand}"
-         CommandParameter="Despesa"
-           BackgroundColor="#F44336"
-   TextColor="White"
-      WidthRequest="100"/>
-    </HorizontalStackLayout>
+      <VerticalStackLayout Spacing="12">
+   <Label Text="Tipo de Transação"
+        FontSize="15"
+      FontAttributes="Bold"
+        TextColor="#000000"/>
 
-       <!-- Filtro de Data -->
-     <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-              <VerticalStackLayout Grid.Column="0" Spacing="4">
-        <Label Text="?? Data Início" FontSize="12"/>
-   <DatePicker Date="{Binding DataInicio}"
-       Format="dd/MM/yyyy"
-      BackgroundColor="White"/>
-   </VerticalStackLayout>
-
-      <VerticalStackLayout Grid.Column="1" Spacing="4">
-        <Label Text="?? Data Fim" FontSize="12"/>
- <DatePicker Date="{Binding DataFim}"
-      Format="dd/MM/yyyy"
-   BackgroundColor="White"/>
-    </VerticalStackLayout>
-          </Grid>
-
-     <Button Text="?? Filtrar"
-      Command="{Binding CarregarTransacoesCommand}"
-   BackgroundColor="#FF9800"
+        <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+       <Border Grid.Column="0"
+  BackgroundColor="#007AFF"
+          StrokeThickness="0"
+       StrokeShape="RoundRectangle 10">
+        <Border.GestureRecognizers>
+       <TapGestureRecognizer/>
+  </Border.GestureRecognizers>
+ <Label Text="Todas"
+       FontSize="15"
+      FontAttributes="Bold"
     TextColor="White"
-       CornerRadius="8"/>
+     HorizontalOptions="Center"
+  Padding="0,12"/>
+           </Border>
 
-</VerticalStackLayout>
-        </Frame>
+   <Border Grid.Column="1"
+       BackgroundColor="#F2F2F7"
+       StrokeThickness="0"
+       StrokeShape="RoundRectangle 10">
+       <Label Text="Receitas"
+FontSize="15"
+    TextColor="#8E8E93"
+       HorizontalOptions="Center"
+ Padding="0,12"/>
+   </Border>
 
-      <!-- Lista de Transações -->
-  <ScrollView Grid.Row="1">
-   <VerticalStackLayout Padding="10" Spacing="10">
-  
-        <!-- Resumo -->
-       <Frame BackgroundColor="#E3F2FD" 
-       Padding="16"
-      CornerRadius="12"
-  Margin="0,0,0,10">
-   <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
-      <VerticalStackLayout Grid.Column="0" Spacing="4">
-     <Label Text="?? Receitas"
-      FontSize="12"
-         TextColor="Gray"/>
-    <Label Text="{Binding TotalReceitas, StringFormat='{0:C2}'}"
-  FontSize="16"
-   FontAttributes="Bold"
-     TextColor="#4CAF50"/>
+        <Border Grid.Column="2"
+     BackgroundColor="#F2F2F7"
+           StrokeThickness="0"
+   StrokeShape="RoundRectangle 10">
+        <Label Text="Despesas"
+FontSize="15"
+     TextColor="#8E8E93"
+HorizontalOptions="Center"
+   Padding="0,12"/>
+       </Border>
+   </Grid>
+ </VerticalStackLayout>
+
+<!-- Filtro de Data -->
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+  <VerticalStackLayout Grid.Column="0" Spacing="8">
+        <Label Text="Data Início"
+   FontSize="13"
+     TextColor="#8E8E93"/>
+      <Border BackgroundColor="#F2F2F7"
+      StrokeThickness="0"
+  StrokeShape="RoundRectangle 10">
+     <DatePicker Date="{Binding DataInicio}"
+ Format="dd/MM/yyyy"
+     TextColor="#000000"
+BackgroundColor="Transparent"
+      HorizontalOptions="Center"
+Margin="12,8"/>
+  </Border>
+  </VerticalStackLayout>
+
+   <VerticalStackLayout Grid.Column="1" Spacing="8">
+        <Label Text="Data Fim"
+     FontSize="13"
+   TextColor="#8E8E93"/>
+<Border BackgroundColor="#F2F2F7"
+     StrokeThickness="0"
+           StrokeShape="RoundRectangle 10">
+      <DatePicker Date="{Binding DataFim}"
+Format="dd/MM/yyyy"
+         TextColor="#000000"
+ BackgroundColor="Transparent"
+HorizontalOptions="Center"
+       Margin="12,8"/>
+     </Border>
+     </VerticalStackLayout>
+        </Grid>
+      </VerticalStackLayout>
+       </Border>
+
+    <!-- Lista de Transacoes -->
+   <ScrollView Grid.Row="1">
+    <VerticalStackLayout Padding="20,0,20,20" Spacing="16">
+    
+     <!-- Resumo Financeiro -->
+   <Border BackgroundColor="White"
+StrokeThickness="0"
+      StrokeShape="RoundRectangle 16">
+  <Border.Shadow>
+   <Shadow Brush="#000000"
+     Offset="0,4"
+    Radius="12"
+      Opacity="0.08"/>
+       </Border.Shadow>
+
+      <Grid Padding="20" ColumnDefinitions="*,*,*" ColumnSpacing="16">
+        <VerticalStackLayout Grid.Column="0" Spacing="8">
+   <Label Text="&#x1F4C8;"
+    FontSize="24"/>
+           <Label Text="Receitas"
+  FontSize="13"
+      TextColor="#8E8E93"/>
+   <Label Text="{Binding TotalReceitas, StringFormat='{0:C2}'}"
+FontSize="20"
+      FontAttributes="Bold"
+        TextColor="#34C759"/>
      </VerticalStackLayout>
 
-    <VerticalStackLayout Grid.Column="1" Spacing="4">
-   <Label Text="?? Despesas"
-     FontSize="12"
-      TextColor="Gray"/>
-     <Label Text="{Binding TotalDespesas, StringFormat='{0:C2}'}"
-   FontSize="16"
+  <VerticalStackLayout Grid.Column="1" Spacing="8">
+    <Label Text="&#x1F4C9;"
+   FontSize="24"/>
+  <Label Text="Despesas"
+   FontSize="13"
+       TextColor="#8E8E93"/>
+   <Label Text="{Binding TotalDespesas, StringFormat='{0:C2}'}"
+       FontSize="20"
 FontAttributes="Bold"
-   TextColor="#F44336"/>
-      </VerticalStackLayout>
+  TextColor="#FF3B30"/>
+        </VerticalStackLayout>
 
-    <VerticalStackLayout Grid.Column="2" Spacing="4">
-   <Label Text="?? Saldo"
- FontSize="12"
-   TextColor="Gray"/>
-       <Label Text="{Binding SaldoPeriodo, StringFormat='{0:C2}'}"
-   FontSize="16"
-      FontAttributes="Bold"
-  TextColor="{Binding SaldoPeriodo, Converter={StaticResource SaldoToColorConverter}}"/>
-       </VerticalStackLayout>
-   </Grid>
-       </Frame>
+ <VerticalStackLayout Grid.Column="2" Spacing="8">
+     <Label Text="&#x1F4B5;"
+        FontSize="24"/>
+  <Label Text="Saldo"
+FontSize="13"
+   TextColor="#8E8E93"/>
+      <Label Text="{Binding SaldoPeriodo, StringFormat='{0:C2}'}"
+   FontSize="20"
+  FontAttributes="Bold"
+       TextColor="{Binding SaldoPeriodo, Converter={StaticResource SaldoToColorConverter}}"/>
+     </VerticalStackLayout>
+  </Grid>
+        </Border>
 
-       <!-- Lista -->
-         <CollectionView ItemsSource="{Binding Transacoes}"
-    SelectionMode="None">
-     <CollectionView.EmptyView>
-      <VerticalStackLayout HorizontalOptions="Center" 
-       VerticalOptions="Center"
-     Padding="40">
-      <Label Text="??"
-      FontSize="48"
+     <!-- Lista de Transacoes -->
+       <CollectionView ItemsSource="{Binding Transacoes}"
+     SelectionMode="None">
+  <CollectionView.EmptyView>
+        <VerticalStackLayout HorizontalOptions="Center"
+     VerticalOptions="Center"
+       Padding="40"
+  Spacing="16">
+     <Label Text="&#x1F4ED;"
+        FontSize="64"
+   Opacity="0.3"
    HorizontalOptions="Center"/>
-    <Label Text="Nenhuma transação encontrada"
-        FontSize="16"
-       TextColor="Gray"
-      HorizontalOptions="Center"
-         Margin="0,10,0,0"/>
-    </VerticalStackLayout>
-</CollectionView.EmptyView>
+     <Label Text="Nenhuma transação"
+   FontSize="17"
+      FontAttributes="Bold"
+TextColor="#8E8E93"
+     HorizontalOptions="Center"/>
+       <Label Text="Adicione sua primeira transação"
+  FontSize="15"
+       TextColor="#AEAEB2"
+     HorizontalOptions="Center"/>
+   </VerticalStackLayout>
+   </CollectionView.EmptyView>
 
   <CollectionView.ItemTemplate>
-     <DataTemplate x:DataType="models:Transacao">
-        <SwipeView>
-      <SwipeView.RightItems>
-           <SwipeItems>
-         <SwipeItem Text="?? Editar"
-     BackgroundColor="#2196F3"
-     Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TransacoesViewModel}}, Path=EditarTransacaoCommand}"
-         CommandParameter="{Binding .}"/>
-<SwipeItem Text="??? Excluir"
-          BackgroundColor="#F44336"
-    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TransacoesViewModel}}, Path=ExcluirTransacaoCommand}"
-       CommandParameter="{Binding .}"/>
-           </SwipeItems>
-    </SwipeView.RightItems>
+    <DataTemplate x:DataType="models:Transacao">
+     <Border BackgroundColor="White"
+  StrokeThickness="0"
+  Margin="0,0,0,12"
+       StrokeShape="RoundRectangle 12">
+      <Border.Shadow>
+   <Shadow Brush="#000000"
+   Offset="0,2"
+          Radius="8"
+   Opacity="0.06"/>
+       </Border.Shadow>
 
-   <Frame Margin="0,0,0,8"
-     Padding="16"
-    CornerRadius="12"
-        BackgroundColor="White"
-     HasShadow="True">
-  <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto" RowSpacing="8" ColumnSpacing="12">
-         
-  <!-- Ícone -->
-      <Label Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
-      Text="{Binding TipoIcone}"
-         FontSize="32"
-   VerticalOptions="Center"/>
+<Grid Padding="16" ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="16" RowSpacing="8">
+ <!-- Icone -->
+       <Border Grid.Column="0" Grid.RowSpan="2"
+   BackgroundColor="#F2F2F7"
+     WidthRequest="48"
+HeightRequest="48"
+    StrokeThickness="0"
+  StrokeShape="RoundRectangle 12"
+     VerticalOptions="Center">
+   <Label Text="{Binding TipoIcone}"
+   FontSize="24"
+HorizontalOptions="Center"
+  VerticalOptions="Center"/>
+  </Border>
 
-       <!-- Descrição e Categoria -->
-   <Label Grid.Row="0" Grid.Column="1"
-    Text="{Binding Descricao}"
-       FontSize="16"
-     FontAttributes="Bold"/>
-            
-        <!-- Data e Forma de Pagamento -->
-      <HorizontalStackLayout Grid.Row="1" Grid.Column="1" Spacing="8">
-       <Label Text="{Binding DataFormatada}"
-   FontSize="12"
-          TextColor="Gray"/>
-         <Label Text="•"
-   FontSize="12"
-    TextColor="Gray"/>
-     <Label Text="{Binding FormaPagamentoIcone}"
-         FontSize="12"/>
-       <Label Text="{Binding FormaPagamento}"
-       FontSize="12"
-    TextColor="Gray"/>
-   </HorizontalStackLayout>
+<!-- Descricao -->
+  <Label Grid.Row="0" Grid.Column="1"
+  Text="{Binding Descricao}"
+    FontSize="17"
+   FontAttributes="Bold"
+TextColor="#000000"
+     VerticalOptions="Center"/>
 
-     <!-- Valor -->
-       <Label Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
-  Text="{Binding ValorFormatado}"
-  FontSize="20"
-           FontAttributes="Bold"
-   VerticalOptions="Center"
-TextColor="{Binding Tipo, Converter={StaticResource TipoToColorConverter}}"/>
+      <!-- Data -->
+ <Label Grid.Row="1" Grid.Column="1"
+  Text="{Binding DataFormatada}"
+   FontSize="13"
+       TextColor="#8E8E93"/>
 
- <!-- Status e Parcela -->
- <HorizontalStackLayout Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Spacing="8">
-         <Frame Padding="6,2"
-    CornerRadius="4"
-    BackgroundColor="{Binding Efetivada, Converter={StaticResource BoolToColorConverter}}">
-        <Label Text="{Binding StatusTexto}"
-       FontSize="10"
-          TextColor="White"/>
-     </Frame>
+       <!-- Valor -->
+  <Label Grid.Column="2" Grid.RowSpan="2"
+      Text="{Binding ValorFormatado}"
+FontSize="20"
+      FontAttributes="Bold"
+  VerticalOptions="Center"
+  TextColor="{Binding Tipo, Converter={StaticResource TipoToColorConverter}}"/>
+      </Grid>
+   </Border>
+   </DataTemplate>
+     </CollectionView.ItemTemplate>
+  </CollectionView>
 
-   <Frame Padding="6,2"
-      CornerRadius="4"
-      BackgroundColor="#9E9E9E"
-  IsVisible="{Binding Parcelada}">
-    <Label Text="{Binding ParcelaTexto}"
-   FontSize="10"
-     TextColor="White"/>
-     </Frame>
-         </HorizontalStackLayout>
-
-   </Grid>
-</Frame>
-       </SwipeView>
-    </DataTemplate>
-    </CollectionView.ItemTemplate>
-     </CollectionView>
-
-   </VerticalStackLayout>
+      </VerticalStackLayout>
  </ScrollView>
 
-        <!-- Botão Adicionar -->
-  <Button Grid.Row="2"
-   Text="? Nova Transação"
-       Command="{Binding AdicionarTransacaoCommand}"
-   BackgroundColor="#4CAF50"
-    TextColor="White"
-    CornerRadius="25"
-       HeightRequest="50"
-      Margin="16"/>
+<!-- Botao Adicionar Transacao (Floating Action Button estilo iOS) -->
+      <Border Grid.Row="2"
+   BackgroundColor="#007AFF"
+ StrokeThickness="0"
+     Margin="20,0,20,40"
+  StrokeShape="RoundRectangle 14">
+     <Border.Shadow>
+        <Shadow Brush="#007AFF"
+     Offset="0,8"
+        Radius="24"
+Opacity="0.4"/>
+   </Border.Shadow>
+   <Border.GestureRecognizers>
+ <TapGestureRecognizer Command="{Binding AdicionarTransacaoCommand}"/>
+    </Border.GestureRecognizers>
 
-    </Grid>
+     <Label Text="&#x2795; Nova Transação"
+    FontSize="17"
+  FontAttributes="Bold"
+    TextColor="White"
+  HorizontalOptions="Center"
+    Padding="0,16"/>
+  </Border>
+
+  </Grid>
 
 </ContentPage>
