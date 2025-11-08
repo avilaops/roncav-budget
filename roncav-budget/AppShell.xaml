@@ -1,15 +1,74 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Shell
-    x:Class="roncav_budget.AppShell"
+  x:Class="roncav_budget.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:roncav_budget"
-    Shell.FlyoutBehavior="Disabled"
-    Title="roncav_budget">
+ xmlns:views="clr-namespace:roncav_budget.Views"
+  Shell.FlyoutBehavior="Flyout"
+    Title="Roncav Budget">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <Shell.FlyoutHeader>
+     <Grid BackgroundColor="#2196F3" HeightRequest="150" Padding="20">
+     <VerticalStackLayout VerticalOptions="Center">
+       <Label Text="💰 Roncav Budget"
+      FontSize="24"
+ FontAttributes="Bold"
+   TextColor="White"/>
+       <Label Text="Controle Financeiro Familiar"
+FontSize="14"
+      TextColor="White"
+   Opacity="0.9"/>
+            </VerticalStackLayout>
+ </Grid>
+ </Shell.FlyoutHeader>
+
+    <FlyoutItem Title="🏠 Dashboard" Icon="home.png">
+        <ShellContent
+      Title="Dashboard"
+    ContentTemplate="{DataTemplate views:DashboardPage}"
+Route="Dashboard" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="💳 Contas" Icon="wallet.png">
+        <ShellContent
+      Title="Minhas Contas"
+            ContentTemplate="{DataTemplate ContentPage}"
+   Route="Contas" />
+ </FlyoutItem>
+
+  <FlyoutItem Title="💸 Transações" Icon="transaction.png">
+     <ShellContent
+     Title="Transações"
+   ContentTemplate="{DataTemplate ContentPage}"
+      Route="Transacoes" />
+    </FlyoutItem>
+
+  <FlyoutItem Title="🎯 Orçamentos" Icon="budget.png">
+     <ShellContent
+    Title="Orçamentos"
+     ContentTemplate="{DataTemplate ContentPage}"
+      Route="Orcamentos" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="🎁 Metas" Icon="goal.png">
+        <ShellContent
+  Title="Metas"
+            ContentTemplate="{DataTemplate ContentPage}"
+    Route="Metas" />
+    </FlyoutItem>
+
+ <FlyoutItem Title="📊 Relatórios" Icon="chart.png">
+     <ShellContent
+  Title="Relatórios"
+         ContentTemplate="{DataTemplate ContentPage}"
+            Route="Relatorios" />
+    </FlyoutItem>
+
+  <FlyoutItem Title="⚙️ Configurações" Icon="settings.png">
+   <ShellContent
+   Title="Configurações"
+ ContentTemplate="{DataTemplate ContentPage}"
+   Route="Configuracoes" />
+    </FlyoutItem>
 
 </Shell>

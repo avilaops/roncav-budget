@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:viewmodels="clr-namespace:roncav_budget.ViewModels"
+      xmlns:models="clr-namespace:roncav_budget.Models"
+    x:Class="roncav_budget.Views.TransacoesPage"
+        x:DataType="viewmodels:TransacoesViewModel"
+  Title="Transações">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+ 
+<!-- Filtros -->
+    <Frame Grid.Row="0" 
+    Padding="16"
+   Margin="10"
+      CornerRadius="12"
+   BackgroundColor="#F5F5F5">
+ <VerticalStackLayout Spacing="12">
+     
+       <!-- Filtro de Tipo -->
+         <Label Text="?? Tipo de Transação" FontSize="14" FontAttributes="Bold"/>
+      <HorizontalStackLayout Spacing="8">
+      <Button Text="Todas" 
+        Command="{Binding CarregarTransacoesCommand}"
+    CommandParameter="Todas"
+        BackgroundColor="#2196F3"
+  TextColor="White"
+     WidthRequest="100"/>
+     <Button Text="?? Receitas" 
+     Command="{Binding CarregarTransacoesCommand}"
+            CommandParameter="Receita"
+        BackgroundColor="#4CAF50"
+ TextColor="White"
+    WidthRequest="100"/>
+     <Button Text="?? Despesas" 
+          Command="{Binding CarregarTransacoesCommand}"
+         CommandParameter="Despesa"
+           BackgroundColor="#F44336"
+   TextColor="White"
+      WidthRequest="100"/>
+    </HorizontalStackLayout>
+
+       <!-- Filtro de Data -->
+     <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+              <VerticalStackLayout Grid.Column="0" Spacing="4">
+        <Label Text="?? Data Início" FontSize="12"/>
+   <DatePicker Date="{Binding DataInicio}"
+       Format="dd/MM/yyyy"
+      BackgroundColor="White"/>
+   </VerticalStackLayout>
+
+      <VerticalStackLayout Grid.Column="1" Spacing="4">
+        <Label Text="?? Data Fim" FontSize="12"/>
+ <DatePicker Date="{Binding DataFim}"
+      Format="dd/MM/yyyy"
+   BackgroundColor="White"/>
+    </VerticalStackLayout>
+          </Grid>
+
+     <Button Text="?? Filtrar"
+      Command="{Binding CarregarTransacoesCommand}"
+   BackgroundColor="#FF9800"
+    TextColor="White"
+       CornerRadius="8"/>
+
+</VerticalStackLayout>
+        </Frame>
+
+      <!-- Lista de Transações -->
+  <ScrollView Grid.Row="1">
+   <VerticalStackLayout Padding="10" Spacing="10">
+  
+        <!-- Resumo -->
+       <Frame BackgroundColor="#E3F2FD" 
+       Padding="16"
+      CornerRadius="12"
+  Margin="0,0,0,10">
+   <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+      <VerticalStackLayout Grid.Column="0" Spacing="4">
+     <Label Text="?? Receitas"
+      FontSize="12"
+         TextColor="Gray"/>
+    <Label Text="{Binding TotalReceitas, StringFormat='{0:C2}'}"
+  FontSize="16"
+   FontAttributes="Bold"
+     TextColor="#4CAF50"/>
+     </VerticalStackLayout>
+
+    <VerticalStackLayout Grid.Column="1" Spacing="4">
+   <Label Text="?? Despesas"
+     FontSize="12"
+      TextColor="Gray"/>
+     <Label Text="{Binding TotalDespesas, StringFormat='{0:C2}'}"
+   FontSize="16"
+FontAttributes="Bold"
+   TextColor="#F44336"/>
+      </VerticalStackLayout>
+
+    <VerticalStackLayout Grid.Column="2" Spacing="4">
+   <Label Text="?? Saldo"
+ FontSize="12"
+   TextColor="Gray"/>
+       <Label Text="{Binding SaldoPeriodo, StringFormat='{0:C2}'}"
+   FontSize="16"
+      FontAttributes="Bold"
+  TextColor="{Binding SaldoPeriodo, Converter={StaticResource SaldoToColorConverter}}"/>
+       </VerticalStackLayout>
+   </Grid>
+       </Frame>
+
+       <!-- Lista -->
+         <CollectionView ItemsSource="{Binding Transacoes}"
+    SelectionMode="None">
+     <CollectionView.EmptyView>
+      <VerticalStackLayout HorizontalOptions="Center" 
+       VerticalOptions="Center"
+     Padding="40">
+      <Label Text="??"
+      FontSize="48"
+   HorizontalOptions="Center"/>
+    <Label Text="Nenhuma transação encontrada"
+        FontSize="16"
+       TextColor="Gray"
+      HorizontalOptions="Center"
+         Margin="0,10,0,0"/>
+    </VerticalStackLayout>
+</CollectionView.EmptyView>
+
+  <CollectionView.ItemTemplate>
+     <DataTemplate x:DataType="models:Transacao">
+        <SwipeView>
+      <SwipeView.RightItems>
+           <SwipeItems>
+         <SwipeItem Text="?? Editar"
+     BackgroundColor="#2196F3"
+     Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TransacoesViewModel}}, Path=EditarTransacaoCommand}"
+         CommandParameter="{Binding .}"/>
+<SwipeItem Text="??? Excluir"
+          BackgroundColor="#F44336"
+    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TransacoesViewModel}}, Path=ExcluirTransacaoCommand}"
+       CommandParameter="{Binding .}"/>
+           </SwipeItems>
+    </SwipeView.RightItems>
+
+   <Frame Margin="0,0,0,8"
+     Padding="16"
+    CornerRadius="12"
+        BackgroundColor="White"
+     HasShadow="True">
+  <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto" RowSpacing="8" ColumnSpacing="12">
+         
+  <!-- Ícone -->
+      <Label Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+      Text="{Binding TipoIcone}"
+         FontSize="32"
+   VerticalOptions="Center"/>
+
+       <!-- Descrição e Categoria -->
+   <Label Grid.Row="0" Grid.Column="1"
+    Text="{Binding Descricao}"
+       FontSize="16"
+     FontAttributes="Bold"/>
+            
+        <!-- Data e Forma de Pagamento -->
+      <HorizontalStackLayout Grid.Row="1" Grid.Column="1" Spacing="8">
+       <Label Text="{Binding DataFormatada}"
+   FontSize="12"
+          TextColor="Gray"/>
+         <Label Text="•"
+   FontSize="12"
+    TextColor="Gray"/>
+     <Label Text="{Binding FormaPagamentoIcone}"
+         FontSize="12"/>
+       <Label Text="{Binding FormaPagamento}"
+       FontSize="12"
+    TextColor="Gray"/>
+   </HorizontalStackLayout>
+
+     <!-- Valor -->
+       <Label Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
+  Text="{Binding ValorFormatado}"
+  FontSize="20"
+           FontAttributes="Bold"
+   VerticalOptions="Center"
+TextColor="{Binding Tipo, Converter={StaticResource TipoToColorConverter}}"/>
+
+ <!-- Status e Parcela -->
+ <HorizontalStackLayout Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Spacing="8">
+         <Frame Padding="6,2"
+    CornerRadius="4"
+    BackgroundColor="{Binding Efetivada, Converter={StaticResource BoolToColorConverter}}">
+        <Label Text="{Binding StatusTexto}"
+       FontSize="10"
+          TextColor="White"/>
+     </Frame>
+
+   <Frame Padding="6,2"
+      CornerRadius="4"
+      BackgroundColor="#9E9E9E"
+  IsVisible="{Binding Parcelada}">
+    <Label Text="{Binding ParcelaTexto}"
+   FontSize="10"
+     TextColor="White"/>
+     </Frame>
+         </HorizontalStackLayout>
+
+   </Grid>
+</Frame>
+       </SwipeView>
+    </DataTemplate>
+    </CollectionView.ItemTemplate>
+     </CollectionView>
+
+   </VerticalStackLayout>
+ </ScrollView>
+
+        <!-- Botão Adicionar -->
+  <Button Grid.Row="2"
+   Text="? Nova Transação"
+       Command="{Binding AdicionarTransacaoCommand}"
+   BackgroundColor="#4CAF50"
+    TextColor="White"
+    CornerRadius="25"
+       HeightRequest="50"
+      Margin="16"/>
+
+    </Grid>
+
+</ContentPage>

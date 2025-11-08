@@ -2,6 +2,7 @@
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:roncav_budget"
+             xmlns:converters="clr-namespace:roncav_budget.Converters"
              x:Class="roncav_budget.App">
     <Application.Resources>
         <ResourceDictionary>
@@ -9,6 +10,13 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- Value Converters -->
+            <converters:SaldoToColorConverter x:Key="SaldoToColorConverter" />
+            <converters:TipoToColorConverter x:Key="TipoToColorConverter" />
+            <converters:BoolToColorConverter x:Key="BoolToColorConverter" />
+            <converters:PercentToProgressConverter x:Key="PercentToProgressConverter" />
+            <converters:PercentToColorConverter x:Key="PercentToColorConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
