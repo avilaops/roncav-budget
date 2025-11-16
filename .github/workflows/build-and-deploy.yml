@@ -2,7 +2,7 @@ name: Build and Package Roncav Budget
 
 on:
     push:
-        branches: [main]
+        branches: [main, master]
     workflow_dispatch:
 
 env:
