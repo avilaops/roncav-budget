@@ -1,33 +1,35 @@
-# ?? Como Executar o Roncav Budget
+# ðŸš€ Como Executar o Roncav Budget
 
-## ? MÉTODO RÁPIDO (Visual Studio)
+> **DocumentaÃ§Ã£o Principal:** [README em PortuguÃªs](README.pt-BR.md) | [README in English](README.md) | [Como Contribuir](CONTRIBUTING.pt-BR.md)
+
+## ? Mï¿½TODO Rï¿½PIDO (Visual Studio)
 
 ### 1?? Abrir o Projeto
-O projeto já deve estar aberto no Visual Studio. Se não estiver:
+O projeto jï¿½ deve estar aberto no Visual Studio. Se nï¿½o estiver:
 - Clique duas vezes em: `C:\Users\nicol\source\repos\roncav-budget\roncav-budget.sln`
 
-### 2?? Selecionar o Projeto de Inicialização
+### 2?? Selecionar o Projeto de Inicializaï¿½ï¿½o
 
-**Para Windows (mais rápido):**
-1. No **Solution Explorer**, clique com botão direito em `roncav-budget.WinUI`
-2. Selecione **"Set as Startup Project"** (Definir como Projeto de Inicialização)
+**Para Windows (mais rï¿½pido):**
+1. No **Solution Explorer**, clique com botï¿½o direito em `roncav-budget.WinUI`
+2. Selecione **"Set as Startup Project"** (Definir como Projeto de Inicializaï¿½ï¿½o)
 3. No topo do Visual Studio, selecione a plataforma: **x64**
 
 **OU para Android (se tiver emulador):**
-1. Clique com botão direito em `roncav-budget.Droid`
+1. Clique com botï¿½o direito em `roncav-budget.Droid`
 2. Selecione **"Set as Startup Project"**
 
 ### 3?? Executar
-- Pressione **F5** (ou clique no botão verde ?? "Play")
+- Pressione **F5** (ou clique no botï¿½o verde ?? "Play")
 - OU: Menu `Debug` ? `Start Debugging`
 
 ### 4?? Aguardar
-- Primeira execução pode demorar 1-2 minutos (compilando)
-- O app abrirá automaticamente
+- Primeira execuï¿½ï¿½o pode demorar 1-2 minutos (compilando)
+- O app abrirï¿½ automaticamente
 
 ---
 
-## ?? O QUE VOCÊ VAI VER
+## ?? O QUE VOCï¿½ VAI VER
 
 ### Dashboard (Tela Inicial)
 ```
@@ -35,7 +37,7 @@ O projeto já deve estar aberto no Visual Studio. Se não estiver:
 ? ?? Resumo        [?]    ?
 ???????????????????????????????
 ?    ?
-? Olá!            ?
+? Olï¿½!            ?
 ? Janeiro/2025     ?
 ?       ?
 ? ?????????????????????????   ?
@@ -51,7 +53,7 @@ O projeto já deve estar aberto no Visual Studio. Se não estiver:
 ? ???????????  ???????????   ?
 ?       ?
 ? ?????????????????????????   ?
-? ? ?? Saldo do Mês       ?   ?
+? ? ?? Saldo do Mï¿½s       ?   ?
 ? ? R$ 0,00               ?   ?
 ? ?????????????????????????   ?
 ?  ?
@@ -62,12 +64,12 @@ O projeto já deve estar aberto no Visual Studio. Se não estiver:
 
 ### Menu Lateral (?)
 - ?? Resumo
-- ?? Transações
+- ?? Transaï¿½ï¿½es
 - ?? Contas
-- ?? Orçamentos
+- ?? Orï¿½amentos
 - ?? Metas
-- ?? Relatórios
-- ?? Configurações
+- ?? Relatï¿½rios
+- ?? Configuraï¿½ï¿½es
 
 ### Cores e Design
 - **Azul (#007AFF)**: Cor principal (estilo iOS)
@@ -81,8 +83,8 @@ O projeto já deve estar aberto no Visual Studio. Se não estiver:
 
 ## ?? SE DER ERRO
 
-### Erro 1: "Não foi possível compilar"
-**Solução:**
+### Erro 1: "Nï¿½o foi possï¿½vel compilar"
+**Soluï¿½ï¿½o:**
 ```bash
 # Limpar e reconstruir
 1. Menu Build ? Clean Solution
@@ -90,15 +92,15 @@ O projeto já deve estar aberto no Visual Studio. Se não estiver:
 3. Pressionar F5 novamente
 ```
 
-### Erro 2: "Arquitetura não suportada"
-**Solução:**
+### Erro 2: "Arquitetura nï¿½o suportada"
+**Soluï¿½ï¿½o:**
 1. No topo do Visual Studio, mude de "Any CPU" para **x64**
 2. OU selecione o projeto Android se tiver emulador
 
-### Erro 3: "Emulador não encontrado" (Android)
-**Solução:**
-- Use o projeto **WinUI** ao invés do Android
-- É mais rápido e não precisa de emulador
+### Erro 3: "Emulador nï¿½o encontrado" (Android)
+**Soluï¿½ï¿½o:**
+- Use o projeto **WinUI** ao invï¿½s do Android
+- ï¿½ mais rï¿½pido e nï¿½o precisa de emulador
 
 ---
 
@@ -106,22 +108,22 @@ O projeto já deve estar aberto no Visual Studio. Se não estiver:
 
 ### ? Design System Apple
 - Cores do sistema iOS
-- Tipografia hierárquica
-- Espaçamentos consistentes
+- Tipografia hierï¿½rquica
+- Espaï¿½amentos consistentes
 - Sombras suaves
 - Bordas arredondadas
 
 ### ? Componentes Premium
-- **Cards com elevação**: Shadow offset (0,4,12)
+- **Cards com elevaï¿½ï¿½o**: Shadow offset (0,4,12)
 - **Buttons iOS-style**: Border radius 14px
-- **Empty states**: Mensagens amigáveis
+- **Empty states**: Mensagens amigï¿½veis
 - **Loading states**: Preparados para uso
 
 ### ? Funcionalidades
 - Dashboard com resumo financeiro
-- Lista de transações (ainda vazia)
-- Menu de navegação
-- Sistema de cores semânticas
+- Lista de transaï¿½ï¿½es (ainda vazia)
+- Menu de navegaï¿½ï¿½o
+- Sistema de cores semï¿½nticas
 
 ---
 
@@ -136,11 +138,11 @@ cd C:\Users\nicol\source\repos\roncav-budget
 # Compilar
 msbuild roncav-budget.WinUI\roncav-budget.WinUI.csproj /p:Configuration=Debug /p:Platform=x64
 
-# Executar (após compilar)
+# Executar (apï¿½s compilar)
 .\roncav-budget.WinUI\bin\x64\Debug\net9.0-windows10.0.19041.0\roncav-budget.WinUI.exe
 ```
 
-### OU via dotnet (pode não funcionar para WinUI)
+### OU via dotnet (pode nï¿½o funcionar para WinUI)
 ```bash
 cd roncav-budget
 dotnet run
@@ -154,35 +156,35 @@ Quando o app abrir:
 
 1. **Veja o Dashboard** - Card azul com saldo total
 2. **Abra o menu** (clique no ?)
-3. **Navegue para Transações**
+3. **Navegue para Transaï¿½ï¿½es**
 4. **Veja o empty state** elegante
 5. **Observe as cores** (verde/vermelho/azul)
 6. **Teste a responsividade** redimensionando a janela
 
 ---
 
-## ?? PRÓXIMOS PASSOS
+## ?? PRï¿½XIMOS PASSOS
 
-Após ver rodando, posso:
+Apï¿½s ver rodando, posso:
 
 1. **Adicionar dados de exemplo** para popular o dashboard
-2. **Implementar formulário** de nova transação
-3. **Adicionar gráficos** (pizza, linha)
-4. **Criar animações** (fade in/out)
+2. **Implementar formulï¿½rio** de nova transaï¿½ï¿½o
+3. **Adicionar grï¿½ficos** (pizza, linha)
+4. **Criar animaï¿½ï¿½es** (fade in/out)
 5. **Implementar Dark Mode**
 
 ---
 
 ## ?? DICA DE OURO
 
-**Para ver o design Apple em ação:**
+**Para ver o design Apple em aï¿½ï¿½o:**
 1. Execute o app
 2. Observe as sombras nos cards
-3. Veja o botão azul com shadow
-4. Repare no espaçamento consistente
-5. Note a tipografia hierárquica
+3. Veja o botï¿½o azul com shadow
+4. Repare no espaï¿½amento consistente
+5. Note a tipografia hierï¿½rquica
 
-O design ficou **muito mais profissional** que o padrão! ???
+O design ficou **muito mais profissional** que o padrï¿½o! ???
 
 ---
 

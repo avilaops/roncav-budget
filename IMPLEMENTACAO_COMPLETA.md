@@ -1,10 +1,12 @@
-# ? SISTEMA DE ORÇAMENTO FAMILIAR - IMPLEMENTAÇÃO COMPLETA
+# ðŸ— SISTEMA DE ORÃ‡AMENTO FAMILIAR - IMPLEMENTAÃ‡ÃƒO COMPLETA
 
-## ?? PROJETO CONCLUÍDO COM SUCESSO!
+> **DocumentaÃ§Ã£o Principal:** [README em PortuguÃªs](README.pt-BR.md) | [README in English](README.md)
 
-### ?? Resumo da Implementação
+## ?? PROJETO CONCLUï¿½DO COM SUCESSO!
 
-**Status**: ? Build concluído com sucesso  
+### ?? Resumo da Implementaï¿½ï¿½o
+
+**Status**: ? Build concluï¿½do com sucesso  
 **Plataforma**: .NET 9 MAUI  
 **Avisos**: 20 (normais para projeto MAUI)  
 **Erros**: 0
@@ -13,70 +15,70 @@
 
 ## ?? Estrutura Criada
 
-### ? Modelos de Domínio (Models/)
-- ?? `Conta.cs` - Gerenciamento de contas bancárias
-- ?? `Categoria.cs` - 15+ categorias brasileiras pré-configuradas
-- ?? `Transacao.cs` - Sistema completo de transações
-- ?? `Orcamento.cs` - Orçamentos e Metas financeiras
-- ?? `RecursosBrasileiros.cs` - PIX, Boleto, Validação CPF/CNPJ
+### ? Modelos de Domï¿½nio (Models/)
+- ?? `Conta.cs` - Gerenciamento de contas bancï¿½rias
+- ?? `Categoria.cs` - 15+ categorias brasileiras prï¿½-configuradas
+- ?? `Transacao.cs` - Sistema completo de transaï¿½ï¿½es
+- ?? `Orcamento.cs` - Orï¿½amentos e Metas financeiras
+- ?? `RecursosBrasileiros.cs` - PIX, Boleto, Validaï¿½ï¿½o CPF/CNPJ
 
-### ? Serviços (Services/)
+### ? Serviï¿½os (Services/)
 - ?? `DatabaseService.cs` - Camada de acesso a dados SQLite
-- ?? `ImportacaoExtratoService.cs` - Import CSV (Nubank, Inter, Itaú, Bradesco)
-- ?? `RelatorioService.cs` - Relatórios e análises financeiras
+- ?? `ImportacaoExtratoService.cs` - Import CSV (Nubank, Inter, Itaï¿½, Bradesco)
+- ?? `RelatorioService.cs` - Relatï¿½rios e anï¿½lises financeiras
 
 ### ? ViewModels (ViewModels/)
 - ?? `DashboardViewModel.cs` - Dashboard principal
-- ?? `TransacoesViewModel.cs` - Gestão de transações
-- ?? `ContasViewModel.cs` - Gestão de contas
-- ?? `OrcamentosViewModel.cs` - Orçamentos mensais
+- ?? `TransacoesViewModel.cs` - Gestï¿½o de transaï¿½ï¿½es
+- ?? `ContasViewModel.cs` - Gestï¿½o de contas
+- ?? `OrcamentosViewModel.cs` - Orï¿½amentos mensais
 - ?? `MetasViewModel.cs` - Metas financeiras
 
 ### ? Views (Views/)
 - ?? `DashboardPage.xaml` - Interface do dashboard
-- ?? `TransacoesPage.xaml` - Interface de transações
+- ?? `TransacoesPage.xaml` - Interface de transaï¿½ï¿½es
 
 ### ? Infraestrutura
 - ?? `ValueConverters.cs` - Conversores XAML
-- ?? `App.xaml` - Configuração global
-- ?? `AppShell.xaml` - Navegação e menu
-- ?? `MauiProgramExtensions.cs` - Injeção de dependência
+- ?? `App.xaml` - Configuraï¿½ï¿½o global
+- ?? `AppShell.xaml` - Navegaï¿½ï¿½o e menu
+- ?? `MauiProgramExtensions.cs` - Injeï¿½ï¿½o de dependï¿½ncia
 
 ---
 
 ## ?? Funcionalidades Implementadas
 
-### ?? Gestão Financeira
-- [x] Múltiplas contas bancárias
+### ?? Gestï¿½o Financeira
+- [x] Mï¿½ltiplas contas bancï¿½rias
 - [x] Receitas e Despesas
-- [x] Transferências entre contas
+- [x] Transferï¿½ncias entre contas
 - [x] Parcelamentos
-- [x] Transações recorrentes
-- [x] Categorização automática
+- [x] Transaï¿½ï¿½es recorrentes
+- [x] Categorizaï¿½ï¿½o automï¿½tica
 
 ### ???? Recursos Brasileiros
 - [x] Suporte completo a **PIX** (5 tipos de chave)
-- [x] **Boletos** bancários
-- [x] Validação de **CPF** e **CNPJ**
+- [x] **Boletos** bancï¿½rios
+- [x] Validaï¿½ï¿½o de **CPF** e **CNPJ**
 - [x] 18+ bancos brasileiros cadastrados
-- [x] Categorias específicas para **MEI**
+- [x] Categorias especï¿½ficas para **MEI**
 - [x] Formas de pagamento nacionais
 
-### ?? Análise e Relatórios
+### ?? Anï¿½lise e Relatï¿½rios
 - [x] Dashboard com resumo em tempo real
-- [x] Orçamento mensal por categoria
+- [x] Orï¿½amento mensal por categoria
 - [x] Metas financeiras com progresso
-- [x] Comparação entre períodos
-- [x] Tendências e previsões
+- [x] Comparaï¿½ï¿½o entre perï¿½odos
+- [x] Tendï¿½ncias e previsï¿½es
 - [x] Gastos por categoria
 
-### ?? Importação de Dados
+### ?? Importaï¿½ï¿½o de Dados
 - [x] CSV Nubank
 - [x] CSV Inter
-- [x] CSV Itaú
+- [x] CSV Itaï¿½
 - [x] CSV Bradesco
 - [x] Formato personalizado
-- [x] Categorização automática inteligente
+- [x] Categorizaï¿½ï¿½o automï¿½tica inteligente
 
 ---
 
@@ -93,17 +95,17 @@
 
 ## ?? Como Executar
 
-### Opção 1: Visual Studio
+### Opï¿½ï¿½o 1: Visual Studio
 ```bash
 1. Abra a solution no Visual Studio 2022
-2. Selecione o projeto de inicialização:
+2. Selecione o projeto de inicializaï¿½ï¿½o:
    - Windows: roncav-budget.WinUI
    - Android: roncav-budget.Droid
    - iOS: roncav-budget.iOS
 3. Pressione F5
 ```
 
-### Opção 2: CLI
+### Opï¿½ï¿½o 2: CLI
 ```bash
 # Build
 cd C:\Users\nicol\source\repos\roncav-budget
@@ -127,97 +129,97 @@ dotnet run --project roncav-budget\roncav-budget.csproj
 ## ??? Banco de Dados
 
 **SQLite Local**
-- Localização: `FileSystem.AppDataDirectory/roncav_budget.db3`
+- Localizaï¿½ï¿½o: `FileSystem.AppDataDirectory/roncav_budget.db3`
 - 5 tabelas: Contas, Categorias, Transacoes, Orcamentos, Metas
 - Sem necessidade de servidor
 - Backup: copiar arquivo .db3
 
 ---
 
-## ?? Interface do Usuário
+## ?? Interface do Usuï¿½rio
 
 ### Dashboard
 - ?? Saldo total em destaque
 - ?? Resumo mensal (Receitas vs Despesas)
 - ?? Lista de contas
-- ?? Transações recentes
-- ?? Status dos orçamentos
+- ?? Transaï¿½ï¿½es recentes
+- ?? Status dos orï¿½amentos
 
 ### Menu Principal
 - ?? Dashboard
 - ?? Contas
-- ?? Transações
-- ?? Orçamentos
+- ?? Transaï¿½ï¿½es
+- ?? Orï¿½amentos
 - ?? Metas
-- ?? Relatórios
-- ?? Configurações
+- ?? Relatï¿½rios
+- ?? Configuraï¿½ï¿½es
 
 ---
 
-## ?? Segurança e Validações
+## ?? Seguranï¿½a e Validaï¿½ï¿½es
 
-- ? Validação de CPF com dígito verificador
-- ? Validação de CNPJ com dígito verificador
-- ? Formatação automática de documentos
+- ? Validaï¿½ï¿½o de CPF com dï¿½gito verificador
+- ? Validaï¿½ï¿½o de CNPJ com dï¿½gito verificador
+- ? Formataï¿½ï¿½o automï¿½tica de documentos
 - ? Dados armazenados localmente (privacidade)
 
 ---
 
-## ?? Próximos Passos (Roadmap)
+## ?? Prï¿½ximos Passos (Roadmap)
 
-### Versão 2.0
-- [ ] Sincronização em nuvem (Azure)
-- [ ] Open Finance Brasil (integração automática com bancos)
-- [ ] Gráficos avançados (charts)
-- [ ] Exportação PDF/Excel
-- [ ] Backup automático
-- [ ] Multi-usuário (controle familiar)
+### Versï¿½o 2.0
+- [ ] Sincronizaï¿½ï¿½o em nuvem (Azure)
+- [ ] Open Finance Brasil (integraï¿½ï¿½o automï¿½tica com bancos)
+- [ ] Grï¿½ficos avanï¿½ados (charts)
+- [ ] Exportaï¿½ï¿½o PDF/Excel
+- [ ] Backup automï¿½tico
+- [ ] Multi-usuï¿½rio (controle familiar)
 
-### Versão 3.0
-- [ ] IA para previsões e insights
+### Versï¿½o 3.0
+- [ ] IA para previsï¿½es e insights
 - [ ] Widgets nativos
-- [ ] Notificações push
+- [ ] Notificaï¿½ï¿½es push
 - [ ] Assistente por voz
-- [ ] Versão web (Blazor)
+- [ ] Versï¿½o web (Blazor)
 
 ---
 
 ## ?? Issues Conhecidos
 
-1. **WinUI Build**: Requer configuração adicional da arquitetura Windows
-   - **Solução**: Executar via Visual Studio ou configurar RuntimeIdentifier
+1. **WinUI Build**: Requer configuraï¿½ï¿½o adicional da arquitetura Windows
+   - **Soluï¿½ï¿½o**: Executar via Visual Studio ou configurar RuntimeIdentifier
 
 2. **Warnings CA1416**: Avisos de compatibilidade CommunityToolkit
-   - **Status**: Normal, não afeta funcionalidade
+   - **Status**: Normal, nï¿½o afeta funcionalidade
 
 ---
 
-## ?? Documentação Adicional
+## ?? Documentaï¿½ï¿½o Adicional
 
-- ?? [README.md](README.md) - Documentação principal do projeto
+- ?? [README.md](README.md) - Documentaï¿½ï¿½o principal do projeto
 - ??? Arquitetura MVVM com CommunityToolkit
-- ?? Padrão Repository com DatabaseService
+- ?? Padrï¿½o Repository com DatabaseService
 - ?? XAML com Data Binding e Converters
 
 ---
 
-## ? Destaques Técnicos
+## ? Destaques Tï¿½cnicos
 
-### ?? Boas Práticas Implementadas
-- ? Padrão MVVM completo
-- ? Injeção de dependência
+### ?? Boas Prï¿½ticas Implementadas
+- ? Padrï¿½o MVVM completo
+- ? Injeï¿½ï¿½o de dependï¿½ncia
 - ? Source Generators (CommunityToolkit.Mvvm)
-- ? Async/Await em todas operações de dados
+- ? Async/Await em todas operaï¿½ï¿½es de dados
 - ? ObservableCollections para UI reativa
-- ? Value Converters para lógica de apresentação
-- ? Validações de domínio
+- ? Value Converters para lï¿½gica de apresentaï¿½ï¿½o
+- ? Validaï¿½ï¿½es de domï¿½nio
 
-### ?? Código Limpo
-- ? Separação de responsabilidades
+### ?? Cï¿½digo Limpo
+- ? Separaï¿½ï¿½o de responsabilidades
 - ? Nomes descritivos
-- ? Comentários em português
-- ? Tratamento de exceções
-- ? Métodos pequenos e focados
+- ? Comentï¿½rios em portuguï¿½s
+- ? Tratamento de exceï¿½ï¿½es
+- ? Mï¿½todos pequenos e focados
 
 ---
 
@@ -231,7 +233,7 @@ Projeto desenvolvido com:
 
 ---
 
-## ?? Licença
+## ?? Licenï¿½a
 
 MIT License - Livre para uso pessoal e comercial
 
@@ -241,11 +243,11 @@ MIT License - Livre para uso pessoal e comercial
 
 **Ronaldo Cavalcante (Avila Ops)**
 - GitHub: [@avilaops](https://github.com/avilaops)
-- Repositório: https://github.com/avilaops/roncav-budget
+- Repositï¿½rio: https://github.com/avilaops/roncav-budget
 
 ---
 
-**?? Roncav Budget - Controle Financeiro Simples e Poderoso para Famílias Brasileiras**
+**?? Roncav Budget - Controle Financeiro Simples e Poderoso para Famï¿½lias Brasileiras**
 
 *Desenvolvido em .NET 9 MAUI | Cross-Platform | 100% Open Source*
 

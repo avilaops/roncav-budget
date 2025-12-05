@@ -1,5 +1,7 @@
 # 🚀 Roncav Budget - Resumo Executivo
 
+> **Documentação Principal:** [README em Português](../README.pt-BR.md) | [README in English](../README.md) | [Ver Mais Documentação](../README.md#documentation)
+
 ## ✅ Status Atual: PRONTO PARA TESTES
 
 **Compilação**: ✅ Bem-sucedida (0 erros)

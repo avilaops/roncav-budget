@@ -1,4 +1,6 @@
-# ?? Frontend Apple Design + Iconoir - Implementação Completa
+# ðŸŽ¨ Frontend Apple Design + Iconoir - ImplementaÃ§Ã£o Completa
+
+> **DocumentaÃ§Ã£o Principal:** [README em PortuguÃªs](README.pt-BR.md) | [README in English](README.md)
 
 ## ? O que foi implementado
 
@@ -10,7 +12,7 @@ Criei um **Design System completo** baseado no Apple HIG (Human Interface Guidel
 - **System Blue** (#007AFF) - Cor principal
 - **System Green** (#34C759) - Receitas e sucesso
 - **System Red** (#FF3B30) - Despesas e alertas
-- **System Orange** (#FF9500) - Orçamentos
+- **System Orange** (#FF9500) - Orï¿½amentos
 - **System Purple** (#AF52DE) - Metas
 - **Tons de cinza** - Gray, Gray2, Gray3, Gray4, Gray5, Gray6
 
@@ -23,7 +25,7 @@ Criei um **Design System completo** baseado no Apple HIG (Human Interface Guidel
 - **Footnote**: 13pt
 - **Caption**: 12pt
 
-#### Espaçamentos
+#### Espaï¿½amentos
 - XXSmall: 2px
 - XSmall: 4px
 - Small: 8px
@@ -47,62 +49,62 @@ Criei um **Design System completo** baseado no Apple HIG (Human Interface Guidel
 
 ---
 
-## ?? Páginas Implementadas
+## ?? Pï¿½ginas Implementadas
 
 ### 1. Dashboard Page (Apple-Style)
 
 **Componentes**:
-- ? Header com saudação e data
+- ? Header com saudaï¿½ï¿½o e data
 - ? **Card Principal** - Saldo Total (azul com gradiente visual)
 - ? **Grid de Cards** - Receitas (verde) e Despesas (vermelho)
-- ? **Card de Saldo** - Diferença mensal com cor dinâmica
-- ? **Lista de Contas** - Cards com ícones arredondados
-- ? **Botão de Atualização** - Estilo iOS com shadow
+- ? **Card de Saldo** - Diferenï¿½a mensal com cor dinï¿½mica
+- ? **Lista de Contas** - Cards com ï¿½cones arredondados
+- ? **Botï¿½o de Atualizaï¿½ï¿½o** - Estilo iOS com shadow
 
 **Design Features**:
 - `Border` com `RoundRectangle` para cards arredondados
 - `Shadow` suave em todos os cards (offset, blur, opacity)
-- Hierarquia tipográfica clara
-- Espaçamento consistente (20px, 24px)
+- Hierarquia tipogrï¿½fica clara
+- Espaï¿½amento consistente (20px, 24px)
 - Cores do sistema Apple
 - Background cinza claro (#F2F2F7)
 
-### 2. Transações Page (Apple-Style)
+### 2. Transaï¿½ï¿½es Page (Apple-Style)
 
 **Componentes**:
 - ? **Filtros em Card** - Tipo (Todas/Receitas/Despesas) + Datas
 - ? **Resumo Financeiro** - 3 colunas (Receitas, Despesas, Saldo)
-- ? **Lista de Transações** - Cards com ícone, descrição, data e valor
-- ? **Empty State** - Mensagem quando não há transações
-- ? **FAB (Floating Action Button)** - Adicionar transação (estilo iOS)
+- ? **Lista de Transaï¿½ï¿½es** - Cards com ï¿½cone, descriï¿½ï¿½o, data e valor
+- ? **Empty State** - Mensagem quando nï¿½o hï¿½ transaï¿½ï¿½es
+- ? **FAB (Floating Action Button)** - Adicionar transaï¿½ï¿½o (estilo iOS)
 
 **Design Features**:
 - Segmented Control style para filtros
 - DatePicker em cards arredondados
-- Shadow azul no botão FAB
-- Ícones emojis grandes (48x48px)
+- Shadow azul no botï¿½o FAB
+- ï¿½cones emojis grandes (48x48px)
 - Tipografia bem definida
 - States visuais (Empty, Loading, Data)
 
 ### 3. AppShell (Apple-Style)
 
 **Componentes**:
-- ? **Header azul** com logo e título
-- ? **Menu lateral** com ícones emoji
-- ? **7 seções**: Resumo, Transações, Contas, Orçamentos, Metas, Relatórios, Configurações
-- ? **Footer** com versão e créditos
+- ? **Header azul** com logo e tï¿½tulo
+- ? **Menu lateral** com ï¿½cones emoji
+- ? **7 seï¿½ï¿½es**: Resumo, Transaï¿½ï¿½es, Contas, Orï¿½amentos, Metas, Relatï¿½rios, Configuraï¿½ï¿½es
+- ? **Footer** com versï¿½o e crï¿½ditos
 
 **Design Features**:
-- Cor primária System Blue
+- Cor primï¿½ria System Blue
 - FontImageSource com emojis
 - Footer em cinza claro
-- Navegação fluida
+- Navegaï¿½ï¿½o fluida
 
 ---
 
 ## ?? App.xaml - Estilos Globais
 
-Estilos reutilizáveis criados:
+Estilos reutilizï¿½veis criados:
 
 ```xml
 - LargeTitleStyle
@@ -118,7 +120,7 @@ Estilos reutilizáveis criados:
 
 **Cores declaradas**:
 - SystemBlue, SystemGreen, SystemRed, SystemOrange, SystemPurple
-- SystemGray (6 variações)
+- SystemGray (6 variaï¿½ï¿½es)
 - BackgroundPrimary, BackgroundSecondary
 - LabelPrimary, LabelSecondary
 
@@ -126,14 +128,14 @@ Estilos reutilizáveis criados:
 
 ## ?? Iconoir Integration (Preparado)
 
-Estrutura pronta para ícones **Iconoir** no `AppleDesignSystem.Icons`:
+Estrutura pronta para ï¿½cones **Iconoir** no `AppleDesignSystem.Icons`:
 
 ```csharp
 // Financeiro
 - Wallet, CreditCard, Coins, DollarCircle
 - TrendingUp, TrendingDown, PiggyBank, Receipt
 
-// Navegação
+// Navegaï¿½ï¿½o
 - Home, Menu, Settings, Plus, Search, Filter
 
 // Categorias
@@ -144,9 +146,9 @@ Estrutura pronta para ícones **Iconoir** no `AppleDesignSystem.Icons`:
 ```
 
 **Como usar** (quando adicionar Iconoir):
-1. Instalar pacote de ícones SVG
+1. Instalar pacote de ï¿½cones SVG
 2. Converter SVG para FontImageSource
-3. Substituir emojis por ícones Iconoir
+3. Substituir emojis por ï¿½cones Iconoir
 4. Aplicar cores do sistema
 
 ---
@@ -156,78 +158,78 @@ Estrutura pronta para ícones **Iconoir** no `AppleDesignSystem.Icons`:
 ### Visual
 - ? Sombras suaves (Apple-like)
 - ? Bordas arredondadas consistentes
-- ? Hierarquia tipográfica clara
+- ? Hierarquia tipogrï¿½fica clara
 - ? Cores do sistema iOS
-- ? Espaçamento uniforme
-- ? Cards com elevação
+- ? Espaï¿½amento uniforme
+- ? Cards com elevaï¿½ï¿½o
 
 ### UX
-- ? Feedback visual em botões
+- ? Feedback visual em botï¿½es
 - ? Empty states informativos
-- ? Cores semânticas (verde=receita, vermelho=despesa)
-- ? Ícones grandes e legíveis
-- ? Informação clara e direta
+- ? Cores semï¿½nticas (verde=receita, vermelho=despesa)
+- ? ï¿½cones grandes e legï¿½veis
+- ? Informaï¿½ï¿½o clara e direta
 
-### Código
+### Cï¿½digo
 - ? Design System centralizado
-- ? Estilos reutilizáveis
-- ? Value Converters para lógica de cores
+- ? Estilos reutilizï¿½veis
+- ? Value Converters para lï¿½gica de cores
 - ? MVVM pattern consistente
 - ? Data Binding completo
 
 ---
 
-## ?? Comparação: Antes vs Depois
+## ?? Comparaï¿½ï¿½o: Antes vs Depois
 
 ### Antes
 - Cards simples sem sombra
-- Cores básicas
+- Cores bï¿½sicas
 - Tipografia inconsistente
-- Sem espaçamento definido
-- Layout genérico
+- Sem espaï¿½amento definido
+- Layout genï¿½rico
 
 ### Depois (Apple Design)
 - **Cards premium** com sombras suaves
 - **Cores do sistema** Apple
 - **Tipografia SF Pro-like** (hierarquia clara)
-- **Espaçamento consistente** (8px, 12px, 16px, 20px, 24px)
+- **Espaï¿½amento consistente** (8px, 12px, 16px, 20px, 24px)
 - **Layout profissional** estilo iOS
 
 ---
 
-## ?? Próximos Passos (Opcional)
+## ?? Prï¿½ximos Passos (Opcional)
 
 ### 1. Adicionar Iconoir Real
 ```bash
 dotnet add package SkiaSharp.Extended.Iconography.Iconoir
 ```
-Substituir emojis por ícones SVG Iconoir
+Substituir emojis por ï¿½cones SVG Iconoir
 
-### 2. Animações
+### 2. Animaï¿½ï¿½es
 - Fade in/out ao carregar
 - Slide in para cards
-- Spring animation em botões
+- Spring animation em botï¿½es
 - Skeleton loaders
 
-### 3. Gráficos
+### 3. Grï¿½ficos
 ```bash
 dotnet add package LiveChartsCore.SkiaSharpView.Maui
 ```
 - Pizza chart para categorias
-- Line chart para evolução mensal
-- Bar chart para comparações
+- Line chart para evoluï¿½ï¿½o mensal
+- Bar chart para comparaï¿½ï¿½es
 
 ### 4. Dark Mode
 - Definir cores dark mode
 - Usar `AppTheme` binding
-- Adicionar toggle nas configurações
+- Adicionar toggle nas configuraï¿½ï¿½es
 
-### 5. Páginas Faltantes
-- Formulário de Nova Transação (modal bottom sheet)
-- Página de Relatórios com gráficos
-- Página de Configurações
+### 5. Pï¿½ginas Faltantes
+- Formulï¿½rio de Nova Transaï¿½ï¿½o (modal bottom sheet)
+- Pï¿½gina de Relatï¿½rios com grï¿½ficos
+- Pï¿½gina de Configuraï¿½ï¿½es
 - Detalhes da Conta
-- Edição de Orçamento
+- Ediï¿½ï¿½o de Orï¿½amento
 
 ---
 
@@ -261,7 +263,7 @@ Error: #FF3B30
 Warning: #FF9500
 Info: #5AC8FA
 
-/* Espaçamento */
+/* Espaï¿½amento */
 xs: 4px
 sm: 8px
 md: 12px
@@ -306,7 +308,7 @@ xl: 20px
 ? ?? Resumo           ?
 ??????????????????????????????
 ?      ?
-?  Olá! ?
+?  Olï¿½! ?
 ?  Janeiro/2025     ?
 ?    ?
 ?  ????????????????????????  ?
@@ -322,7 +324,7 @@ xl: 20px
 ?  ????????  ????????      ?
 ?  ?
 ?  ????????????????????????  ?
-?  ? ?? Saldo do Mês      ?  ?
+?  ? ?? Saldo do Mï¿½s      ?  ?
 ?  ? R$ 3.300,00          ?  ?
 ?  ????????????????????????  ?
 ?       ?
