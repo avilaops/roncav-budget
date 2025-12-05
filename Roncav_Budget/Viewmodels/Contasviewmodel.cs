@@ -9,6 +9,7 @@ namespace roncav_budget.ViewModels;
 public partial class ContasViewModel : ObservableObject
 {
     private readonly DatabaseService _databaseService;
+    private readonly IDialogService _dialogService;
 
     [ObservableProperty]
     private bool _isLoading;
@@ -18,9 +19,10 @@ public partial class ContasViewModel : ObservableObject
 
     public ObservableCollection<Conta> Contas { get; } = new();
 
-  public ContasViewModel(DatabaseService databaseService)
+  public ContasViewModel(DatabaseService databaseService, IDialogService dialogService)
     {
         _databaseService = databaseService;
+        _dialogService = dialogService;
     }
 
     [RelayCommand]
@@ -42,7 +44,7 @@ public partial class ContasViewModel : ObservableObject
    }
      catch (Exception ex)
    {
-   await Application.Current!.MainPage!.DisplayAlert("Erro", $"Erro ao carregar contas: {ex.Message}", "OK");
+   await _dialogService.DisplayAlertAsync("Erro", $"Erro ao carregar contas: {ex.Message}", "OK");
         }
    finally
         {
@@ -53,7 +55,7 @@ public partial class ContasViewModel : ObservableObject
     [RelayCommand]
     private async Task AdicionarContaAsync()
  {
-        // Criar nova conta com valores padrão
+        // Criar nova conta com valores padrï¿½o
   var novaConta = new Conta
         {
       Nome = "Nova Conta",
@@ -62,7 +64,7 @@ public partial class ContasViewModel : ObservableObject
     Cor = "#2196F3"
    };
 
-   // Aqui deveria abrir um modal para edição
+   // Aqui deveria abrir um modal para ediï¿½ï¿½o
         // Por enquanto, vamos salvar direto
    await _databaseService.SalvarContaAsync(novaConta);
         await CarregarContasAsync();
@@ -72,7 +74,7 @@ public partial class ContasViewModel : ObservableObject
     private async Task EditarContaAsync(Conta conta)
     {
   if (conta == null) return;
-        // Navegar para página de edição
+        // Navegar para pï¿½gina de ediï¿½ï¿½o
         // await Shell.Current.GoToAsync($"EditarConta?id={conta.Id}");
     }
 
@@ -81,10 +83,10 @@ public partial class ContasViewModel : ObservableObject
     {
         if (conta == null) return;
 
-        var confirma = await Application.Current!.MainPage!.DisplayAlert(
-       "Confirmar Exclusão",
+        var confirma = await _dialogService.DisplayConfirmAsync(
+       "Confirmar ExclusÃ£o",
       $"Deseja realmente excluir a conta '{conta.Nome}'?",
-   "Sim", "Não");
+   "Sim", "NÃ£o");
 
   if (!confirma) return;
 
@@ -93,11 +95,11 @@ public partial class ContasViewModel : ObservableObject
        await _databaseService.ExcluirContaAsync(conta);
       Contas.Remove(conta);
     SaldoTotal = await _databaseService.ObterSaldoTotalAsync();
-            await Application.Current.MainPage.DisplayAlert("Sucesso", "Conta excluída com sucesso!", "OK");
+            await _dialogService.DisplayAlertAsync("Sucesso", "Conta excluÃ­da com sucesso!", "OK");
         }
    catch (Exception ex)
      {
-  await Application.Current.MainPage.DisplayAlert("Erro", $"Erro ao excluir conta: {ex.Message}", "OK");
+  await _dialogService.DisplayAlertAsync("Erro", $"Erro ao excluir conta: {ex.Message}", "OK");
         }
     }
 

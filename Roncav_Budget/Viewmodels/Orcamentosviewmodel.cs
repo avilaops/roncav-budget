@@ -9,6 +9,7 @@ namespace roncav_budget.ViewModels;
 public partial class OrcamentosViewModel : ObservableObject
 {
     private readonly DatabaseService _databaseService;
+    private readonly IDialogService _dialogService;
 
  [ObservableProperty]
     private bool _isLoading;
@@ -28,9 +29,10 @@ public partial class OrcamentosViewModel : ObservableObject
     public ObservableCollection<Orcamento> Orcamentos { get; } = new();
     public ObservableCollection<Categoria> CategoriasDisponiveis { get; } = new();
 
- public OrcamentosViewModel(DatabaseService databaseService)
+ public OrcamentosViewModel(DatabaseService databaseService, IDialogService dialogService)
     {
  _databaseService = databaseService;
+        _dialogService = dialogService;
   }
 
   [RelayCommand]
@@ -61,7 +63,7 @@ private async Task CarregarOrcamentosAsync()
         }
         catch (Exception ex)
   {
-   await Application.Current!.MainPage!.DisplayAlert("Erro", $"Erro ao carregar orçamentos: {ex.Message}", "OK");
+   await _dialogService.DisplayAlertAsync("Erro", $"Erro ao carregar orÃ§amentos: {ex.Message}", "OK");
     }
         finally
      {
@@ -83,7 +85,7 @@ private async Task CarregarOrcamentosAsync()
     private async Task AdicionarOrcamentoAsync()
   {
  // Aqui deveria abrir um modal para selecionar categoria e valor
-   // Por simplicidade, vamos criar um orçamento de exemplo
+   // Por simplicidade, vamos criar um orï¿½amento de exemplo
         if (CategoriasDisponiveis.Count > 0)
   {
    var categoria = CategoriasDisponiveis[0];

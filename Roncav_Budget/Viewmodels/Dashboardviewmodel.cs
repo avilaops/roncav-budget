@@ -10,6 +10,7 @@ namespace roncav_budget.ViewModels;
 public partial class DashboardViewModel : ObservableObject
 {
     private readonly DatabaseService _databaseService;
+    private readonly IDialogService _dialogService;
     private static bool _dadosExemploCarregados = false;
 
     [ObservableProperty]
@@ -34,10 +35,11 @@ public partial class DashboardViewModel : ObservableObject
     public ObservableCollection<Transacao> TransacoesRecentes { get; } = new();
     public ObservableCollection<Orcamento> OrcamentosMes { get; } = new();
 
- public DashboardViewModel(DatabaseService databaseService)
+    public DashboardViewModel(DatabaseService databaseService, IDialogService dialogService)
     {
-    _databaseService = databaseService;
-MesAtual = DateTime.Now.ToString("MMMM/yyyy");
+        _databaseService = databaseService;
+        _dialogService = dialogService;
+        MesAtual = DateTime.Now.ToString("MMMM/yyyy");
     }
 
     [RelayCommand]
@@ -57,7 +59,7 @@ MesAtual = DateTime.Now.ToString("MMMM/yyyy");
             // Carregar saldo total
             SaldoTotal = await _databaseService.ObterSaldoTotalAsync();
 
-  // Carregar dados do mês atual
+  // Carregar dados do mï¿½s atual
  var mesAtual = DateTime.Now.Month;
         var anoAtual = DateTime.Now.Year;
 
@@ -73,7 +75,7 @@ MesAtual = DateTime.Now.ToString("MMMM/yyyy");
          Contas.Add(conta);
        }
 
-            // Carregar transações recentes
+            // Carregar transaï¿½ï¿½es recentes
             TransacoesRecentes.Clear();
    var dataInicio = DateTime.Today.AddDays(-30);
          var transacoes = await _databaseService.ObterTransacoesAsync(dataInicio);
@@ -82,7 +84,7 @@ MesAtual = DateTime.Now.ToString("MMMM/yyyy");
        TransacoesRecentes.Add(transacao);
             }
 
-      // Carregar orçamentos do mês
+      // Carregar orï¿½amentos do mï¿½s
             OrcamentosMes.Clear();
    await _databaseService.AtualizarGastosOrcamentosAsync(mesAtual, anoAtual);
             var orcamentos = await _databaseService.ObterOrcamentosMesAsync(mesAtual, anoAtual);
@@ -93,7 +95,7 @@ MesAtual = DateTime.Now.ToString("MMMM/yyyy");
         }
         catch (Exception ex)
         {
-       await Application.Current!.MainPage!.DisplayAlert("Erro", $"Erro ao carregar dados: {ex.Message}", "OK");
+            await _dialogService.DisplayAlertAsync("Erro", $"Erro ao carregar dados: {ex.Message}", "OK");
         }
         finally
         {

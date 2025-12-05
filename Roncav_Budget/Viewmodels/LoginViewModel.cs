@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using roncav_budget.Services;
 using roncav_budget.Services.Avila;
 using System.ComponentModel.DataAnnotations;
 
@@ -9,6 +10,7 @@ public partial class LoginViewModel : ObservableObject
 {
     private readonly AvilaApiService _avilaApi;
     private readonly IConnectivity _connectivity;
+    private readonly IDialogService _dialogService;
 
     [ObservableProperty]
     private string email = string.Empty;
@@ -27,10 +29,11 @@ public partial class LoginViewModel : ObservableObject
 
     public bool IsNotBusy => !IsBusy;
 
-    public LoginViewModel(AvilaApiService avilaApi, IConnectivity connectivity)
+    public LoginViewModel(AvilaApiService avilaApi, IConnectivity connectivity, IDialogService dialogService)
     {
         _avilaApi = avilaApi;
         _connectivity = connectivity;
+        _dialogService = dialogService;
     }
 
     partial void OnIsBusyChanged(bool value)
@@ -106,7 +109,7 @@ public partial class LoginViewModel : ObservableObject
     private async Task ForgotPassword()
     {
         // TODO: Implementar recuperação de senha
-        await Application.Current!.MainPage!.DisplayAlert(
+        await _dialogService.DisplayAlertAsync(
             "Recuperar senha",
             "Um link de recuperação será enviado para seu e-mail em breve.",
             "OK");
