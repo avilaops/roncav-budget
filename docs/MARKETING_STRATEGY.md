@@ -1,5 +1,7 @@
 # 📈 Estratégia de Marketing - Roncav Budget
 
+> **Documentação Principal:** [README em Português](../README.pt-BR.md) | [README in English](../README.md)
+
 ## 🎯 Posicionamento de Mercado
 
 ### Proposta de Valor

@@ -1,33 +1,35 @@
-# ?? SOLUÇÃO DO ERRO - Projeto de Biblioteca
+# ðŸ”§ SOLUÃ‡ÃƒO DO ERRO - Projeto de Biblioteca
+
+> **DocumentaÃ§Ã£o Principal:** [README em PortuguÃªs](README.pt-BR.md) | [Como Executar](COMO_EXECUTAR.md)
 
 ## ?? PROBLEMA
 ```
-"Um projeto com um Tipo de Saída de Biblioteca de Classes 
-não pode ser iniciado diretamente"
+"Um projeto com um Tipo de Saï¿½da de Biblioteca de Classes 
+nï¿½o pode ser iniciado diretamente"
 ```
 
-## ? SOLUÇÃO SIMPLES (3 PASSOS)
+## ? SOLUï¿½ï¿½O SIMPLES (3 PASSOS)
 
 ### Passo 1: Fechar a janela de erro
 Clique em **"OK"** na janela de erro
 
-### Passo 2: Definir projeto executável
+### Passo 2: Definir projeto executï¿½vel
 
 **No Solution Explorer (lado direito):**
 
 ```
 ?? Solution 'roncav-budget' (5 de 5 projetos)
-  ?? ?? roncav-budget          ? NÃO é este (biblioteca)
+  ?? ?? roncav-budget          ? Nï¿½O ï¿½ este (biblioteca)
   ?? ?? roncav-budget.Droid    ? Pode ser este (Android)
   ?? ?? roncav-budget.iOS  ? Pode ser este (iPhone)
   ?? ?? roncav-budget.Mac      ? Pode ser este (Mac)
   ?? ?? roncav-budget.WinUI    ? ? ESTE AQUI (Windows)
 ```
 
-**AÇÃO:**
-1. Clique com **BOTÃO DIREITO** em `roncav-budget.WinUI`
+**Aï¿½ï¿½O:**
+1. Clique com **BOTï¿½O DIREITO** em `roncav-budget.WinUI`
 2. Selecione **"Set as Startup Project"**
-3. O projeto ficará em **NEGRITO**
+3. O projeto ficarï¿½ em **NEGRITO**
 
 ### Passo 3: Selecionar Plataforma
 
@@ -44,7 +46,7 @@ Trocar de **"Any CPU"** para **"x64"**
 ```
 Pressione F5
 OU
-Clique no botão verde ??
+Clique no botï¿½o verde ??
 ```
 
 ---
@@ -70,7 +72,7 @@ dotnet build roncav-budget.WinUI\roncav-budget.WinUI.csproj -c Debug
 
 Se tiver emulador Android configurado:
 
-1. Clique com botão direito em `roncav-budget.Droid`
+1. Clique com botï¿½o direito em `roncav-budget.Droid`
 2. "Set as Startup Project"
 3. Selecione o emulador Android no topo
 4. Pressione F5
@@ -81,23 +83,23 @@ Se tiver emulador Android configurado:
 
 ```
 roncav-budget
-?? roncav-budget (biblioteca .dll)? NÃO executável
+?? roncav-budget (biblioteca .dll)? Nï¿½O executï¿½vel
 ?  ?? Modelos, Services, ViewModels
 ?
-?? Plataformas (executáveis .exe)
-   ?? WinUI (Windows)        ? ? Executável
-   ?? Droid (Android)          ? ? Executável
-   ?? iOS (iPhone)              ? ? Executável
-   ?? Mac (macOS)   ? ? Executável
+?? Plataformas (executï¿½veis .exe)
+   ?? WinUI (Windows)        ? ? Executï¿½vel
+   ?? Droid (Android)          ? ? Executï¿½vel
+   ?? iOS (iPhone)              ? ? Executï¿½vel
+   ?? Mac (macOS)   ? ? Executï¿½vel
 ```
 
-O projeto principal é uma **biblioteca compartilhada**. Os projetos de plataforma (WinUI, Droid, etc.) são os **executáveis** que usam essa biblioteca.
+O projeto principal ï¿½ uma **biblioteca compartilhada**. Os projetos de plataforma (WinUI, Droid, etc.) sï¿½o os **executï¿½veis** que usam essa biblioteca.
 
 ---
 
-## ? APÓS CONFIGURAR
+## ? APï¿½S CONFIGURAR
 
-Você verá:
+Vocï¿½ verï¿½:
 
 ```
 Solution Explorer:
@@ -115,9 +117,9 @@ E no topo:
 
 ---
 
-## ?? CONFIRMAÇÃO VISUAL
+## ?? CONFIRMAï¿½ï¿½O VISUAL
 
-Quando estiver correto, você verá no topo do Visual Studio:
+Quando estiver correto, vocï¿½ verï¿½ no topo do Visual Studio:
 
 ```
 ??????????????????????????????????????????
@@ -125,14 +127,14 @@ Quando estiver correto, você verá no topo do Visual Studio:
 ??????????????????????????????????????????
 ```
 
-E no Solution Explorer, `roncav-budget.WinUI` estará em **negrito**.
+E no Solution Explorer, `roncav-budget.WinUI` estarï¿½ em **negrito**.
 
 ---
 
 ## ?? RECAP
 
 1. ? Fechar erro
-2. ? Botão direito em `roncav-budget.WinUI`
+2. ? Botï¿½o direito em `roncav-budget.WinUI`
 3. ? "Set as Startup Project"
 4. ? Trocar para `x64`
 5. ? Pressionar F5
