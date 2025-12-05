@@ -26,6 +26,7 @@ namespace roncav_budget
             builder.Services.AddSingleton<DatabaseService>();
             builder.Services.AddSingleton<ImportacaoExtratoService>();
             builder.Services.AddSingleton<RelatorioService>();
+            builder.Services.AddSingleton<IDialogService, DialogService>();
 
             // Serviços de integração Avila
             builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);

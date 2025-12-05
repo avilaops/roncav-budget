@@ -9,6 +9,7 @@ namespace roncav_budget.ViewModels;
 public partial class MetasViewModel : ObservableObject
 {
     private readonly DatabaseService _databaseService;
+    private readonly IDialogService _dialogService;
 
     [ObservableProperty]
 private bool _isLoading;
@@ -17,9 +18,10 @@ private bool _isLoading;
     public ObservableCollection<Meta> MetasAtivas { get; } = new();
     public ObservableCollection<Meta> MetasConcluidas { get; } = new();
 
-    public MetasViewModel(DatabaseService databaseService)
+    public MetasViewModel(DatabaseService databaseService, IDialogService dialogService)
     {
    _databaseService = databaseService;
+        _dialogService = dialogService;
     }
 
     [RelayCommand]
@@ -47,7 +49,7 @@ else
         }
    catch (Exception ex)
     {
- await Application.Current!.MainPage!.DisplayAlert("Erro", $"Erro ao carregar metas: {ex.Message}", "OK");
+ await _dialogService.DisplayAlertAsync("Erro", $"Erro ao carregar metas: {ex.Message}", "OK");
         }
    finally
         {
@@ -62,7 +64,7 @@ else
         var novaMeta = new Meta
    {
          Nome = "Nova Meta",
-   Descricao = "Descrição da meta",
+   Descricao = "Descriï¿½ï¿½o da meta",
   ValorObjetivo = 5000,
   ValorAtual = 0,
    DataInicio = DateTime.Today,
@@ -88,8 +90,8 @@ else
         {
   meta.Concluida = true;
          meta.DataConclusao = DateTime.Now;
-      await Application.Current!.MainPage!.DisplayAlert("?? Parabéns!", 
-         $"Você concluiu a meta '{meta.Nome}'!", "OK");
+      await _dialogService.DisplayAlertAsync("ðŸŽ‰ ParabÃ©ns!", 
+         $"VocÃª concluiu a meta '{meta.Nome}'!", "OK");
  }
 
         await _databaseService.SalvarMetaAsync(meta);
@@ -101,10 +103,10 @@ else
     {
      if (meta == null) return;
 
-        var confirma = await Application.Current!.MainPage!.DisplayAlert(
-      "Confirmar Exclusão",
+        var confirma = await _dialogService.DisplayConfirmAsync(
+      "Confirmar ExclusÃ£o",
     $"Deseja realmente excluir a meta '{meta.Nome}'?",
-    "Sim", "Não");
+    "Sim", "NÃ£o");
 
       if (!confirma) return;
 
@@ -114,11 +116,11 @@ else
       Metas.Remove(meta);
        MetasAtivas.Remove(meta);
         MetasConcluidas.Remove(meta);
-            await Application.Current.MainPage.DisplayAlert("Sucesso", "Meta excluída com sucesso!", "OK");
+            await _dialogService.DisplayAlertAsync("Sucesso", "Meta excluÃ­da com sucesso!", "OK");
         }
         catch (Exception ex)
 {
-            await Application.Current.MainPage.DisplayAlert("Erro", $"Erro ao excluir meta: {ex.Message}", "OK");
+            await _dialogService.DisplayAlertAsync("Erro", $"Erro ao excluir meta: {ex.Message}", "OK");
         }
     }
 }

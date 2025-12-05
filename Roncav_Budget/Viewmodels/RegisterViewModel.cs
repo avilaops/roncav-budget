@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using roncav_budget.Services;
 using roncav_budget.Services.Avila;
 using System.ComponentModel.DataAnnotations;
 
@@ -9,6 +10,7 @@ public partial class RegisterViewModel : ObservableObject
 {
     private readonly AvilaApiService _avilaApi;
     private readonly IConnectivity _connectivity;
+    private readonly IDialogService _dialogService;
 
     [ObservableProperty]
     private string nome = string.Empty;
@@ -36,10 +38,11 @@ public partial class RegisterViewModel : ObservableObject
 
     public bool IsNotBusy => !IsBusy;
 
-    public RegisterViewModel(AvilaApiService avilaApi, IConnectivity connectivity)
+    public RegisterViewModel(AvilaApiService avilaApi, IConnectivity connectivity, IDialogService dialogService)
     {
         _avilaApi = avilaApi;
         _connectivity = connectivity;
+        _dialogService = dialogService;
     }
 
     partial void OnIsBusyChanged(bool value)
@@ -107,7 +110,7 @@ public partial class RegisterViewModel : ObservableObject
             if (result.IsSuccess)
             {
                 // Registro bem-sucedido
-                await Application.Current!.MainPage!.DisplayAlert(
+                await _dialogService.DisplayAlertAsync(
                     "Conta criada!",
                     "Sua conta foi criada com sucesso. Bem-vindo ao Roncav Budget!",
                     "OK");

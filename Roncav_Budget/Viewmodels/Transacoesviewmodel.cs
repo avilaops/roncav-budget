@@ -9,6 +9,7 @@ namespace roncav_budget.ViewModels;
 public partial class TransacoesViewModel : ObservableObject
 {
     private readonly DatabaseService _databaseService;
+    private readonly IDialogService _dialogService;
 
     [ObservableProperty]
     private bool _isLoading;
@@ -26,9 +27,10 @@ public partial class TransacoesViewModel : ObservableObject
     public ObservableCollection<Conta> Contas { get; } = new();
     public ObservableCollection<Categoria> Categorias { get; } = new();
 
-    public TransacoesViewModel(DatabaseService databaseService)
+    public TransacoesViewModel(DatabaseService databaseService, IDialogService dialogService)
     {
         _databaseService = databaseService;
+        _dialogService = dialogService;
     }
 
     [RelayCommand]
@@ -62,7 +64,7 @@ public partial class TransacoesViewModel : ObservableObject
      }
         catch (Exception ex)
 {
-      await Application.Current!.MainPage!.DisplayAlert("Erro", $"Erro ao carregar transações: {ex.Message}", "OK");
+      await _dialogService.DisplayAlertAsync("Erro", $"Erro ao carregar transaÃ§Ãµes: {ex.Message}", "OK");
     }
  finally
         {
@@ -90,7 +92,7 @@ public partial class TransacoesViewModel : ObservableObject
     [RelayCommand]
     private async Task AdicionarTransacaoAsync()
     {
-        // Navegar para página de nova transação
+        // Navegar para pï¿½gina de nova transaï¿½ï¿½o
    // await Shell.Current.GoToAsync("NovaTransacao");
   }
 
@@ -98,7 +100,7 @@ public partial class TransacoesViewModel : ObservableObject
     private async Task EditarTransacaoAsync(Transacao transacao)
     {
         if (transacao == null) return;
-    // Navegar para página de edição
+    // Navegar para pï¿½gina de ediï¿½ï¿½o
   // await Shell.Current.GoToAsync($"EditarTransacao?id={transacao.Id}");
     }
 
@@ -107,10 +109,10 @@ private async Task ExcluirTransacaoAsync(Transacao transacao)
     {
         if (transacao == null) return;
 
-      var confirma = await Application.Current!.MainPage!.DisplayAlert(
-      "Confirmar Exclusão",
-       $"Deseja realmente excluir a transação '{transacao.Descricao}'?",
- "Sim", "Não");
+      var confirma = await _dialogService.DisplayConfirmAsync(
+      "Confirmar ExclusÃ£o",
+       $"Deseja realmente excluir a transaÃ§Ã£o '{transacao.Descricao}'?",
+ "Sim", "NÃ£o");
 
    if (!confirma) return;
 
@@ -118,11 +120,11 @@ private async Task ExcluirTransacaoAsync(Transacao transacao)
      {
          await _databaseService.ExcluirTransacaoAsync(transacao);
    Transacoes.Remove(transacao);
-      await Application.Current.MainPage.DisplayAlert("Sucesso", "Transação excluída com sucesso!", "OK");
+      await _dialogService.DisplayAlertAsync("Sucesso", "TransaÃ§Ã£o excluÃ­da com sucesso!", "OK");
   }
         catch (Exception ex)
         {
-            await Application.Current.MainPage.DisplayAlert("Erro", $"Erro ao excluir transação: {ex.Message}", "OK");
+            await _dialogService.DisplayAlertAsync("Erro", $"Erro ao excluir transaÃ§Ã£o: {ex.Message}", "OK");
         }
     }
 
