@@ -2,19 +2,68 @@
 
 ## 📋 Visão Geral do Projeto
 
-**Roncav Budget** é uma aplicação .NET MAUI multiplataforma para gerenciamento de orçamentos e controle financeiro.
+**Roncav Budget** é uma aplicação .NET MAUI multiplataforma de gestão financeira focada no mercado brasileiro, oferecendo controle completo de orçamentos, transações, metas e relatórios com suporte nativo a PIX, boletos e integração bancária local.
 
-### Tecnologias
-- **.NET MAUI** - Framework multiplataforma
-- **C#** - Linguagem principal
-- **XAML** - Interface de usuário
-- **SQLite** - Banco de dados local
+### Tecnologias Core
+- **.NET 9+ / .NET MAUI** - Framework multiplataforma nativo
+- **C# 12** - Linguagem principal com nullability habilitado
+- **XAML** - Interface de usuário declarativa
+- **SQLite** (`sqlite-net-pcl`) - Banco de dados local com persistência offline
+- **CommunityToolkit.Mvvm** - Infraestrutura MVVM moderna
+- **CommunityToolkit.Maui** - Componentes UI estendidos
 
 ### Plataformas Suportadas
-- ✅ Windows (WinUI)
-- ✅ Android
-- ✅ iOS
-- ✅ macOS
+- ✅ Windows (WinUI 3)
+- ✅ Android (API 21+)
+- ✅ iOS (14.0+)
+- ✅ macOS (Catalyst 10.15+)
+
+### Contexto Brasileiro
+Este aplicativo é otimizado para o mercado brasileiro com:
+- ✅ Validação e formatação de CPF/CNPJ
+- ✅ Suporte completo a PIX (chaves, QR codes, histórico)
+- ✅ Categorias MEI (receitas, DAS, despesas operacionais)
+- ✅ Importação de extratos de bancos brasileiros (Nubank, Inter, Itaú, Bradesco)
+- ✅ Formato monetário brasileiro (R$)
+- ✅ Calendário fiscal brasileiro
+
+---
+
+## 🏗️ Arquitetura do Projeto
+
+### Estrutura de Diretórios
+```
+Roncav_Budget/
+├── Models/                 # Entidades de domínio e DTOs
+│   ├── Conta.cs           # Modelo de conta bancária
+│   ├── Transacao.cs       # Modelo de transação financeira
+│   ├── Orcamento.cs       # Modelo de orçamento
+│   └── Meta.cs            # Modelo de meta financeira
+├── Services/              # Serviços e lógica de negócio
+│   ├── DatabaseService.cs # Gerenciamento SQLite
+│   ├── ImportacaoExtratoService.cs
+│   ├── RelatorioService.cs
+│   └── SyncService.cs
+├── ViewModels/            # ViewModels MVVM
+│   ├── DashboardViewModel.cs
+│   ├── TransacoesViewModel.cs
+│   └── ContasViewModel.cs
+├── Views/                 # Páginas XAML
+│   ├── DashboardPage.xaml
+│   ├── TransacoesPage.xaml
+│   └── ContasPage.xaml
+├── Converters/            # Value Converters XAML
+├── Resources/             # Recursos visuais
+│   ├── Styles/           # Estilos e temas
+│   ├── Fonts/            # Fontes customizadas
+│   └── Images/           # Imagens e ícones
+├── Platforms/             # Código específico por plataforma
+│   ├── Android/
+│   ├── iOS/
+│   ├── Windows/
+│   └── MacCatalyst/
+└── Data/                  # Camada de acesso a dados
+```
 
 ---
 
@@ -23,293 +72,1454 @@
 ### Antes de Fazer Alterações
 
 1. **Ler a arquitetura existente**
-   - Verificar `Readme_Roncav_Budget.md`
-   - Revisar `Como_Executar.md` e `Executar_Agora.md`
-   - Consultar `Guia_Visual_Completo.md` para entender o design
+   - Verificar `Readme_Roncav_Budget.md` para contexto geral
+   - Revisar `Como_Executar.md` e `Executar_Agora.md` para setup
+   - Consultar `Guia_Visual_Completo.md` para design guidelines
+   - Ler `IMPLEMENTACAO_COMPLETA.md` para detalhes técnicos
 
 2. **Analisar dependências**
    - Verificar `Roncav_Budget.sln` para estrutura do solution
    - Revisar arquivos `.csproj` de cada projeto
-   - Identificar NuGet packages instalados
+   - Identificar NuGet packages instalados e suas versões
+   - Verificar compatibilidade de pacotes com .NET 9
 
 3. **Verificar compilação atual**
-   ```powershell
-   dotnet build Roncav_Budget.sln
+   ```bash
+   # Restaurar workloads e dependências
+   dotnet workload restore
+   dotnet restore Roncav_Budget.sln
+   
+   # Compilar solução
+   dotnet build Roncav_Budget.sln --configuration Debug
    ```
 
-### Padrões de Código
+### Padrões de Código e Arquitetura
 
-- **MVVM Pattern**: Seguir Model-View-ViewModel
-- **Naming Conventions**:
-  - Views: `*Page.xaml`
-  - ViewModels: `*ViewModel.cs`
-  - Models: `*Model.cs`
-  - Services: `*Service.cs`
+#### MVVM Pattern (Model-View-ViewModel)
+- **Models**: Entidades de dados puros, sem lógica de UI
+- **Views**: XAML puro, mínimo code-behind (apenas event wiring)
+- **ViewModels**: Lógica de apresentação, commands, property bindings
+- **Services**: Lógica de negócio, acesso a dados, APIs externas
 
-- **Async/Await**: Sempre usar para operações I/O
-- **Dependency Injection**: Registrar serviços no `MauiProgram.cs`
+#### Naming Conventions
+```csharp
+// Views
+*Page.xaml              // DashboardPage.xaml, TransacoesPage.xaml
+*View.xaml              // ContaDetailView.xaml
+*Control.xaml           // CustomButtonControl.xaml
+
+// ViewModels
+*ViewModel.cs           // DashboardViewModel.cs
+*VM.cs (evitar)        // Usar forma completa
+
+// Models
+*Model.cs               // ContaModel.cs, TransacaoModel.cs
+* (sem sufixo)         // Conta.cs, Transacao.cs (preferido)
+
+// Services
+*Service.cs             // DatabaseService.cs, ImportacaoService.cs
+I*Service.cs           // Interface: IDatabaseService.cs
+
+// Converters
+*Converter.cs           // BoolToColorConverter.cs
+*ToConverter.cs        // StringToVisibilityConverter.cs
+```
+
+#### Convenções C#
+```csharp
+// Campos privados: camelCase com underscore
+private readonly ILogger<T> _logger;
+private string _userName;
+
+// Propriedades públicas: PascalCase
+public string UserName { get; set; }
+public decimal SaldoTotal { get; set; }
+
+// Métodos: PascalCase
+public async Task<bool> SalvarTransacaoAsync(Transacao transacao)
+{
+    // Implementação
+}
+
+// Constantes: PascalCase
+private const int MaxRetryAttempts = 3;
+public const string DatabaseName = "roncav_budget.db3";
+
+// Eventos: PascalCase
+public event EventHandler<TransacaoEventArgs> TransacaoAdicionada;
+
+// Async methods: sempre sufixo Async
+public async Task LoadDataAsync() { }
+public async ValueTask<int> GetCountAsync() { }
+```
+
+#### Async/Await Patterns
+```csharp
+// ✅ CORRETO: Async até o fim
+public async Task<List<Transacao>> GetTransacoesAsync()
+{
+    return await _database.Table<Transacao>().ToListAsync();
+}
+
+// ✅ CORRETO: Cancelamento
+public async Task LoadDataAsync(CancellationToken cancellationToken = default)
+{
+    await Task.Delay(1000, cancellationToken);
+}
+
+// ❌ EVITAR: Async void (exceto event handlers)
+public async void LoadData() { } // Não fazer!
+
+// ✅ CORRETO: Event handlers podem ser async void
+private async void OnRefreshClicked(object sender, EventArgs e)
+{
+    await LoadDataAsync();
+}
+
+// ✅ CORRETO: ConfigureAwait(false) em libraries
+public async Task<string> GetApiDataAsync()
+{
+    var response = await httpClient.GetAsync(url).ConfigureAwait(false);
+    return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+}
+```
+
+#### Dependency Injection
+```csharp
+// MauiProgram.cs - Registro de serviços
+builder.Services.AddSingleton<IDatabaseService, DatabaseService>();
+builder.Services.AddSingleton<IImportacaoService, ImportacaoExtratoService>();
+builder.Services.AddTransient<DashboardViewModel>();
+builder.Services.AddTransient<DashboardPage>();
+
+// ViewModel - Injeção via construtor
+public class DashboardViewModel : ObservableObject
+{
+    private readonly IDatabaseService _database;
+    private readonly ILogger<DashboardViewModel> _logger;
+    
+    public DashboardViewModel(
+        IDatabaseService database, 
+        ILogger<DashboardViewModel> logger)
+    {
+        _database = database;
+        _logger = logger;
+    }
+}
+```
+
+#### Null Safety (C# 12)
+```csharp
+// ✅ CORRETO: Nullable reference types habilitado
+#nullable enable
+
+public class Transacao
+{
+    public int Id { get; set; }
+    public string Descricao { get; set; } = string.Empty;  // Não-nulo
+    public string? Observacao { get; set; }                // Nullable
+    public decimal Valor { get; set; }
+}
+
+// ✅ CORRETO: Null checks
+if (transacao?.Conta is not null)
+{
+    await ProcessarContaAsync(transacao.Conta);
+}
+
+// ✅ CORRETO: Null coalescing
+var descricao = transacao.Descricao ?? "Sem descrição";
+var total = transacoes?.Sum(t => t.Valor) ?? 0;
+```
+
 
 ---
 
-## 🌐 Integração com Ecossistema Avila
+## 🇧🇷 Desenvolvimento Específico para Brasil
 
-### APIs e Serviços Centralizados
+### Formatação de Dados Brasileiros
 
-Este projeto faz parte do **ecossistema Avila** e deve seguir os padrões de integração corporativos:
-
-#### 🔗 APIs Centralizadas da Avila
-
-**Base URLs por Ambiente:**
-- **Produção**: `https://api.avila.inc`
-- **Staging**: `https://api-staging.avila.inc`
-- **Desenvolvimento**: `https://localhost:7000` ou Cloudflare Tunnel
-
-**Serviços Disponíveis:**
-
-1. **Authentication API** (`/auth`)
-   - `POST /auth/login` - Autenticação de usuários
-   - `POST /auth/refresh` - Refresh de tokens JWT
-   - `POST /auth/logout` - Invalidar sessão
-   - `GET /auth/validate` - Validar token
-
-2. **User Management API** (`/users`)
-   - `GET /users/profile` - Perfil do usuário
-   - `PUT /users/profile` - Atualizar perfil
-   - `GET /users/permissions` - Permissões do usuário
-
-3. **Sync API** (`/sync`)
-   - `POST /sync/upload` - Enviar dados locais para nuvem
-   - `GET /sync/download` - Baixar dados da nuvem
-   - `GET /sync/status` - Status de sincronização
-   - `POST /sync/resolve-conflicts` - Resolver conflitos
-
-4. **Analytics API** (`/analytics`)
-   - `POST /analytics/events` - Registrar eventos de uso
-   - `POST /analytics/errors` - Reportar erros
-   - `GET /analytics/insights` - Obter insights de dados
-
-### 📡 Implementação de Integração
-
-#### 1. Configuração de Serviço HTTP
-
+#### CPF/CNPJ
 ```csharp
-// Services/AvilaApiService.cs
-public class AvilaApiService
+// Services/ValidadorDocumentoService.cs
+public static class ValidadorDocumento
 {
-    private readonly HttpClient _httpClient;
-    private readonly ISecureStorage _secureStorage;
-
-    public AvilaApiService(HttpClient httpClient, ISecureStorage secureStorage)
+    public static bool ValidarCPF(string cpf)
     {
-        _httpClient = httpClient;
-        _secureStorage = secureStorage;
-
-        // Base URL configurável por ambiente
-        #if DEBUG
-            _httpClient.BaseAddress = new Uri("https://localhost:7000");
-        #else
-            _httpClient.BaseAddress = new Uri("https://api.avila.inc");
-        #endif
+        cpf = cpf.Replace(".", "").Replace("-", "").Trim();
+        if (cpf.Length != 11) return false;
+        
+        // Validação de dígitos verificadores
+        // ... implementação completa
+        return true;
     }
-
-    public async Task<bool> AuthenticateAsync(string email, string password)
+    
+    public static string FormatarCPF(string cpf)
     {
-        var response = await _httpClient.PostAsJsonAsync("/auth/login", new
-        {
-            email,
-            password,
-            clientId = "roncav-budget",
-            platform = DeviceInfo.Platform.ToString()
-        });
-
-        if (response.IsSuccessStatusCode)
-        {
-            var token = await response.Content.ReadFromJsonAsync<AuthToken>();
-            await _secureStorage.SetAsync("auth_token", token.AccessToken);
-            await _secureStorage.SetAsync("refresh_token", token.RefreshToken);
-            return true;
-        }
-
-        return false;
+        cpf = cpf.Replace(".", "").Replace("-", "").Trim();
+        if (cpf.Length != 11) return cpf;
+        return $"{cpf.Substring(0,3)}.{cpf.Substring(3,3)}.{cpf.Substring(6,3)}-{cpf.Substring(9,2)}";
+    }
+    
+    public static bool ValidarCNPJ(string cnpj)
+    {
+        cnpj = cnpj.Replace(".", "").Replace("/", "").Replace("-", "").Trim();
+        if (cnpj.Length != 14) return false;
+        
+        // Validação de dígitos verificadores
+        // ... implementação completa
+        return true;
     }
 }
 ```
 
-#### 2. Registrar Serviço no MauiProgram.cs
-
+#### Moeda Brasileira
 ```csharp
-// MauiProgram.cs
-builder.Services.AddHttpClient<AvilaApiService>(client =>
+// Converters/MoedaBrasileiraConverter.cs
+public class MoedaBrasileiraConverter : IValueConverter
 {
-    client.DefaultRequestHeaders.Add("X-Client-App", "Roncav-Budget");
-    client.DefaultRequestHeaders.Add("X-Client-Version", AppInfo.VersionString);
-    client.Timeout = TimeSpan.FromSeconds(30);
-});
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is decimal valor)
+        {
+            return valor.ToString("C", new CultureInfo("pt-BR"));
+        }
+        return "R$ 0,00";
+    }
+    
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is string texto)
+        {
+            texto = texto.Replace("R$", "").Replace(".", "").Replace(",", ".").Trim();
+            return decimal.TryParse(texto, out var resultado) ? resultado : 0m;
+        }
+        return 0m;
+    }
+}
 
-builder.Services.AddSingleton<ISyncService, SyncService>();
-builder.Services.AddSingleton<IAnalyticsService, AnalyticsService>();
+// Uso em código
+var valorFormatado = valor.ToString("C", new CultureInfo("pt-BR")); // R$ 1.234,56
+var percentual = (valor / total).ToString("P2", new CultureInfo("pt-BR")); // 45,67%
 ```
 
-#### 3. Sincronização de Dados
+#### PIX - Chaves e Validação
+```csharp
+// Models/ChavePix.cs
+public enum TipoChavePix
+{
+    CPF,
+    CNPJ,
+    Email,
+    Telefone,
+    ChaveAleatoria
+}
+
+public class ChavePix
+{
+    public TipoChavePix Tipo { get; set; }
+    public string Valor { get; set; } = string.Empty;
+    
+    public bool Validar()
+    {
+        return Tipo switch
+        {
+            TipoChavePix.CPF => ValidadorDocumento.ValidarCPF(Valor),
+            TipoChavePix.CNPJ => ValidadorDocumento.ValidarCNPJ(Valor),
+            TipoChavePix.Email => Regex.IsMatch(Valor, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"),
+            TipoChavePix.Telefone => Regex.IsMatch(Valor, @"^\+55\d{2}\d{8,9}$"),
+            TipoChavePix.ChaveAleatoria => Guid.TryParse(Valor, out _),
+            _ => false
+        };
+    }
+}
+
+// Models/TransacaoPix.cs
+public class TransacaoPix : Transacao
+{
+    public ChavePix ChaveOrigem { get; set; }
+    public ChavePix ChaveDestino { get; set; }
+    public string? QRCode { get; set; }
+    public string? TxId { get; set; }  // Identificador único da transação
+    public DateTime DataHoraPix { get; set; }
+}
+```
+
+#### Bancos Brasileiros
+```csharp
+// Models/BancoBrasileiro.cs
+public class BancoBrasileiro
+{
+    public string Codigo { get; set; } = string.Empty;
+    public string Nome { get; set; } = string.Empty;
+    public string NomeCompleto { get; set; } = string.Empty;
+}
+
+// Data/BancosBrasileiros.cs
+public static class BancosBrasileiros
+{
+    public static readonly List<BancoBrasileiro> Lista = new()
+    {
+        new() { Codigo = "001", Nome = "Banco do Brasil", NomeCompleto = "Banco do Brasil S.A." },
+        new() { Codigo = "033", Nome = "Santander", NomeCompleto = "Banco Santander Brasil S.A." },
+        new() { Codigo = "104", Nome = "Caixa", NomeCompleto = "Caixa Econômica Federal" },
+        new() { Codigo = "237", Nome = "Bradesco", NomeCompleto = "Banco Bradesco S.A." },
+        new() { Codigo = "341", Nome = "Itaú", NomeCompleto = "Itaú Unibanco S.A." },
+        new() { Codigo = "077", Nome = "Inter", NomeCompleto = "Banco Inter S.A." },
+        new() { Codigo = "260", Nome = "Nubank", NomeCompleto = "Nu Pagamentos S.A." },
+        new() { Codigo = "290", Nome = "PagSeguro", NomeCompleto = "PagSeguro Internet S.A." },
+        new() { Codigo = "323", Nome = "Mercado Pago", NomeCompleto = "Mercado Pago" },
+        new() { Codigo = "336", Nome = "C6 Bank", NomeCompleto = "Banco C6 S.A." }
+    };
+}
+```
+
+#### Categorias MEI
+```csharp
+// Models/CategoriaMEI.cs
+public class CategoriaMEI
+{
+    public int Id { get; set; }
+    public string Nome { get; set; } = string.Empty;
+    public TipoCategoriaMEI Tipo { get; set; }
+    public bool ContaParaDAS { get; set; }
+}
+
+public enum TipoCategoriaMEI
+{
+    ReceitaBruta,           // Faturamento
+    DAS,                    // Documento de Arrecadação do Simples Nacional
+    DespesaOperacional,     // Custos e despesas
+    Investimento,           // Ativos e melhorias
+    ProLabore,              // Retirada do proprietário
+    ImpostoExtra            // ISS, ICMS adicional
+}
+```
+
+### Importação de Extratos Bancários
+
+#### Estrutura Base
+```csharp
+// Services/ImportacaoExtratoService.cs
+public interface IImportacaoExtratoService
+{
+    Task<List<Transacao>> ImportarCSVAsync(string filePath, BancoBrasileiro banco);
+    Task<List<Transacao>> ImportarOFXAsync(string filePath);
+    bool ValidarFormatoCSV(string filePath, BancoBrasileiro banco);
+}
+
+public class ImportacaoExtratoService : IImportacaoExtratoService
+{
+    public async Task<List<Transacao>> ImportarCSVAsync(string filePath, BancoBrasileiro banco)
+    {
+        return banco.Codigo switch
+        {
+            "260" => await ImportarNubankCSVAsync(filePath),    // Nubank
+            "077" => await ImportarInterCSVAsync(filePath),     // Inter
+            "341" => await ImportarItauCSVAsync(filePath),      // Itaú
+            "237" => await ImportarBradescoCSVAsync(filePath),  // Bradesco
+            _ => await ImportarCSVGenericoAsync(filePath)
+        };
+    }
+    
+    private async Task<List<Transacao>> ImportarNubankCSVAsync(string filePath)
+    {
+        // Formato Nubank: Data,Categoria,Descrição,Valor
+        var transacoes = new List<Transacao>();
+        var lines = await File.ReadAllLinesAsync(filePath);
+        
+        foreach (var line in lines.Skip(1)) // Pula cabeçalho
+        {
+            var campos = line.Split(',');
+            if (campos.Length >= 4)
+            {
+                transacoes.Add(new Transacao
+                {
+                    Data = DateTime.Parse(campos[0]),
+                    Categoria = campos[1],
+                    Descricao = campos[2],
+                    Valor = decimal.Parse(campos[3], new CultureInfo("pt-BR"))
+                });
+            }
+        }
+        
+        return transacoes;
+    }
+}
+```
+
+---
+
+## 🧪 Testes e Qualidade
+
+### Estrutura de Testes
 
 ```csharp
-// Services/SyncService.cs
-public class SyncService : ISyncService
-{
-    private readonly AvilaApiService _apiService;
-    private readonly ILocalDatabase _localDb;
+// Roncav_Budget.Tests/Services/DatabaseServiceTests.cs
+using Xunit;
+using FluentAssertions;
 
-    public async Task<SyncResult> SyncAsync()
+public class DatabaseServiceTests : IDisposable
+{
+    private readonly DatabaseService _sut;  // System Under Test
+    private readonly string _testDbPath;
+    
+    public DatabaseServiceTests()
+    {
+        _testDbPath = Path.Combine(Path.GetTempPath(), $"test_{Guid.NewGuid()}.db3");
+        _sut = new DatabaseService(_testDbPath);
+    }
+    
+    [Fact]
+    public async Task SalvarTransacao_ComDadosValidos_DeveSalvarComSucesso()
+    {
+        // Arrange
+        var transacao = new Transacao
+        {
+            Descricao = "Teste",
+            Valor = 100.50m,
+            Data = DateTime.Now,
+            Tipo = TipoTransacao.Despesa
+        };
+        
+        // Act
+        var resultado = await _sut.SalvarTransacaoAsync(transacao);
+        
+        // Assert
+        resultado.Should().BeTrue();
+        transacao.Id.Should().BeGreaterThan(0);
+    }
+    
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    public async Task SalvarTransacao_ComDescricaoInvalida_DeveLancarExcecao(string descricaoInvalida)
+    {
+        // Arrange
+        var transacao = new Transacao
+        {
+            Descricao = descricaoInvalida,
+            Valor = 100.50m
+        };
+        
+        // Act & Assert
+        await Assert.ThrowsAsync<ArgumentException>(() => 
+            _sut.SalvarTransacaoAsync(transacao));
+    }
+    
+    public void Dispose()
+    {
+        if (File.Exists(_testDbPath))
+        {
+            File.Delete(_testDbPath);
+        }
+    }
+}
+```
+
+### Test Patterns
+
+#### AAA Pattern (Arrange-Act-Assert)
+```csharp
+[Fact]
+public async Task CalcularSaldoTotal_ComMultiplasContas_DeveRetornarSomaCorreta()
+{
+    // Arrange - Preparar dados de teste
+    var contas = new List<Conta>
+    {
+        new() { Nome = "Conta 1", Saldo = 100m },
+        new() { Nome = "Conta 2", Saldo = 200m },
+        new() { Nome = "Conta 3", Saldo = 300m }
+    };
+    
+    // Act - Executar ação
+    var saldoTotal = await _service.CalcularSaldoTotalAsync(contas);
+    
+    // Assert - Verificar resultado
+    saldoTotal.Should().Be(600m);
+}
+```
+
+#### Mocking com Moq
+```csharp
+[Fact]
+public async Task LoadTransacoes_QuandoChamado_DeveConsultarDatabase()
+{
+    // Arrange
+    var mockDatabase = new Mock<IDatabaseService>();
+    mockDatabase
+        .Setup(x => x.GetTransacoesAsync())
+        .ReturnsAsync(new List<Transacao> { new() { Id = 1 } });
+    
+    var viewModel = new TransacoesViewModel(mockDatabase.Object);
+    
+    // Act
+    await viewModel.LoadTransacoesAsync();
+    
+    // Assert
+    mockDatabase.Verify(x => x.GetTransacoesAsync(), Times.Once);
+    viewModel.Transacoes.Should().HaveCount(1);
+}
+```
+
+### Testes de UI (Appium ou FlaUI)
+```csharp
+// Roncav_Budget.UITests/DashboardTests.cs
+[Test]
+public void Dashboard_AoCarregar_DeveExibirSaldoTotal()
+{
+    // Arrange
+    var app = ConfigureApp.Android.StartApp();
+    
+    // Act
+    var saldoElement = app.WaitForElement(c => c.Marked("SaldoTotalLabel"));
+    
+    // Assert
+    Assert.IsNotNull(saldoElement);
+    Assert.IsTrue(saldoElement[0].Text.Contains("R$"));
+}
+```
+
+---
+
+## 🔒 Segurança e Boas Práticas
+
+### Armazenamento Seguro
+```csharp
+// Services/SecureStorageService.cs
+public class SecureStorageService
+{
+    private const string AuthTokenKey = "auth_token";
+    private const string UserPinKey = "user_pin";
+    
+    // ✅ CORRETO: Usar SecureStorage para dados sensíveis
+    public async Task<string?> GetAuthTokenAsync()
+    {
+        return await SecureStorage.GetAsync(AuthTokenKey);
+    }
+    
+    public async Task SetAuthTokenAsync(string token)
+    {
+        await SecureStorage.SetAsync(AuthTokenKey, token);
+    }
+    
+    // ✅ CORRETO: Salvar hash, nunca plaintext
+    public async Task SetPinAsync(string pin)
+    {
+        var hash = HashPassword(pin);
+        await SecureStorage.SetAsync(UserPinKey, hash);
+    }
+    
+    private string HashPassword(string password)
+    {
+        using var sha256 = SHA256.Create();
+        var bytes = Encoding.UTF8.GetBytes(password);
+        var hash = sha256.ComputeHash(bytes);
+        return Convert.ToBase64String(hash);
+    }
+}
+
+// ❌ EVITAR: Preferences para dados sensíveis
+Preferences.Set("password", "123456"); // NUNCA FAZER ISSO!
+```
+
+### SQL Injection Prevention
+```csharp
+// ✅ CORRETO: Usar parametrized queries
+public async Task<List<Transacao>> BuscarPorDescricaoAsync(string descricao)
+{
+    return await _database.Table<Transacao>()
+        .Where(t => t.Descricao.Contains(descricao))
+        .ToListAsync();
+}
+
+// ❌ EVITAR: String concatenation
+var query = $"SELECT * FROM Transacao WHERE Descricao = '{descricao}'"; // Vulnerável!
+```
+
+### Validação de Input
+```csharp
+// ✅ CORRETO: Validar entrada do usuário
+public class TransacaoValidator
+{
+    public ValidationResult Validar(Transacao transacao)
+    {
+        var resultado = new ValidationResult();
+        
+        if (string.IsNullOrWhiteSpace(transacao.Descricao))
+        {
+            resultado.AddError("Descrição é obrigatória");
+        }
+        
+        if (transacao.Descricao?.Length > 200)
+        {
+            resultado.AddError("Descrição deve ter no máximo 200 caracteres");
+        }
+        
+        if (transacao.Valor <= 0)
+        {
+            resultado.AddError("Valor deve ser maior que zero");
+        }
+        
+        if (transacao.Data > DateTime.Now)
+        {
+            resultado.AddError("Data não pode ser futura");
+        }
+        
+        return resultado;
+    }
+}
+```
+
+### Tratamento de Erros
+```csharp
+// ✅ CORRETO: Try-catch específico com logging
+public async Task<bool> SalvarTransacaoAsync(Transacao transacao)
+{
+    try
+    {
+        await _database.InsertAsync(transacao);
+        _logger.LogInformation("Transação salva: {Id}", transacao.Id);
+        return true;
+    }
+    catch (SQLiteException ex)
+    {
+        _logger.LogError(ex, "Erro ao salvar transação no banco de dados");
+        throw new DatabaseException("Não foi possível salvar a transação", ex);
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Erro inesperado ao salvar transação");
+        throw;
+    }
+}
+
+// ✅ CORRETO: Global exception handler
+public partial class App : Application
+{
+    public App()
+    {
+        InitializeComponent();
+        
+        AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+        TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
+    }
+    
+    private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+    {
+        var exception = e.ExceptionObject as Exception;
+        _logger.LogCritical(exception, "Unhandled exception");
+        
+        // Enviar para analytics/crash reporting
+        // Analytics.TrackError(exception);
+    }
+    
+    private void OnUnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
+    {
+        _logger.LogError(e.Exception, "Unobserved task exception");
+        e.SetObserved();
+    }
+}
+```
+
+---
+
+## ⚡ Performance e Otimização
+
+### SQLite Performance
+```csharp
+// ✅ CORRETO: Batch inserts com transação
+public async Task SalvarMultiplasTransacoesAsync(List<Transacao> transacoes)
+{
+    await _database.RunInTransactionAsync(tran =>
+    {
+        foreach (var transacao in transacoes)
+        {
+            tran.Insert(transacao);
+        }
+    });
+}
+
+// ✅ CORRETO: Índices para queries frequentes
+public class Transacao
+{
+    [PrimaryKey, AutoIncrement]
+    public int Id { get; set; }
+    
+    [Indexed]  // Índice para buscas por data
+    public DateTime Data { get; set; }
+    
+    [Indexed]  // Índice para buscas por conta
+    public int ContaId { get; set; }
+    
+    public string Descricao { get; set; } = string.Empty;
+    public decimal Valor { get; set; }
+}
+
+// ✅ CORRETO: Paginação para listas grandes
+public async Task<List<Transacao>> GetTransacoesPaginadasAsync(int pagina, int tamanhoPagina)
+{
+    return await _database.Table<Transacao>()
+        .OrderByDescending(t => t.Data)
+        .Skip(pagina * tamanhoPagina)
+        .Take(tamanhoPagina)
+        .ToListAsync();
+}
+```
+
+### XAML Performance
+```xml
+<!-- ✅ CORRETO: Virtualização em listas grandes -->
+<CollectionView ItemsSource="{Binding Transacoes}"
+                SelectionMode="Single">
+    <CollectionView.ItemTemplate>
+        <DataTemplate>
+            <!-- Template item -->
+        </DataTemplate>
+    </CollectionView.ItemTemplate>
+</CollectionView>
+
+<!-- ❌ EVITAR: StackLayout com muitos itens -->
+<ScrollView>
+    <StackLayout BindableLayout.ItemsSource="{Binding Transacoes}">
+        <!-- Não virtualiza, carrega tudo! -->
+    </StackLayout>
+</ScrollView>
+
+<!-- ✅ CORRETO: Lazy loading de imagens -->
+<Image Source="{Binding ImageUrl}"
+       Aspect="AspectFill"
+       CachingEnabled="True"
+       CacheValidity="7" />
+```
+
+### Memory Management
+```csharp
+// ✅ CORRETO: Dispose de recursos
+public class DatabaseService : IDisposable
+{
+    private SQLiteAsyncConnection? _database;
+    
+    public async ValueTask DisposeAsync()
+    {
+        if (_database != null)
+        {
+            await _database.CloseAsync();
+            _database = null;
+        }
+    }
+}
+
+// ✅ CORRETO: Weak event handlers para evitar memory leaks
+public class MyViewModel : ObservableObject
+{
+    private readonly WeakEventManager _eventManager = new();
+    
+    public event EventHandler DataLoaded
+    {
+        add => _eventManager.AddEventHandler(value);
+        remove => _eventManager.RemoveEventHandler(value);
+    }
+    
+    protected void OnDataLoaded()
+    {
+        _eventManager.HandleEvent(this, EventArgs.Empty, nameof(DataLoaded));
+    }
+}
+```
+
+---
+
+## ♿ Acessibilidade (a11y)
+
+### Princípios de Acessibilidade
+
+```xml
+<!-- ✅ CORRETO: Labels semânticos -->
+<Label Text="Saldo Total"
+       AutomationId="SaldoTotalLabel"
+       SemanticProperties.Description="Saldo total de todas as contas"
+       SemanticProperties.HeadingLevel="Level1" />
+
+<!-- ✅ CORRETO: Botões com descrição -->
+<Button Text="Adicionar"
+        AutomationId="AdicionarButton"
+        SemanticProperties.Hint="Adiciona uma nova transação" />
+
+<!-- ✅ CORRETO: Inputs com labels associados -->
+<VerticalStackLayout>
+    <Label Text="Descrição da transação"
+           SemanticProperties.Description="Campo para descrever a transação" />
+    <Entry Placeholder="Ex: Mercado, Aluguel..."
+           AutomationId="DescricaoEntry"
+           x:Name="DescricaoEntry" />
+</VerticalStackLayout>
+
+<!-- ✅ CORRETO: Imagens com texto alternativo -->
+<Image Source="icon_pix.png"
+       SemanticProperties.Description="Ícone do PIX" />
+```
+
+### Contraste de Cores
+```xml
+<!-- Resources/Styles/Colors.xaml -->
+<Color x:Key="Primary">#1E88E5</Color>          <!-- Azul - ratio 4.5:1 com branco -->
+<Color x:Key="TextPrimary">#212121</Color>      <!-- Quase preto - ratio 16:1 com branco -->
+<Color x:Key="TextSecondary">#757575</Color>    <!-- Cinza escuro - ratio 4.5:1 com branco -->
+<Color x:Key="Error">#D32F2F</Color>            <!-- Vermelho - ratio 4.5:1 com branco -->
+<Color x:Key="Success">#2E7D32</Color>          <!-- Verde escuro - ratio 4.5:1 -->
+```
+
+### Tamanhos de Fonte Dinâmicos
+```csharp
+// ✅ CORRETO: Respeitar preferências do sistema
+public static class FontSizes
+{
+    public static double GetScaledFontSize(double baseFontSize)
+    {
+        var scale = DeviceDisplay.MainDisplayInfo.Density;
+        return baseFontSize * scale;
+    }
+}
+```
+
+```xml
+<!-- ✅ CORRETO: Fontes escaláveis -->
+<Label Text="Título" FontSize="24" />
+<Label Text="Subtítulo" FontSize="18" />
+<Label Text="Corpo" FontSize="14" />
+```
+
+### Navegação por Teclado e Foco
+```xml
+<!-- ✅ CORRETO: Ordem de tabulação -->
+<Entry TabIndex="0" Placeholder="Nome" />
+<Entry TabIndex="1" Placeholder="Valor" />
+<Entry TabIndex="2" Placeholder="Data" />
+<Button TabIndex="3" Text="Salvar" />
+```
+
+---
+
+## 🌍 Internacionalização (i18n) e Localização (l10n)
+
+### Estrutura de Resources
+
+```
+Resources/
+├── Strings/
+│   ├── AppResources.resx           # Português (pt-BR) - padrão
+│   ├── AppResources.en.resx        # English
+│   └── AppResources.es.resx        # Español
+```
+
+### Uso de Recursos
+```csharp
+// Resources/Strings/AppResources.resx
+// Nome: WelcomeMessage
+// Valor: Bem-vindo ao Roncav Budget!
+
+// Código C#
+using Resources.Strings;
+
+public string GetWelcomeMessage()
+{
+    return AppResources.WelcomeMessage;
+}
+
+// XAML
+xmlns:resx="clr-namespace:Roncav_Budget.Resources.Strings"
+
+<Label Text="{x:Static resx:AppResources.WelcomeMessage}" />
+```
+
+### Formatação Cultural
+```csharp
+// ✅ CORRETO: Usar cultura atual
+var valorMonetario = 1234.56m;
+var valorFormatado = valorMonetario.ToString("C", CultureInfo.CurrentCulture);
+// pt-BR: R$ 1.234,56
+// en-US: $1,234.56
+
+var dataAtual = DateTime.Now;
+var dataFormatada = dataAtual.ToString("d", CultureInfo.CurrentCulture);
+// pt-BR: 05/12/2025
+// en-US: 12/05/2025
+```
+
+### Plural Forms
+```csharp
+// ✅ CORRETO: Tratar pluralização
+public string GetTransacoesMessage(int count)
+{
+    return count switch
+    {
+        0 => AppResources.NoTransactions,      // "Nenhuma transação"
+        1 => AppResources.OneTransaction,      // "1 transação"
+        _ => string.Format(AppResources.MultipleTransactions, count) // "{0} transações"
+    };
+}
+```
+
+---
+
+## 📱 Offline-First e Sincronização
+
+### Estratégia Local-First
+```csharp
+// Services/OfflineFirstService.cs
+public class OfflineFirstService
+{
+    private readonly IDatabaseService _localDb;
+    private readonly IAvilaApiService _apiService;
+    private readonly IConnectivity _connectivity;
+    
+    public async Task<List<Transacao>> GetTransacoesAsync()
+    {
+        // Sempre retorna dados locais primeiro
+        var localData = await _localDb.GetTransacoesAsync();
+        
+        // Tenta sincronizar em background se online
+        if (_connectivity.NetworkAccess == NetworkAccess.Internet)
+        {
+            _ = Task.Run(async () => await SyncInBackgroundAsync());
+        }
+        
+        return localData;
+    }
+    
+    public async Task<bool> SalvarTransacaoAsync(Transacao transacao)
+    {
+        // Salva localmente primeiro
+        transacao.IsSynced = false;
+        await _localDb.SaveTransacaoAsync(transacao);
+        
+        // Tenta sincronizar imediatamente se online
+        if (_connectivity.NetworkAccess == NetworkAccess.Internet)
+        {
+            try
+            {
+                await _apiService.SyncTransacaoAsync(transacao);
+                transacao.IsSynced = true;
+                await _localDb.UpdateTransacaoAsync(transacao);
+            }
+            catch
+            {
+                // Ficará na fila de sincronização
+            }
+        }
+        
+        return true;
+    }
+}
+```
+
+### Resolução de Conflitos
+```csharp
+public enum ConflictResolutionStrategy
+{
+    ServerWins,      // Servidor sempre prevalece
+    ClientWins,      // Cliente sempre prevalece
+    LastWriteWins,   // Mais recente prevalece
+    Manual           // Usuário decide
+}
+
+public class ConflictResolver
+{
+    public async Task<Transacao> ResolveConflictAsync(
+        Transacao localVersion,
+        Transacao serverVersion,
+        ConflictResolutionStrategy strategy)
+    {
+        return strategy switch
+        {
+            ConflictResolutionStrategy.ServerWins => serverVersion,
+            ConflictResolutionStrategy.ClientWins => localVersion,
+            ConflictResolutionStrategy.LastWriteWins => 
+                localVersion.UpdatedAt > serverVersion.UpdatedAt 
+                    ? localVersion 
+                    : serverVersion,
+            ConflictResolutionStrategy.Manual => 
+                await ShowConflictDialogAsync(localVersion, serverVersion),
+            _ => serverVersion
+        };
+    }
+}
+```
+
+---
+
+## 🎨 UI/UX Best Practices
+
+### Design Patterns Brasileiros
+
+```csharp
+// ✅ CORRETO: Formato de telefone brasileiro
+public class TelefoneFormatter
+{
+    public static string Format(string telefone)
+    {
+        telefone = Regex.Replace(telefone, @"\D", "");
+        
+        if (telefone.Length == 11)
+        {
+            return $"({telefone.Substring(0, 2)}) {telefone.Substring(2, 5)}-{telefone.Substring(7, 4)}";
+            // (11) 98765-4321
+        }
+        else if (telefone.Length == 10)
+        {
+            return $"({telefone.Substring(0, 2)}) {telefone.Substring(2, 4)}-{telefone.Substring(6, 4)}";
+            // (11) 3456-7890
+        }
+        
+        return telefone;
+    }
+}
+```
+
+### Loading States
+```xml
+<!-- Views/Components/LoadingView.xaml -->
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             x:Class="Roncav_Budget.Views.Components.LoadingView"
+             IsVisible="{Binding IsLoading}">
+    <VerticalStackLayout HorizontalOptions="Center"
+                         VerticalOptions="Center"
+                         Spacing="16">
+        <ActivityIndicator IsRunning="True"
+                          Color="{StaticResource Primary}"
+                          HeightRequest="48"
+                          WidthRequest="48" />
+        <Label Text="Carregando..."
+               HorizontalOptions="Center"
+               TextColor="{StaticResource TextSecondary}" />
+    </VerticalStackLayout>
+</ContentView>
+```
+
+### Empty States
+```xml
+<!-- Views/Components/EmptyStateView.xaml -->
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             x:Class="Roncav_Budget.Views.Components.EmptyStateView"
+             IsVisible="{Binding HasNoData}">
+    <VerticalStackLayout HorizontalOptions="Center"
+                         VerticalOptions="Center"
+                         Spacing="24"
+                         Padding="32">
+        <Image Source="empty_state_icon.png"
+               HeightRequest="120"
+               WidthRequest="120"
+               Opacity="0.5" />
+        <Label Text="{Binding EmptyStateTitle}"
+               FontSize="20"
+               FontAttributes="Bold"
+               HorizontalTextAlignment="Center" />
+        <Label Text="{Binding EmptyStateMessage}"
+               FontSize="14"
+               TextColor="{StaticResource TextSecondary}"
+               HorizontalTextAlignment="Center" />
+        <Button Text="{Binding EmptyStateAction}"
+                Command="{Binding EmptyStateCommand}"
+                HorizontalOptions="Center" />
+    </VerticalStackLayout>
+</ContentView>
+```
+
+### Error States
+```csharp
+// ViewModels/Base/BaseViewModel.cs
+public partial class BaseViewModel : ObservableObject
+{
+    [ObservableProperty]
+    private bool isLoading;
+    
+    [ObservableProperty]
+    private bool hasError;
+    
+    [ObservableProperty]
+    private string errorMessage = string.Empty;
+    
+    [ObservableProperty]
+    private string errorTitle = "Ops!";
+    
+    protected async Task ExecuteWithErrorHandlingAsync(Func<Task> action)
     {
         try
         {
-            // 1. Upload dados locais modificados
-            var localChanges = await _localDb.GetPendingChangesAsync();
-            if (localChanges.Any())
-            {
-                await _apiService.UploadChangesAsync(localChanges);
-            }
-
-            // 2. Download dados do servidor
-            var serverData = await _apiService.GetUpdatesAsync();
-            await _localDb.MergeServerDataAsync(serverData);
-
-            // 3. Resolver conflitos
-            var conflicts = await _localDb.GetConflictsAsync();
-            if (conflicts.Any())
-            {
-                await ResolveConflictsAsync(conflicts);
-            }
-
-            return SyncResult.Success();
+            IsLoading = true;
+            HasError = false;
+            ErrorMessage = string.Empty;
+            
+            await action();
         }
         catch (Exception ex)
         {
-            // Log para Analytics API
-            await _apiService.LogErrorAsync(ex);
-            return SyncResult.Failed(ex.Message);
+            HasError = true;
+            ErrorTitle = "Erro";
+            ErrorMessage = GetUserFriendlyErrorMessage(ex);
+            _logger.LogError(ex, "Erro ao executar operação");
         }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+    
+    private string GetUserFriendlyErrorMessage(Exception ex)
+    {
+        return ex switch
+        {
+            HttpRequestException => "Não foi possível conectar ao servidor. Verifique sua conexão com a internet.",
+            SQLiteException => "Erro ao acessar o banco de dados local.",
+            UnauthorizedAccessException => "Você não tem permissão para realizar esta operação.",
+            TimeoutException => "A operação demorou muito tempo. Tente novamente.",
+            _ => "Ocorreu um erro inesperado. Tente novamente mais tarde."
+        };
     }
 }
 ```
 
-### 🏢 Governança e Cultura Corporativa
+---
 
-#### Padrões Obrigatórios da Avila
+## 🔧 CI/CD e Automação
 
-1. **Autenticação e Autorização**
-   - ✅ Sempre usar JWT tokens da API central
-   - ✅ Implementar refresh token automático
-   - ✅ Validar permissões antes de operações críticas
-   - ❌ NUNCA criar sistema de auth próprio
+### GitHub Actions Workflow
 
-2. **Logging e Telemetria**
-   - ✅ Todos os erros devem ir para Analytics API
-   - ✅ Registrar eventos de uso importantes (login, sync, transações)
-   - ✅ Incluir contexto: userId, deviceId, appVersion
-   - ✅ Usar níveis: Debug, Info, Warning, Error, Critical
+```yaml
+# .github/workflows/build-and-test.yml
+name: Build and Test
 
-3. **Tratamento de Dados**
-   - ✅ Dados sensíveis SEMPRE criptografados (SecureStorage)
-   - ✅ LGPD/GDPR compliance: permitir exportação e exclusão
-   - ✅ Sincronização bidirecional quando online
-   - ✅ Modo offline funcional (local-first)
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
 
-4. **UI/UX Consistente**
-   - ✅ Seguir Material Design 3 / Fluent Design
-   - ✅ Cores da marca Avila:
-     - Primary: `#1E88E5` (Azul Avila)
-     - Secondary: `#FF6F00` (Laranja Destaque)
-     - Error: `#D32F2F`
-     - Success: `#388E3C`
-   - ✅ Fontes: Segoe UI (Windows), SF Pro (iOS), Roboto (Android)
-   - ✅ Ícones: Material Icons ou Fluent UI Icons
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+    
+    - name: Install MAUI Workloads
+      run: dotnet workload install maui
+    
+    - name: Restore dependencies
+      run: dotnet restore Roncav_Budget.sln
+    
+    - name: Build
+      run: dotnet build Roncav_Budget.sln --configuration Release --no-restore
+    
+    - name: Run tests
+      run: dotnet test Roncav_Budget.sln --configuration Release --no-build --verbosity normal
+    
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: |
+          **/bin/Release/**/*.dll
+          **/bin/Release/**/*.exe
+```
 
-5. **Versionamento e Deploy**
-   - ✅ Semantic Versioning: `MAJOR.MINOR.PATCH`
-   - ✅ Tag git para cada release: `v1.2.3`
-   - ✅ CHANGELOG.md atualizado
-   - ✅ Deploy em staging antes de produção
+### Build Script
+```powershell
+# build.ps1
+param(
+    [string]$Configuration = "Release",
+    [string]$Platform = "win-x64"
+)
 
-#### 📊 Estrutura de Dados Padrão Avila
+Write-Host "🚀 Iniciando build do Roncav Budget" -ForegroundColor Green
 
+# Restaurar workloads
+Write-Host "📦 Restaurando workloads..." -ForegroundColor Yellow
+dotnet workload restore
+
+# Restaurar dependências
+Write-Host "📦 Restaurando dependências..." -ForegroundColor Yellow
+dotnet restore Roncav_Budget.sln
+
+# Build
+Write-Host "🔨 Compilando..." -ForegroundColor Yellow
+dotnet build Roncav_Budget.sln `
+    --configuration $Configuration `
+    --no-restore
+
+# Testes (se existirem)
+if (Test-Path "Roncav_Budget.Tests") {
+    Write-Host "🧪 Executando testes..." -ForegroundColor Yellow
+    dotnet test Roncav_Budget.sln `
+        --configuration $Configuration `
+        --no-build `
+        --verbosity normal
+}
+
+Write-Host "✅ Build concluído com sucesso!" -ForegroundColor Green
+```
+
+---
+
+## 📚 Documentação
+
+### XML Documentation Comments
 ```csharp
-// Models/Base/AvilaEntity.cs
-public abstract class AvilaEntity
+/// <summary>
+/// Serviço responsável por gerenciar transações financeiras no banco de dados local.
+/// </summary>
+/// <remarks>
+/// Este serviço implementa operações CRUD para transações e suporta
+/// importação de extratos bancários de múltiplas fontes.
+/// </remarks>
+public class TransacaoService : ITransacaoService
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime? UpdatedAt { get; set; }
-    public string CreatedBy { get; set; } // UserId
-    public string? UpdatedBy { get; set; }
-    public bool IsDeleted { get; set; } = false;
-    public DateTime? DeletedAt { get; set; }
-    public long Version { get; set; } = 1; // Para controle de conflitos
-    public bool IsSynced { get; set; } = false;
+    /// <summary>
+    /// Salva uma nova transação no banco de dados.
+    /// </summary>
+    /// <param name="transacao">A transação a ser salva.</param>
+    /// <param name="cancellationToken">Token para cancelamento da operação.</param>
+    /// <returns>True se a operação foi bem-sucedida, false caso contrário.</returns>
+    /// <exception cref="ArgumentNullException">Lançado quando transacao é null.</exception>
+    /// <exception cref="ValidationException">Lançado quando a transação contém dados inválidos.</exception>
+    /// <example>
+    /// <code>
+    /// var transacao = new Transacao 
+    /// { 
+    ///     Descricao = "Compra no supermercado",
+    ///     Valor = 150.50m,
+    ///     Data = DateTime.Now
+    /// };
+    /// var sucesso = await _service.SalvarTransacaoAsync(transacao);
+    /// </code>
+    /// </example>
+    public async Task<bool> SalvarTransacaoAsync(
+        Transacao transacao, 
+        CancellationToken cancellationToken = default)
+    {
+        // Implementação
+    }
 }
 ```
 
-#### 🔄 Ciclo de Sincronização
+### README Sections
+Um bom README deve incluir:
 
+1. **Título e Descrição**: O que é e para que serve
+2. **Badges**: Build status, cobertura de testes, versão
+3. **Screenshots**: Capturas de tela do app
+4. **Funcionalidades**: Lista do que o app faz
+5. **Tecnologias**: Stack completa
+6. **Pré-requisitos**: O que é necessário para rodar
+7. **Instalação**: Passo a passo para setup
+8. **Uso**: Como usar o aplicativo
+9. **Estrutura**: Organização dos arquivos
+10. **Contribuição**: Como contribuir
+11. **Licença**: Tipo de licença
+12. **Contato**: Como entrar em contato
+
+---
+
+## 🐛 Troubleshooting
+
+### Problemas Comuns
+
+#### 1. Erro de Workload MAUI
+
+```bash
+# Erro: "To build this project, the following workloads must be installed: maui"
+
+# Solução:
+dotnet workload install maui
+dotnet workload install maui-android
+dotnet workload install maui-ios
+dotnet workload install maui-maccatalyst
+dotnet workload install maui-windows
+
+# Verificar workloads instalados:
+dotnet workload list
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    FLUXO DE SINCRONIZAÇÃO                   │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  App Local                    API Avila                     │
-│  ┌─────────┐                 ┌─────────┐                   │
-│  │ SQLite  │────Upload────▶  │ MongoDB │                   │
-│  │         │                 │ Cosmos  │                   │
-│  │         │◀───Download───  │         │                   │
-│  └─────────┘                 └─────────┘                   │
-│      │                            │                         │
-│      │  Conflito?                 │                         │
-│      └────────┬───────────────────┘                         │
-│               ▼                                             │
-│         Resolução:                                          │
-│         • Last-Write-Wins (padrão)                          │
-│         • Server-Wins (dados críticos)                      │
-│         • Manual (UI de resolução)                          │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+
+#### 2. Erro de SDK não encontrado
+
+```bash
+# Erro: "SDK not found"
+
+# Verificar versão:
+dotnet --version
+
+# Instalar .NET 9:
+# Windows: https://dotnet.microsoft.com/download
+# macOS: brew install --cask dotnet-sdk
+# Linux: https://learn.microsoft.com/dotnet/core/install/linux
 ```
 
-### 🔐 Segurança Corporativa
+#### 3. Dependências NuGet corrompidas
 
-#### Secrets Management
+```bash
+# Limpar cache e restaurar:
+dotnet nuget locals all --clear
+dotnet restore Roncav_Budget.sln --force
+```
+
+#### 4. Build lento ou travando
+
+```powershell
+# Limpar bin/obj:
+Get-ChildItem -Recurse -Directory -Filter "bin" | Remove-Item -Recurse -Force
+Get-ChildItem -Recurse -Directory -Filter "obj" | Remove-Item -Recurse -Force
+
+# Reconstruir:
+dotnet clean
+dotnet restore
+dotnet build
+```
+
+#### 5. Erro de permissão SQLite no Android
 
 ```csharp
-// appsettings.json (NÃO commitar valores reais)
-{
-  "AvilaApi": {
-    "BaseUrl": "https://api.avila.inc",
-    "ClientId": "roncav-budget-{ENV}",
-    "Timeout": 30
-  },
-  "Features": {
-    "EnableSync": true,
-    "EnableAnalytics": true,
-    "OfflineMode": true
-  }
-}
+// Adicionar permissão no AndroidManifest.xml:
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-// Usar User Secrets em desenvolvimento
-// dotnet user-secrets set "AvilaApi:ApiKey" "dev-key-xxx"
+// No código:
+await Permissions.RequestAsync<Permissions.StorageWrite>();
 ```
 
-#### Azure Key Vault (Produção)
+#### 6. Hot Reload não funcionando
 
-```csharp
-// Program.cs - Configuração para produção
-#if RELEASE
-builder.Configuration.AddAzureKeyVault(
-    new Uri("https://avila-keyvault.vault.azure.net/"),
-    new DefaultAzureCredential()
-);
-#endif
+```bash
+# Verificar se está habilitado:
+dotnet watch --project Roncav_Budget/Roncav_Budget.csproj
+
+# Se não funcionar, adicionar ao .csproj:
+<PropertyGroup>
+    <EnableHotReload>true</EnableHotReload>
+</PropertyGroup>
 ```
 
-### 📋 Checklist de Conformidade Avila
+---
+
+## 🔄 Workflow de Desenvolvimento Recomendado
+
+### 1. Análise Inicial
+- ✅ Ler toda documentação (`.md` files)
+- ✅ Mapear estrutura de pastas e projetos
+- ✅ Identificar padrões de código existentes
+- ✅ Verificar arquitetura MVVM
+- ✅ Revisar Models, Services, ViewModels
+
+### 2. Setup e Compilação
+- ✅ Instalar workloads necessários
+- ✅ Restaurar dependências (`dotnet restore`)
+- ✅ Compilar em Debug (`dotnet build`)
+- ✅ Compilar em Release (`dotnet build -c Release`)
+- ✅ Executar app em pelo menos uma plataforma
+
+### 3. Desenvolvimento
+- ✅ Criar feature branch: `git checkout -b feature/nome-feature`
+- ✅ Seguir convenções de código estabelecidas
+- ✅ Implementar testes para novas funcionalidades
+- ✅ Executar linter: `dotnet format`
+- ✅ Build incremental: `dotnet build --no-restore`
+
+### 4. Testes
+- ✅ Testes unitários: `dotnet test`
+- ✅ Testes de integração (se existirem)
+- ✅ Testes manuais em pelo menos 2 plataformas
+- ✅ Verificar acessibilidade
+- ✅ Testar offline-first scenarios
+
+### 5. Revisão de Código
+- ✅ Verificar SOLID principles
+- ✅ Garantir exception handling adequado
+- ✅ Validar async/await patterns
+- ✅ Checar memory leaks potenciais
+- ✅ Validar integração com APIs Avila
+- ✅ Verificar conformidade com padrões corporativos
+- ✅ Revisar segurança (SQL injection, XSS, etc.)
+
+### 6. Otimizações
+- ✅ Analisar performance com profiler
+- ✅ Otimizar queries ao banco de dados (índices)
+- ✅ Reduzir tamanho do pacote final
+- ✅ Implementar lazy loading onde aplicável
+- ✅ Minimizar chamadas à API (cache local)
+- ✅ Otimizar sincronização (delta sync)
+
+### 7. Deploy
+- ✅ Seguir checklist de deploy
+- ✅ Gerar builds para todas as plataformas
+- ✅ Documentar breaking changes em CHANGELOG.md
+- ✅ Criar release notes
+- ✅ Testar em staging primeiro
+- ✅ Validar com equipe de QA
+- ✅ Tag de versão: `git tag -a v1.2.3 -m "Release 1.2.3"`
+
+---
+
+## 📐 Convenções Git
+
+### Branch Naming
+```
+main                    # Produção
+develop                 # Desenvolvimento
+feature/nome-feature    # Nova funcionalidade
+bugfix/nome-bug        # Correção de bug
+hotfix/nome-hotfix     # Correção urgente em produção
+release/v1.2.3         # Preparação para release
+```
+
+### Commit Messages (Conventional Commits)
+```
+feat: adiciona importação de extratos do Nubank
+fix: corrige cálculo de saldo total
+docs: atualiza README com instruções de build
+style: formata código seguindo EditorConfig
+refactor: refatora DatabaseService para usar async/await
+perf: otimiza queries SQLite com índices
+test: adiciona testes para ValidadorDocumento
+chore: atualiza dependências NuGet
+ci: adiciona workflow de build no GitHub Actions
+```
+
+### Pull Request Template
+```markdown
+## Descrição
+[Descrição clara do que foi implementado/corrigido]
+
+## Tipo de Mudança
+- [ ] Bug fix (mudança que corrige um problema)
+- [ ] Nova funcionalidade (mudança que adiciona funcionalidade)
+- [ ] Breaking change (mudança que quebra compatibilidade)
+- [ ] Documentação
+
+## Checklist
+- [ ] Código segue o style guide do projeto
+- [ ] Realizei self-review do código
+- [ ] Comentei código complexo
+- [ ] Atualizei documentação relevante
+- [ ] Mudanças não geram novos warnings
+- [ ] Adicionei testes que provam que o fix/feature funciona
+- [ ] Testes unitários passam localmente
+- [ ] Testei em pelo menos 2 plataformas
+
+## Screenshots (se aplicável)
+[Adicionar screenshots de mudanças visuais]
+
+## Contexto Adicional
+[Informações extras que revisores devem saber]
+```
+
+---
+
+## 📋 Checklist de Conformidade Avila
 
 Antes de qualquer deploy, garantir:
 
@@ -317,216 +1527,82 @@ Antes de qualquer deploy, garantir:
 - [ ] **Sync bidirecional** implementado e testado
 - [ ] **Logs enviados para Analytics API**
 - [ ] **Tratamento de erros** global implementado
-- [ ] **Modo offline** funcional
+- [ ] **Modo offline** funcional (offline-first)
 - [ ] **UI/UX** segue padrões da marca Avila
-- [ ] **Dados sensíveis** criptografados
+- [ ] **Dados sensíveis** criptografados (SecureStorage)
 - [ ] **Compliance LGPD**: exportação/exclusão de dados
 - [ ] **Versionamento** correto (tag git + CHANGELOG)
 - [ ] **Testes** em staging antes de produção
-
-### 🎨 Design System Avila
-
-```xml
-<!-- Resources/Styles/AvilaColors.xaml -->
-<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui">
-    <!-- Cores Primárias -->
-    <Color x:Key="AvilaPrimary">#1E88E5</Color>
-    <Color x:Key="AvilaSecondary">#FF6F00</Color>
-
-    <!-- Status -->
-    <Color x:Key="AvilaSuccess">#388E3C</Color>
-    <Color x:Key="AvilaWarning">#F57C00</Color>
-    <Color x:Key="AvilaError">#D32F2F</Color>
-    <Color x:Key="AvilaInfo">#1976D2</Color>
-
-    <!-- Neutros -->
-    <Color x:Key="AvilaTextPrimary">#212121</Color>
-    <Color x:Key="AvilaTextSecondary">#757575</Color>
-    <Color x:Key="AvilaBackground">#FAFAFA</Color>
-    <Color x:Key="AvilaSurface">#FFFFFF</Color>
-</ResourceDictionary>
-```
+- [ ] **Acessibilidade** validada (labels, contraste, keyboard nav)
+- [ ] **Internacionalização** implementada (pt-BR padrão)
+- [ ] **Performance** otimizada (SQLite, XAML, memory)
+- [ ] **Segurança** validada (CodeQL, dependency check)
+- [ ] **Documentação** atualizada (README, XML docs)
 
 ---
 
-## 🚀 Deploy e Publicação
+## 📞 Suporte e Recursos
 
-### Pré-requisitos de Deploy
+### Documentação Oficial
+- [.NET MAUI Docs](https://learn.microsoft.com/dotnet/maui/)
+- [XAML Controls](https://learn.microsoft.com/dotnet/maui/user-interface/controls/)
+- [Publishing Guide](https://learn.microsoft.com/dotnet/maui/deployment/)
+- [Best Practices](https://learn.microsoft.com/dotnet/maui/fundamentals/best-practices)
+- [Avila API Documentation](https://api.avila.inc/docs)
+- [Avila Design System](https://design.avila.inc)
+- [Avila Developer Portal](https://dev.avila.inc)
 
-1. **Verificar configuração de build**
-   ```powershell
-   # Verificar se todos os projetos compilam
-   dotnet build -c Release
-   ```
+### Comunidade
+- [.NET MAUI GitHub](https://github.com/dotnet/maui)
+- [Stack Overflow - MAUI](https://stackoverflow.com/questions/tagged/.net-maui)
+- [.NET Community Discord](https://aka.ms/dotnet-discord)
 
-2. **Testar em modo Release**
-   ```powershell
-   # Windows
-   dotnet build Roncav_Budget.winui/Roncav_Budget.winui.csproj -c Release
-
-   # Android
-   dotnet build Roncav_Budget.droid/Roncav_Budget.droid.csproj -c Release
-   ```
-
-### Deploy por Plataforma
-
-#### 🪟 Windows (WinUI)
-
-```powershell
-# Publicar para Windows
-dotnet publish Roncav_Budget.winui/Roncav_Budget.winui.csproj `
-  -c Release `
-  -f net8.0-windows10.0.19041.0 `
-  -p:RuntimeIdentifierOverride=win10-x64 `
-  -p:WindowsPackageType=MSIX `
-  -p:GenerateAppxPackageOnBuild=true
-```
-
-**Arquivos gerados**: `Roncav_Budget.winui/AppPackages/`
-
-#### 🤖 Android
-
-```powershell
-# Publicar APK
-dotnet publish Roncav_Budget.droid/Roncav_Budget.droid.csproj `
-  -c Release `
-  -f net8.0-android `
-  -p:AndroidPackageFormat=apk
-
-# Publicar AAB (Google Play)
-dotnet publish Roncav_Budget.droid/Roncav_Budget.droid.csproj `
-  -c Release `
-  -f net8.0-android `
-  -p:AndroidPackageFormat=aab
-```
-
-**Arquivos gerados**: `Roncav_Budget.droid/bin/Release/`
-
-#### 🍎 iOS
-
-```powershell
-# Publicar para iOS (requer macOS)
-dotnet publish Roncav_Budget.ios/Roncav_Budget.ios.csproj `
-  -c Release `
-  -f net8.0-ios
-```
-
-**Nota**: Deploy iOS requer certificados Apple Developer
-
-#### 💻 macOS
-
-```powershell
-# Publicar para macOS
-dotnet publish Roncav_Budget.mac/Roncav_Budget.mac.csproj `
-  -c Release `
-  -f net8.0-maccatalyst
-```
+### Ferramentas Úteis
+- **Visual Studio 2022** (17.8+) - IDE principal
+- **Visual Studio Code** - Editor leve com extensões
+- **Android Studio** - Para depuração Android
+- **Xcode** - Para depuração iOS/macOS
+- **SQLite Browser** - Para inspeção do banco de dados
+- **Postman** - Para testar APIs
+- **Git** - Controle de versão
 
 ---
 
-## ✅ Checklist de Deploy
-
-Antes de fazer deploy, verificar:
-
-- [ ] **Compilação limpa sem warnings**
-  ```powershell
-  dotnet clean
-  dotnet build -c Release --no-incremental
-  ```
-
-- [ ] **Versão atualizada**
-  - Incrementar versão em `Directory.Build.props` ou `.csproj`
-  - Formato: `<ApplicationDisplayVersion>1.0.0</ApplicationDisplayVersion>`
-
-- [ ] **Testes executados**
-  ```powershell
-  dotnet test
-  ```
-
-- [ ] **Assets e recursos verificados**
-  - Ícones da aplicação
-  - Splash screens
-  - Imagens e fontes
-
-- [ ] **Configurações de release**
-  - `appsettings.json` para produção
-  - Connection strings corretas
-  - API keys configuradas
-
-- [ ] **Assinatura de código** (se aplicável)
-  - Certificado Windows para MSIX
-  - Keystore Android configurado
-  - Perfil de provisionamento iOS
-
-- [ ] **Integração Avila validada**
-  - Auth API conectada
-  - Sync funcionando
-  - Analytics configurado
-  - Cores/fontes da marca aplicadas
-
----
-
-## 🐛 Solução de Problemas Comuns
-
-### Erro: "Workload not installed"
-```powershell
-# Instalar workloads MAUI
-dotnet workload install maui
-dotnet workload install android
-dotnet workload install ios
-dotnet workload install maccatalyst
-```
-
-### Erro: "SDK not found"
-- Verificar se .NET 8 SDK está instalado: `dotnet --version`
-- Instalar: https://dotnet.microsoft.com/download
-
-### Erro de dependências NuGet
-```powershell
-# Limpar cache e restaurar
-dotnet nuget locals all --clear
-dotnet restore Roncav_Budget.sln
-```
-
-### Build lento ou travando
-```powershell
-# Limpar bin/obj
-Get-ChildItem -Recurse -Directory -Filter "bin" | Remove-Item -Recurse -Force
-Get-ChildItem -Recurse -Directory -Filter "obj" | Remove-Item -Recurse -Force
-dotnet restore
-```
-
----
-
-## 📝 Comandos Úteis
+## 🚀 Comandos Úteis
 
 ### Desenvolvimento
-```powershell
+```bash
 # Rodar no Windows
-dotnet run --project Roncav_Budget.winui
+dotnet run --project Roncav_Budget.winui/Roncav_Budget.winui.csproj
 
 # Rodar no Android (emulador)
-dotnet build -t:Run -f net8.0-android
+dotnet build Roncav_Budget.droid/Roncav_Budget.droid.csproj -t:Run -f net9.0-android
 
 # Listar dispositivos Android
 adb devices
 
 # Hot Reload ativado
-dotnet watch run --project Roncav_Budget.winui
+dotnet watch --project Roncav_Budget/Roncav_Budget.csproj
 ```
 
 ### Análise de Código
-```powershell
-# Análise de código
-dotnet format --verify-no-changes
+```bash
+# Formatação de código
+dotnet format Roncav_Budget.sln
+
+# Verificar sem aplicar mudanças
+dotnet format Roncav_Budget.sln --verify-no-changes
+
+# Build com warnings como erros
 dotnet build /p:TreatWarningsAsErrors=true
 
-# Verificar estilo
-dotnet format --severity info
+# Análise de segurança
+dotnet list package --vulnerable
+dotnet list package --deprecated
 ```
 
 ### Informações do Projeto
-```powershell
+```bash
 # Ver workloads instalados
 dotnet workload list
 
@@ -535,82 +1611,69 @@ dotnet --list-sdks
 
 # Ver runtimes instalados
 dotnet --list-runtimes
+
+# Informações sobre o dispositivo
+dotnet info
 ```
 
 ---
 
-## 🎯 Workflow de Revisão Recomendado
+## 🔐 Segurança - NÃO Commitar
 
-### 1. Análise Inicial
-- Ler todos os `.md` da raiz do projeto
-- Mapear estrutura de pastas e projetos
-- Identificar padrões de código existentes
+**NUNCA commitar ao repositório:**
+- ❌ API keys em código
+- ❌ Senhas ou tokens
+- ❌ Keystores/certificados privados
+- ❌ Connection strings de produção
+- ❌ Secrets ou credenciais
+- ❌ Dados de usuários reais (em testes)
 
-### 2. Compilação e Testes
-- Compilar em Debug e Release
-- Executar testes automatizados
-- Testar em pelo menos 2 plataformas
-
-### 3. Revisão de Código
-- Verificar SOLID principles
-- Garantir exception handling adequado
-- Validar async/await patterns
-- Checar memory leaks potenciais
-- **Validar integração com APIs Avila**
-- **Verificar conformidade com padrões corporativos**
-
-### 4. Otimizações
-- Analisar performance com profiler
-- Otimizar queries ao banco de dados
-- Reduzir tamanho do pacote final
-- Implementar lazy loading onde aplicável
-- **Minimizar chamadas à API (cache local)**
-- **Otimizar sincronização (delta sync)**
-
-### 5. Deploy
-- Seguir checklist de deploy acima
-- Gerar builds para todas as plataformas
-- Documentar breaking changes
-- Atualizar CHANGELOG.md (se existir)
-- **Testar em staging.avila.inc primeiro**
-- **Validar com equipe de QA**
+**SEMPRE usar:**
+- ✅ User Secrets para desenvolvimento (`dotnet user-secrets`)
+- ✅ Azure Key Vault para produção
+- ✅ Variáveis de ambiente para CI/CD
+- ✅ `.gitignore` apropriado
+- ✅ Configurações por ambiente (appsettings.{Environment}.json)
 
 ---
 
-## 📚 Referências
-
-- [.NET MAUI Docs](https://learn.microsoft.com/dotnet/maui/)
-- [XAML Controls](https://learn.microsoft.com/dotnet/maui/user-interface/controls/)
-- [Publishing Guide](https://learn.microsoft.com/dotnet/maui/deployment/)
-- [Best Practices](https://learn.microsoft.com/dotnet/maui/fundamentals/best-practices)
-- **[Avila API Documentation](https://api.avila.inc/docs)** - Documentação completa das APIs
-- **[Avila Design System](https://design.avila.inc)** - Guia de UI/UX corporativo
-- **[Avila Developer Portal](https://dev.avila.inc)** - Portal do desenvolvedor
+**Última atualização**: 2025-12-05  
+**Versão das instruções**: 2.0  
+**Compatibilidade**: .NET 9, .NET MAUI 9+
 
 ---
 
-## 🔐 Segurança
+## 💡 Dicas Finais
 
-- **Nunca commitar**:
-  - API keys em código
-  - Senhas ou tokens
-  - Keystores/certificados privados
-
-- **Usar**:
-  - User Secrets para desenvolvimento
-  - Azure Key Vault para produção
-  - Variáveis de ambiente para CI/CD
-
----
-
-## 📞 Suporte
-
-Para dúvidas específicas do projeto:
-1. Verificar documentação em `/docs` (se existir)
-2. Consultar arquivos `.md` na raiz
-3. Revisar issues no repositório GitHub
+1. **Sempre comece entendendo**: Leia todo o código existente antes de modificar
+2. **Teste localmente**: Compile e execute antes de commitar
+3. **Pequenos commits**: Commits atômicos são mais fáceis de revisar
+4. **Documente decisões**: Comente código complexo e decisões arquiteturais
+5. **Pense em manutenção**: Código deve ser fácil de entender por outros devs
+6. **Performance importa**: Mas legibilidade primeiro, otimize depois
+7. **Segurança é prioridade**: Sempre valide inputs e proteja dados sensíveis
+8. **Acessibilidade não é opcional**: Faça o app usável por todos
+9. **Offline-first**: Usuários brasileiros nem sempre têm conexão estável
+10. **Comunique-se**: Pergunte quando tiver dúvidas, não assuma
 
 ---
 
-**Última atualização**: 2025-11-16
-**Versão das instruções**: 1.0
+## 📖 Glossário
+
+- **MAUI**: Multi-platform App UI - framework da Microsoft
+- **MVVM**: Model-View-ViewModel - padrão de arquitetura
+- **PIX**: Sistema de pagamentos instantâneos brasileiro
+- **MEI**: Microempreendedor Individual
+- **DAS**: Documento de Arrecadação do Simples Nacional
+- **CPF**: Cadastro de Pessoas Físicas
+- **CNPJ**: Cadastro Nacional de Pessoa Jurídica
+- **SQLite**: Banco de dados relacional leve e embutido
+- **DI**: Dependency Injection - Injeção de Dependência
+- **a11y**: Accessibility - Acessibilidade (11 letras entre 'a' e 'y')
+- **i18n**: Internationalization - Internacionalização (18 letras)
+- **l10n**: Localization - Localização (10 letras)
+- **LGPD**: Lei Geral de Proteção de Dados (Brasil)
+- **SOLID**: Princípios de design orientado a objetos
+- **CI/CD**: Continuous Integration/Continuous Deployment
+
+
