@@ -67,7 +67,7 @@ public class ValidationService : IValidationService
             return false;
 
         // Verifica se todos os dígitos são iguais
-        if (cpf.Distinct().Count() == 1)
+        if (cpf.All(c => c == cpf[0]))
             return false;
 
         // Valida dígitos verificadores
@@ -110,7 +110,7 @@ public class ValidationService : IValidationService
             return false;
 
         // Verifica se todos os dígitos são iguais
-        if (cnpj.Distinct().Count() == 1)
+        if (cnpj.All(c => c == cnpj[0]))
             return false;
 
         // Valida dígitos verificadores

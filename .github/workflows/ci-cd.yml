@@ -6,10 +6,16 @@ on:
   pull_request:
     branches: [ main, develop ]
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build-and-test:
     name: Build and Test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     
     steps:
     - uses: actions/checkout@v4
@@ -20,7 +26,7 @@ jobs:
         dotnet-version: '9.0.x'
     
     - name: Install MAUI Workloads
-      run: dotnet workload install maui-android maui-tizen wasm-tools-net9
+      run: dotnet workload install maui-android
     
     - name: Restore dependencies
       run: dotnet restore
@@ -41,6 +47,9 @@ jobs:
   code-quality:
     name: Code Quality Analysis
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
     
     steps:
     - uses: actions/checkout@v4
@@ -53,7 +62,7 @@ jobs:
         dotnet-version: '9.0.x'
     
     - name: Install MAUI Workloads
-      run: dotnet workload install maui-android maui-tizen wasm-tools-net9
+      run: dotnet workload install maui-android
     
     - name: Restore dependencies
       run: dotnet restore
@@ -79,6 +88,8 @@ jobs:
     name: Build Android
     runs-on: ubuntu-latest
     needs: build-and-test
+    permissions:
+      contents: read
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
     
     steps:
@@ -110,6 +121,9 @@ jobs:
   dependency-review:
     name: Dependency Review
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     if: github.event_name == 'pull_request'
     
     steps:
