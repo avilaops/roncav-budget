@@ -303,8 +303,6 @@ jobs:
                       ### 📚 Documentação
                       
                       Acesse a documentação completa em: https://avilaops.github.io/roncav-budget
-                      
-                      Documentação: https://avilaops.github.io/roncav-budget
                   draft: false
                   prerelease: false
               env:
