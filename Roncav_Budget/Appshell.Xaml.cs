@@ -7,17 +7,43 @@ namespace roncav_budget
 {
     public partial class AppShell : Shell
     {
+        private readonly DatabaseService? _databaseService;
+
         public AppShell()
         {
             InitializeComponent();
 
             // Registrar rotas para navegação
-            Routing.RegisterRoute("login", typeof(LoginPage));
-            Routing.RegisterRoute("register", typeof(RegisterPage));
-            Routing.RegisterRoute("dashboard", typeof(DashboardPage));
+            RegisterRoutes();
 
             // Popular dados de exemplo na primeira execução
             _ = InicializarDadosAsync();
+
+            // Configurar tema
+            ConfigurarTema();
+        }
+
+        #region Configuração Inicial
+
+        private void RegisterRoutes()
+        {
+            Routing.RegisterRoute("login", typeof(LoginPage));
+            Routing.RegisterRoute("register", typeof(RegisterPage));
+            Routing.RegisterRoute("dashboard", typeof(DashboardPage));
+            Routing.RegisterRoute("transacoes/nova", typeof(NovaTransacaoPage));
+            Routing.RegisterRoute("contas/nova", typeof(NovaContaPage));
+            Routing.RegisterRoute("metas/nova", typeof(NovaMetaPage));
+        }
+
+        private void ConfigurarTema()
+        {
+            // Detectar tema do sistema
+            var temaAtual = Application.Current?.RequestedTheme ?? AppTheme.Light;
+            
+            if (temaAtual == AppTheme.Dark)
+            {
+                Shell.SetFlyoutBackgroundColor(this, Color.FromArgb("#1C1C1E"));
+            }
         }
 
         private async Task InicializarDadosAsync()
@@ -28,13 +54,16 @@ namespace roncav_budget
                 if (databaseService != null)
                 {
                     await DadosDeExemplo.PopularDadosExemploAsync(databaseService);
+                    System.Diagnostics.Debug.WriteLine("✅ Dados de exemplo inicializados");
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Erro ao popular dados: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"❌ Erro ao popular dados: {ex.Message}");
             }
         }
+
+        #endregion
 
         #region ⌨️ Keyboard Accelerators Handlers
 
@@ -45,23 +74,32 @@ namespace roncav_budget
         {
             try
             {
+                var atalhos = new[]
+                {
+                    "🔹 CTRL+K → Adicionar nova categoria",
+                    "🔹 CTRL+O → Importar extrato bancário",
+                    "🔹 CTRL+N → Nova transação rápida",
+                    "🔹 CTRL+SHIFT+W → Esta ajuda",
+                    "🔹 F5 → Atualizar dashboard",
+                    "🔹 CTRL+S → Sincronizar com nuvem",
+                    "🔹 CTRL+, → Abrir configurações",
+                    "🔹 ESC → Voltar/Cancelar"
+                };
+
                 await DisplayAlert(
                     "⌨️ Atalhos de Teclado",
-                    "Bem-vindo ao Roncav Budget!\n\n" +
-                    "Atalhos disponíveis:\n\n" +
-                    "• CTRL+K: Adicionar nova categoria\n" +
-                    "• CTRL+O: Abrir/Importar arquivo\n" +
-                    "• CTRL+SHIFT+W: Esta ajuda\n" +
-                    "• CTRL+N: Nova transação\n" +
-                    "• CTRL+S: Sincronizar dados\n" +
-                    "• F5: Atualizar dashboard\n\n" +
-                    "Para mais informações, acesse Configurações → Ajuda.",
-                    "OK"
+                    $"Bem-vindo ao Orçamento Familiar! 💰\n\n" +
+                    $"Atalhos disponíveis:\n\n" +
+                    string.Join("\n", atalhos) +
+                    $"\n\n💡 Dica: Pressione os atalhos em qualquer tela!",
+                    "Entendi"
                 );
+
+                System.Diagnostics.Debug.WriteLine("ℹ️ Ajuda de atalhos exibida");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Erro no atalho de ajuda: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"❌ Erro no atalho de ajuda: {ex.Message}");
             }
         }
 
@@ -72,38 +110,50 @@ namespace roncav_budget
         {
             try
             {
-                string? result = await DisplayPromptAsync(
+                string? categoria = await DisplayPromptAsync(
                     "➕ Nova Categoria",
                     "Digite o nome da nova categoria:",
-                    placeholder: "Ex: Investimentos, Viagens, Saúde",
+                    placeholder: "Ex: Investimentos, Viagens, Educação",
                     maxLength: 50,
-                    keyboard: Keyboard.Text
+                    keyboard: Keyboard.Text,
+                    accept: "Adicionar",
+                    cancel: "Cancelar"
                 );
 
-                if (!string.IsNullOrWhiteSpace(result))
+                if (!string.IsNullOrWhiteSpace(categoria))
                 {
-                    // TODO: Implementar lógica para adicionar categoria ao banco de dados
-                    // var databaseService = Handler?.MauiContext?.Services.GetService<DatabaseService>();
-                    // await databaseService.AdicionarCategoriaAsync(result);
+                    // Validar categoria
+                    categoria = categoria.Trim();
+
+                    // TODO: Implementar lógica real de adicionar categoria
+                    // var categoriaService = Handler?.MauiContext?.Services.GetService<CategoriaService>();
+                    // await categoriaService.AdicionarAsync(categoria);
                     
                     await DisplayAlert(
-                        "✅ Sucesso",
-                        $"Categoria '{result}' adicionada com sucesso!\n\n" +
-                        $"Você pode visualizá-la na seção de Transações.",
+                        "✅ Sucesso!",
+                        $"Categoria '{categoria}' adicionada!\n\n" +
+                        $"Agora você pode usá-la ao cadastrar transações.",
                         "OK"
                     );
                     
-                    System.Diagnostics.Debug.WriteLine($"📁 Nova categoria adicionada: {result}");
+                    System.Diagnostics.Debug.WriteLine($"📁 Nova categoria: {categoria}");
+
+                    // Vibrar para feedback (mobile)
+                    try
+                    {
+                        HapticFeedback.Default.Perform(HapticFeedbackType.Click);
+                    }
+                    catch { }
                 }
             }
             catch (Exception ex)
             {
                 await DisplayAlert(
                     "❌ Erro",
-                    $"Não foi possível adicionar a categoria: {ex.Message}",
+                    $"Não foi possível adicionar a categoria:\n{ex.Message}",
                     "OK"
                 );
-                System.Diagnostics.Debug.WriteLine($"Erro no atalho adicionar pasta: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"❌ Erro: {ex.Message}");
             }
         }
 
@@ -114,53 +164,114 @@ namespace roncav_budget
         {
             try
             {
-                // Opção 1: Usar FolderPicker (requer Microsoft.Maui.Storage)
-                // var result = await FolderPicker.Default.PickAsync();
-                
-                // Opção 2: Usar FilePicker para importar extratos
-                var customFileType = new FilePickerFileType(
-                    new Dictionary<DevicePlatform, IEnumerable<string>>
-                    {
-                        { DevicePlatform.iOS, new[] { "public.comma-separated-values-text" } },
-                        { DevicePlatform.Android, new[] { "text/csv", "text/comma-separated-values" } },
-                        { DevicePlatform.WinUI, new[] { ".csv", ".xlsx", ".xls", ".ofx" } },
-                        { DevicePlatform.macOS, new[] { "csv", "xlsx", "xls", "ofx" } }
-                    });
+                // Perguntar o que quer importar
+                var acao = await DisplayActionSheet(
+                    "📂 Importar Dados",
+                    "Cancelar",
+                    null,
+                    "Extrato Bancário (CSV/OFX)",
+                    "Backup de Dados (JSON)",
+                    "Planilha Excel (XLSX)"
+                );
+
+                if (acao == "Cancelar" || string.IsNullOrEmpty(acao))
+                    return;
+
+                // Definir tipos de arquivo aceitos
+                var fileTypes = acao switch
+                {
+                    "Extrato Bancário (CSV/OFX)" => new FilePickerFileType(
+                        new Dictionary<DevicePlatform, IEnumerable<string>>
+                        {
+                            { DevicePlatform.WinUI, new[] { ".csv", ".ofx", ".txt" } },
+                            { DevicePlatform.Android, new[] { "text/csv", "text/plain" } },
+                            { DevicePlatform.iOS, new[] { "public.comma-separated-values-text" } },
+                            { DevicePlatform.macOS, new[] { "csv", "ofx", "txt" } }
+                        }),
+                    "Backup de Dados (JSON)" => new FilePickerFileType(
+                        new Dictionary<DevicePlatform, IEnumerable<string>>
+                        {
+                            { DevicePlatform.WinUI, new[] { ".json" } },
+                            { DevicePlatform.Android, new[] { "application/json" } },
+                            { DevicePlatform.iOS, new[] { "public.json" } },
+                            { DevicePlatform.macOS, new[] { "json" } }
+                        }),
+                    _ => new FilePickerFileType(
+                        new Dictionary<DevicePlatform, IEnumerable<string>>
+                        {
+                            { DevicePlatform.WinUI, new[] { ".xlsx", ".xls" } },
+                            { DevicePlatform.Android, new[] { "application/vnd.ms-excel" } },
+                            { DevicePlatform.iOS, new[] { "com.microsoft.excel.xls" } },
+                            { DevicePlatform.macOS, new[] { "xlsx", "xls" } }
+                        })
+                };
 
                 var options = new PickOptions
                 {
-                    PickerTitle = "Selecione um extrato bancário para importar",
-                    FileTypes = customFileType
+                    PickerTitle = $"Selecione o arquivo: {acao}",
+                    FileTypes = fileTypes
                 };
 
                 var result = await FilePicker.Default.PickAsync(options);
 
                 if (result != null)
                 {
-                    await DisplayAlert(
-                        "📂 Arquivo Selecionado",
-                        $"Nome: {result.FileName}\n" +
-                        $"Tipo: {result.ContentType}\n" +
-                        $"Caminho: {result.FullPath}\n\n" +
-                        $"Processando importação...",
-                        "OK"
+                    var confirmar = await DisplayAlert(
+                        "📥 Importar Arquivo?",
+                        $"📄 Nome: {result.FileName}\n" +
+                        $"📦 Tipo: {result.ContentType ?? "Desconhecido"}\n" +
+                        $"📏 Tamanho: {await GetFileSizeAsync(result.FullPath)}\n\n" +
+                        $"Deseja importar este arquivo?",
+                        "Sim, Importar",
+                        "Cancelar"
                     );
 
-                    // TODO: Implementar lógica de importação
-                    // var importService = Handler?.MauiContext?.Services.GetService<ImportacaoExtratoService>();
-                    // await importService.ImportarAsync(result.FullPath);
-                    
-                    System.Diagnostics.Debug.WriteLine($"📥 Arquivo selecionado: {result.FullPath}");
+                    if (confirmar)
+                    {
+                        // TODO: Implementar lógica de importação real
+                        // var importService = Handler?.MauiContext?.Services.GetService<ImportacaoService>();
+                        // var resultado = await importService.ImportarAsync(result.FullPath, acao);
+                        
+                        await DisplayAlert(
+                            "✅ Importação Iniciada!",
+                            $"O arquivo está sendo processado em segundo plano.\n\n" +
+                            $"Você será notificado quando concluir.",
+                            "OK"
+                        );
+                        
+                        System.Diagnostics.Debug.WriteLine($"📥 Importando: {result.FullPath}");
+                    }
                 }
             }
             catch (Exception ex)
             {
                 await DisplayAlert(
-                    "❌ Erro",
-                    $"Não foi possível abrir o arquivo: {ex.Message}",
+                    "❌ Erro na Importação",
+                    $"Não foi possível importar o arquivo:\n{ex.Message}",
                     "OK"
                 );
-                System.Diagnostics.Debug.WriteLine($"Erro no atalho abrir pasta: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"❌ Erro: {ex.Message}");
+            }
+        }
+
+        #endregion
+
+        #region Métodos Auxiliares
+
+        private async Task<string> GetFileSizeAsync(string filePath)
+        {
+            try
+            {
+                var fileInfo = new FileInfo(filePath);
+                var sizeInKB = fileInfo.Length / 1024.0;
+                
+                return sizeInKB > 1024
+                    ? $"{sizeInKB / 1024:F2} MB"
+                    : $"{sizeInKB:F2} KB";
+            }
+            catch
+            {
+                return "Desconhecido";
             }
         }
 

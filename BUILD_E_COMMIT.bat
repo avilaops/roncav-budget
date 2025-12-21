@@ -89,9 +89,9 @@ if not exist ".git" (
     git init
     
     if defined GITHUB_TOKEN (
-        git remote add origin https://%GITHUB_TOKEN%@github.com/avilaops/roncav-budget.git
+        git remote add origin https://%GITHUB_TOKEN%@github.com/avilaops/orcamento.git
     ) else (
-        git remote add origin https://github.com/avilaops/roncav-budget.git
+        git remote add origin https://github.com/avilaops/orcamento.git
     )
     
     echo ✅ Repositório inicializado!
@@ -110,7 +110,7 @@ if defined GITHUB_USERNAME (
 if defined GITHUB_EMAIL (
     git config user.email "%GITHUB_EMAIL%"
 ) else (
-    git config user.email "contato@avila.inc"
+    git config user.email "contato@orcamento.avila.inc"
 )
 
 git config credential.helper wincred
@@ -157,7 +157,7 @@ echo [6/6] 📤 Push para GitHub...
 
 REM Atualizar remote com token se disponível
 if defined GITHUB_TOKEN (
-    git remote set-url origin https://%GITHUB_TOKEN%@github.com/avilaops/roncav-budget.git
+    git remote set-url origin https://%GITHUB_TOKEN%@github.com/avilaops/orcamento.git
 )
 
 git push origin %CURRENT_BRANCH%
@@ -195,15 +195,12 @@ echo 📊 Último commit:
 git log --oneline -1
 echo.
 echo 🌐 GitHub:
-echo    https://github.com/avilaops/roncav-budget
+echo    https://github.com/avilaops/orcamento
 echo.
 echo 📁 Branch: %CURRENT_BRANCH%
 echo 📅 Data: %mydate% %mytime%
 echo.
 echo ============================================================
-echo.
-echo 💡 DICA: Execute este script sempre que fizer alterações!
-echo.
 pause
 exit /b 0
 

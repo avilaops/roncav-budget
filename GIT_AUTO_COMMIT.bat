@@ -5,7 +5,7 @@ echo 🚀 GIT AUTO COMMIT - Orçamento Familiar
 echo ============================================================
 echo.
 echo Desenvolvido por: Nícolas Ávila
-echo Repositório: https://github.com/avilaops/roncav-budget
+echo Repositório: https://github.com/avilaops/orcamento
 echo.
 
 cd /d "%~dp0"
@@ -16,7 +16,7 @@ if not exist ".git" (
     echo.
     echo Execute primeiro:
     echo   git init
-    echo   git remote add origin https://github.com/avilaops/roncav-budget
+    echo   git remote add origin https://github.com/avilaops/orcamento
     pause
     exit /b 1
 )
@@ -92,7 +92,7 @@ echo 📊 Resumo:
 git log --oneline -1
 echo.
 echo 🌐 Repositório atualizado em:
-echo    https://github.com/avilaops/roncav-budget
+echo    https://github.com/avilaops/orcamento
 echo.
 echo ============================================================
 pause

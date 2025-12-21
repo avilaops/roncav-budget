@@ -11,7 +11,7 @@ echo.
 cd /d "%~dp0"
 
 REM ============================================================
-REM VERIFICAR CREDENCIAIS
+REM VERIFICAR CREDENCIAIS NAS VARIÁVEIS DE AMBIENTE
 REM ============================================================
 
 if "%GITHUB_TOKEN%"=="" (
@@ -29,7 +29,7 @@ if "%GITHUB_TOKEN%"=="" (
     echo.
     set USE_TOKEN=0
 ) else (
-    echo ✅ GITHUB_TOKEN encontrado!
+    echo ✅ GITHUB_TOKEN encontrado! (primeiros 8 chars: $($githubToken.Substring(0,8))...)"
     echo 🔐 Usando autenticação automática
     echo.
     set USE_TOKEN=1
@@ -40,17 +40,13 @@ REM VERIFICAR REPOSITÓRIO
 REM ============================================================
 
 if not exist ".git" (
-    echo ❌ ERRO: Não é um repositório Git!
-    echo.
-    echo 🔧 Inicializando repositório...
+    echo 🔧 Inicializando repositório Git...
     git init
     
     if "%USE_TOKEN%"=="1" (
-        echo 🔐 Configurando remote com token...
-        git remote add origin https://%GITHUB_TOKEN%@github.com/avilaops/roncav-budget.git
+        git remote add origin https://%GITHUB_TOKEN%@github.com/avilaops/orcamento.git
     ) else (
-        echo 🔗 Configurando remote...
-        git remote add origin https://github.com/avilaops/roncav-budget.git
+        git remote add origin https://github.com/avilaops/orcamento.git
     )
     
     echo ✅ Repositório inicializado!
@@ -166,7 +162,7 @@ echo.
 REM Se usar token, atualizar URL do remote
 if "%USE_TOKEN%"=="1" (
     echo 🔐 Atualizando remote com token...
-    git remote set-url origin https://%GITHUB_TOKEN%@github.com/avilaops/roncav-budget.git
+    git remote set-url origin https://%GITHUB_TOKEN%@github.com/avilaops/orcamento.git
     echo ✅ Remote configurado com autenticação!
     echo.
 )
@@ -211,7 +207,7 @@ echo 📊 Último commit:
 git log --oneline -1
 echo.
 echo 🌐 Veja no GitHub:
-echo    https://github.com/avilaops/roncav-budget
+echo    https://github.com/avilaops/orcamento
 echo.
 echo 📁 Branch: %CURRENT_BRANCH%
 echo 📅 Data: %mydate% %mytime%
@@ -244,7 +240,7 @@ echo    - Digite usuário e senha quando solicitado
 echo.
 echo 3️⃣  VERIFICAR PERMISSÕES:
 echo    - Verifique se tem acesso ao repositório
-echo    - URL: https://github.com/avilaops/roncav-budget
+echo    - URL: https://github.com/avilaops/orcamento
 echo.
 echo 4️⃣  FORÇAR PUSH (USE COM CUIDADO):
 echo    - Execute: git push origin %CURRENT_BRANCH% --force

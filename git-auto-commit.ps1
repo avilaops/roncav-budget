@@ -67,7 +67,7 @@ function Write-Info {
 Write-Header "🚀 GIT AUTO COMMIT - Orçamento Familiar"
 
 Write-Info "Desenvolvido por: Nícolas Ávila"
-Write-Info "Repositório: https://github.com/avilaops/roncav-budget"
+Write-Info "Repositório: https://github.com/avilaops/orcamento"
 Write-Host ""
 
 # Verificar se está em um repositório Git
@@ -166,11 +166,11 @@ if (-not $remoteUrl) {
     Write-Info "Remote não configurado. Adicionando..."
     
     if ($useToken) {
-        $url = "https://$($githubToken)@github.com/avilaops/roncav-budget.git"
+        $url = "https://$($githubToken)@github.com/avilaops/orcamento.git"
         git remote add origin $url
         Write-Success "Remote configurado com token!"
     } else {
-        git remote add origin "https://github.com/avilaops/roncav-budget.git"
+        git remote add origin "https://github.com/avilaops/orcamento.git"
         Write-Success "Remote configurado!"
     }
 } else {
@@ -178,7 +178,7 @@ if (-not $remoteUrl) {
     
     # Atualizar URL se tiver token
     if ($useToken -and $remoteUrl -notlike "*$githubToken*") {
-        $url = "https://$($githubToken)@github.com/avilaops/roncav-budget.git"
+        $url = "https://$($githubToken)@github.com/avilaops/orcamento.git"
         git remote set-url origin $url
         Write-Success "Remote atualizado com token!"
     }
@@ -305,7 +305,7 @@ git log --oneline -1
 
 Write-Host ""
 Write-ColorOutput Green "🌐 Veja no GitHub:"
-Write-ColorOutput Green "   https://github.com/avilaops/roncav-budget"
+Write-ColorOutput Green "   https://github.com/avilaops/orcamento"
 
 Write-Host ""
 Write-Info "📁 Branch: $currentBranch"
