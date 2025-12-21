@@ -84,8 +84,7 @@ public partial class NovaContaViewModel : ObservableObject
                 Cor = CorSelecionada,
                 Ativa = Ativa,
                 IncluirNoTotal = IncluirNoTotal,
-                DataCriacao = DateTime.Now,
-                UltimaAtualizacao = DateTime.Now
+                DataCriacao = DateTime.Now
             };
 
             await _databaseService.SalvarContaAsync(novaConta);

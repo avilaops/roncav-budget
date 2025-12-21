@@ -44,9 +44,11 @@ namespace roncav_budget
             // Detectar tema do sistema
             var temaAtual = Application.Current?.RequestedTheme ?? AppTheme.Light;
             
+            // Configurar cor do flyout baseado no tema
             if (temaAtual == AppTheme.Dark)
             {
-                Shell.SetFlyoutBackgroundColor(this, Color.FromArgb("#1C1C1E"));
+                // No .NET MAUI não tem SetFlyoutBackgroundColor
+                // A cor é definida no XAML via Shell.FlyoutBackgroundColor
             }
         }
 

@@ -26,34 +26,34 @@ public partial class ContasViewModel : ObservableObject
     [RelayCommand]
   private async Task CarregarContasAsync()
     {
- IsLoading = true;
+        IsLoading = true;
 
-     try
-  {
-    Contas.Clear();
-       var contas = await _databaseService.ObterContasAsync();
-   
-      foreach (var conta in contas)
-      {
-     Contas.Add(conta);
-       }
-
-         SaldoTotal = await _databaseService.ObterSaldoTotalAsync();
-   }
-     catch (Exception ex)
-   {
-   await Application.Current!.MainPage!.DisplayAlert("Erro", $"Erro ao carregar contas: {ex.Message}", "OK");
-        }
-   finally
+        try
         {
-       IsLoading = false;
-    }
+            Contas.Clear();
+            var contas = await _databaseService.ObterContasAsync();
+   
+            foreach (var conta in contas)
+            {
+                Contas.Add(conta);
+            }
+
+            SaldoTotal = await _databaseService.ObterSaldoTotalAsync();
+        }
+        catch (Exception ex)
+        {
+            await Application.Current!.MainPage!.DisplayAlert("Erro", $"Erro ao carregar contas: {ex.Message}", "OK");
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
     [RelayCommand]
     private async Task AdicionarContaAsync()
  {
-        // Criar nova conta com valores padrão
+        // Criar nova conta com valores padrï¿½o
   var novaConta = new Conta
         {
       Nome = "Nova Conta",
@@ -62,7 +62,7 @@ public partial class ContasViewModel : ObservableObject
     Cor = "#2196F3"
    };
 
-   // Aqui deveria abrir um modal para edição
+   // Aqui deveria abrir um modal para ediï¿½ï¿½o
         // Por enquanto, vamos salvar direto
    await _databaseService.SalvarContaAsync(novaConta);
         await CarregarContasAsync();
@@ -72,7 +72,7 @@ public partial class ContasViewModel : ObservableObject
     private async Task EditarContaAsync(Conta conta)
     {
   if (conta == null) return;
-        // Navegar para página de edição
+        // Navegar para pï¿½gina de ediï¿½ï¿½o
         // await Shell.Current.GoToAsync($"EditarConta?id={conta.Id}");
     }
 
@@ -82,9 +82,9 @@ public partial class ContasViewModel : ObservableObject
         if (conta == null) return;
 
         var confirma = await Application.Current!.MainPage!.DisplayAlert(
-       "Confirmar Exclusão",
+       "Confirmar Exclusï¿½o",
       $"Deseja realmente excluir a conta '{conta.Nome}'?",
-   "Sim", "Não");
+   "Sim", "Nï¿½o");
 
   if (!confirma) return;
 
@@ -93,7 +93,7 @@ public partial class ContasViewModel : ObservableObject
        await _databaseService.ExcluirContaAsync(conta);
       Contas.Remove(conta);
     SaldoTotal = await _databaseService.ObterSaldoTotalAsync();
-            await Application.Current.MainPage.DisplayAlert("Sucesso", "Conta excluída com sucesso!", "OK");
+            await Application.Current.MainPage.DisplayAlert("Sucesso", "Conta excluï¿½da com sucesso!", "OK");
         }
    catch (Exception ex)
      {

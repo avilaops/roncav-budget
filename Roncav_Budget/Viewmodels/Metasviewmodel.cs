@@ -62,7 +62,7 @@ else
         var novaMeta = new Meta
    {
          Nome = "Nova Meta",
-   Descricao = "Descrição da meta",
+   Descricao = "Descriï¿½ï¿½o da meta",
   ValorObjetivo = 5000,
   ValorAtual = 0,
    DataInicio = DateTime.Today,
@@ -88,8 +88,8 @@ else
         {
   meta.Concluida = true;
          meta.DataConclusao = DateTime.Now;
-      await Application.Current!.MainPage!.DisplayAlert("?? Parabéns!", 
-         $"Você concluiu a meta '{meta.Nome}'!", "OK");
+      await Application.Current!.MainPage!.DisplayAlert("?? Parabï¿½ns!", 
+         $"Vocï¿½ concluiu a meta '{meta.Nome}'!", "OK");
  }
 
         await _databaseService.SalvarMetaAsync(meta);
@@ -102,9 +102,9 @@ else
      if (meta == null) return;
 
         var confirma = await Application.Current!.MainPage!.DisplayAlert(
-      "Confirmar Exclusão",
+      "Confirmar Exclusï¿½o",
     $"Deseja realmente excluir a meta '{meta.Nome}'?",
-    "Sim", "Não");
+    "Sim", "Nï¿½o");
 
       if (!confirma) return;
 
@@ -114,7 +114,7 @@ else
       Metas.Remove(meta);
        MetasAtivas.Remove(meta);
         MetasConcluidas.Remove(meta);
-            await Application.Current.MainPage.DisplayAlert("Sucesso", "Meta excluída com sucesso!", "OK");
+            await Application.Current.MainPage.DisplayAlert("Sucesso", "Meta excluï¿½da com sucesso!", "OK");
         }
         catch (Exception ex)
 {

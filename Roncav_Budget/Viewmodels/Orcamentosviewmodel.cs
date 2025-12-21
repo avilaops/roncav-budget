@@ -61,7 +61,7 @@ private async Task CarregarOrcamentosAsync()
         }
         catch (Exception ex)
   {
-   await Application.Current!.MainPage!.DisplayAlert("Erro", $"Erro ao carregar orçamentos: {ex.Message}", "OK");
+   await Application.Current!.MainPage!.DisplayAlert("Erro", $"Erro ao carregar orï¿½amentos: {ex.Message}", "OK");
     }
         finally
      {
@@ -83,7 +83,7 @@ private async Task CarregarOrcamentosAsync()
     private async Task AdicionarOrcamentoAsync()
   {
  // Aqui deveria abrir um modal para selecionar categoria e valor
-   // Por simplicidade, vamos criar um orçamento de exemplo
+   // Por simplicidade, vamos criar um orï¿½amento de exemplo
         if (CategoriasDisponiveis.Count > 0)
   {
    var categoria = CategoriasDisponiveis[0];
