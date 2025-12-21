@@ -55,8 +55,41 @@ roncav-budget/
 - [ ] Modo multiusuário para famílias e notificações push.
 - [ ] IA para previsão de fluxo de caixa e metas.
 
+## 📦 Downloads e Deploy
+
+### Releases Automáticos
+
+O projeto utiliza GitHub Actions para gerar builds automáticos e releases:
+
+**Baixar versões compiladas:**
+- 🔗 [Releases](https://github.com/avilaops/roncav-budget/releases/latest) - Versões oficiais
+- 🔗 [Actions](https://github.com/avilaops/roncav-budget/actions) - Builds de desenvolvimento
+
+**Plataformas disponíveis:**
+- ✅ **Windows (WinUI 3)** - Arquivo ZIP com executável
+- ✅ **Android** - APK para instalação direta
+
+### Deployment Automático
+
+Ao criar uma tag de versão, o GitHub Actions automaticamente:
+1. Compila para Windows e Android
+2. Cria uma release no GitHub
+3. Anexa os binários compilados
+4. Publica a documentação no GitHub Pages
+
+```bash
+# Criar nova release
+git tag -a v1.0.0 -m "Release v1.0.0"
+git push origin main --tags
+```
+
+### Documentação Online
+
+Acesse a documentação completa do projeto:
+- 📚 [https://avilaops.github.io/roncav-budget](https://avilaops.github.io/roncav-budget)
+
 ## Responsável
 - Sigma Squad — Finanças & Pagamentos (com apoio Lumen)
 
 ## Última atualização
-- 2025-11-11
+- 2025-12-06
