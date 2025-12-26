@@ -1,0 +1,47 @@
+name: Deploy Django to Railway
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'django_app/**'
+      - '.github/workflows/deploy-railway.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+      
+      - name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          cd django_app
+          railway up --service orcamento-django
+      
+      - name: Run Database Migrations
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          railway run --service orcamento-django python manage.py migrate
+      
+      - name: Collect Static Files
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          railway run --service orcamento-django python manage.py collectstatic --noinput
+      
+      - name: Deployment Status
+        if: success()
+        run: |
+          echo "✅ Deployment successful!"
+          echo "🚀 Application deployed to Railway"
+          echo "📊 Database migrations applied"
+          echo "📁 Static files collected"

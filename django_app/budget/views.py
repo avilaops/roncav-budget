@@ -1139,7 +1139,7 @@ def registro(request):
 
     if request.method == 'POST':
         from django.contrib.auth.models import User
-        from .models_profile import UserProfile
+        from .models import UserProfile
 
         username = request.POST.get('username')
         email = request.POST.get('email')
