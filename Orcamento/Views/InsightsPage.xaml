@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Orcamento.ViewModels"
+             x:Class="Orcamento.Views.InsightsPage"
+             x:DataType="vm:InsightsViewModel"
+             Title="Análise Financeira"
+             BackgroundColor="#F5F5F7">
+
+    <RefreshView IsRefreshing="{Binding IsLoading}"
+                 Command="{Binding CarregarInsightsCommand}"
+                 RefreshColor="#667eea">
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="24">
+
+                <!-- Header -->
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="📊 Análise Inteligente"
+                           FontSize="32"
+                           FontAttributes="Bold"
+                           TextColor="#1C1C1E"/>
+                    <Label Text="Insights sobre suas finanças"
+                           FontSize="16"
+                           TextColor="#8E8E93"/>
+                </VerticalStackLayout>
+
+                <!-- Card: Score de Saúde Financeira -->
+                <Frame Padding="24"
+                       CornerRadius="20"
+                       HasShadow="True"
+                       BackgroundColor="White">
+                    <VerticalStackLayout Spacing="16">
+                        <Label Text="💪 Saúde Financeira"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="#1C1C1E"/>
+
+                        <!-- Circular Progress -->
+                        <Grid HeightRequest="150" WidthRequest="150" HorizontalOptions="Center">
+                            <!-- Background Circle -->
+                            <Ellipse Fill="#F2F2F7"
+                                    WidthRequest="150"
+                                    HeightRequest="150"/>
+
+                            <!-- Score Circle -->
+                            <Ellipse Fill="{Binding CorScore}"
+                                    WidthRequest="130"
+                                    HeightRequest="130"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    Opacity="0.2"/>
+
+                            <!-- Score Text -->
+                            <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                <Label Text="{Binding ScorePercentual}"
+                                       FontSize="42"
+                                       FontAttributes="Bold"
+                                       TextColor="{Binding CorScore}"
+                                       HorizontalOptions="Center"/>
+                                <Label Text="Score"
+                                       FontSize="14"
+                                       TextColor="#8E8E93"
+                                       HorizontalOptions="Center"/>
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <Label Text="{Binding MensagemScore}"
+                               FontSize="16"
+                               TextColor="#1C1C1E"
+                               HorizontalTextAlignment="Center"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Card: Projeção de Gastos -->
+                <Frame Padding="20"
+                       CornerRadius="16"
+                       HasShadow="True"
+                       BackgroundColor="White">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="📈 Projeção do Mês"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="#1C1C1E"/>
+                        <Label Text="{Binding ProjecaoGastosFormatado}"
+                               FontSize="32"
+                               FontAttributes="Bold"
+                               TextColor="#FF9500"/>
+                        <Label Text="Estimativa de gastos até o final do mês"
+                               FontSize="13"
+                               TextColor="#8E8E93"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Card: Categoria com Maior Gasto -->
+                <Frame Padding="20"
+                       CornerRadius="16"
+                       HasShadow="True"
+                       BackgroundColor="White"
+                       IsVisible="{Binding ValorMaiorGasto, Converter={StaticResource IsGreaterThanZeroConverter}}">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="🔥 Maior Gasto"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="#1C1C1E"/>
+                        <Label Text="{Binding CategoriaComMaiorGasto}"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="#667eea"/>
+                        <Label Text="{Binding ValorMaiorGastoFormatado}"
+                               FontSize="24"
+                               FontAttributes="Bold"
+                               TextColor="#FF3B30"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Alertas -->
+                <VerticalStackLayout Spacing="12"
+                                    IsVisible="{Binding Alertas.Count, Converter={StaticResource IsGreaterThanZeroConverter}}">
+                    <Label Text="⚠️ Alertas"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#1C1C1E"/>
+
+                    <CollectionView ItemsSource="{Binding Alertas}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <Frame Padding="16"
+                                       CornerRadius="12"
+                                       BackgroundColor="#FFF3E0"
+                                       Margin="0,0,0,8"
+                                       HasShadow="False">
+                                    <Label Text="{Binding .}"
+                                           FontSize="14"
+                                           TextColor="#E65100"/>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+                <!-- Dicas Inteligentes -->
+                <VerticalStackLayout Spacing="12"
+                                    IsVisible="{Binding Dicas.Count, Converter={StaticResource IsGreaterThanZeroConverter}}">
+                    <Label Text="💡 Dicas Personalizadas"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#1C1C1E"/>
+
+                    <CollectionView ItemsSource="{Binding Dicas}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <Frame Padding="16"
+                                       CornerRadius="12"
+                                       BackgroundColor="#E8F5E9"
+                                       Margin="0,0,0,8"
+                                       HasShadow="False">
+                                    <Label Text="{Binding .}"
+                                           FontSize="14"
+                                           TextColor="#2E7D32"/>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

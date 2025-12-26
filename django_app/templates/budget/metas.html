@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block title %}Metas - Budget{% endblock %}
+
+{% block content %}
+<h1 style="color: white; margin-bottom: 2rem; font-size: 2.5rem;">🎯 Metas Financeiras</h1>
+
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2>Metas Ativas</h2>
+        <a href="{% url 'meta_criar' %}" class="btn btn-primary" style="text-decoration: none;">+ Nova Meta</a>
+    </div>
+
+    {% if metas_ativas %}
+    <div style="display: grid; gap: 2rem; margin-bottom: 3rem;">
+        {% for meta in metas_ativas %}
+        <div style="background: linear-gradient(135deg, #667eea22 0%, #764ba244 100%);
+                    padding: 2rem; border-radius: 12px; border: 2px solid #667eea;">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.5rem;">
+                <div>
+                    <h3 style="font-size: 1.3rem; color: #333; margin-bottom: 0.5rem;">🎯 {{ meta.nome }}</h3>
+                    <p style="color: #666;">
+                        R$ {{ meta.valor_atual|floatformat:2 }} de R$ {{ meta.valor_alvo|floatformat:2 }}
+                    </p>
+                </div>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <span class="badge" style="background: #667eea; color: white; font-size: 1rem;">
+                        {{ meta.percentual_completo }}%
+                    </span>
+                    <a href="{% url 'meta_editar' meta.id %}" class="btn" style="padding: 0.25rem 0.75rem; background: white; text-decoration: none;">✏️</a>
+                    <form method="post" action="{% url 'meta_deletar' meta.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn" style="padding: 0.25rem 0.75rem; background: #fee2e2;"
+                                onclick="return confirm('Tem certeza que deseja deletar esta meta?')">🗑️</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="progress-bar" style="height: 16px; margin-bottom: 1rem;">
+                <div class="progress-fill"
+                     style="width: {{ meta.percentual_completo }}%;
+                            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);">
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; color: #666;">
+                <span>
+                    📅 Início: {{ meta.data_inicio|date:"d/m/Y" }}
+                </span>
+                <span>
+                    🎯 Meta: {{ meta.data_alvo|date:"d/m/Y" }}
+                </span>
+                <span>
+                    💰 Faltam: R$ {{ meta.valor_alvo|subtract:meta.valor_atual|floatformat:2 }}
+                </span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align: center; padding: 3rem; color: #999; margin-bottom: 3rem;">
+        <p style="font-size: 1.2rem; margin-bottom: 1rem;">🎯</p>
+        <p>Nenhuma meta ativa no momento.</p>
+        <p style="margin-top: 0.5rem;">Defina seus objetivos financeiros!</p>
+    </div>
+    {% endif %}
+</div>
+
+{% if metas_concluidas %}
+<div class="card">
+    <h2 style="margin-bottom: 1.5rem;">✅ Metas Concluídas</h2>
+
+    <div style="display: grid; gap: 1.5rem;">
+        {% for meta in metas_concluidas %}
+        <div style="background: #d1fae522; padding: 1.5rem; border-radius: 12px; border: 2px solid #10b981;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3 style="font-size: 1.1rem; color: #333;">✅ {{ meta.nome }}</h3>
+                    <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">
+                        R$ {{ meta.valor_alvo|floatformat:2 }} • Concluída
+                    </p>
+                </div>
+                <span class="badge badge-success" style="font-size: 1.5rem;">🎉</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

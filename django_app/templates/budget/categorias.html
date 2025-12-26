@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Categorias - Budget{% endblock %}
+
+{% block content %}
+<h1 style="color: white; margin-bottom: 2rem; font-size: 2.5rem;">🏷️ Categorias</h1>
+
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2>Minhas Categorias</h2>
+        <a href="{% url 'categoria_criar' %}" class="btn btn-primary" style="text-decoration: none;">+ Nova Categoria</a>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
+        {% for categoria in categorias %}
+        <div style="background: linear-gradient(135deg, {{ categoria.cor }}22 0%, {{ categoria.cor }}44 100%);
+                    padding: 1.5rem; border-radius: 12px; border: 2px solid {{ categoria.cor }};">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <span style="font-size: 2.5rem;">{{ categoria.icone }}</span>
+                    <div>
+                        <h3 style="color: #333; margin-bottom: 0.25rem;">{{ categoria.nome }}</h3>
+                        <span class="badge" style="background: {{ categoria.cor }}; color: white; font-size: 0.85rem;">
+                            {{ categoria.get_tipo_display }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #999;">
+            Nenhuma categoria cadastrada. Adicione sua primeira categoria!
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="card" style="background: #f0f9ff; border: 2px solid #3b82f6;">
+    <h3 style="color: #1e40af; margin-bottom: 1rem;">💡 Dica</h3>
+    <p style="color: #1e3a8a;">
+        Organize suas transações criando categorias personalizadas.
+        Você pode separar por tipo (receita/despesa), usar ícones e cores para facilitar a visualização!
+    </p>
+</div>
+{% endblock %}

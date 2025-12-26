@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if conta %}Editar{% else %}Nova{% endif %} Conta - Budget{% endblock %}
+
+{% block content %}
+<h1 style="color: white; margin-bottom: 2rem; font-size: 2.5rem;">
+    {% if conta %}✏️ Editar Conta{% else %}➕ Nova Conta{% endif %}
+</h1>
+
+<div class="card">
+    <form method="post" style="max-width: 600px;">
+        {% csrf_token %}
+
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Nome *</label>
+            <input type="text" name="nome" value="{{ conta.nome|default:'' }}" required
+                   style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;"
+                   placeholder="Ex: Banco do Brasil, Carteira, Nubank">
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Tipo *</label>
+            <select name="tipo" required style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;">
+                <option value="corrente" {% if conta.tipo == 'corrente' %}selected{% endif %}>Conta Corrente</option>
+                <option value="poupanca" {% if conta.tipo == 'poupanca' %}selected{% endif %}>Poupança</option>
+                <option value="carteira" {% if conta.tipo == 'carteira' %}selected{% endif %}>Carteira</option>
+                <option value="investimento" {% if conta.tipo == 'investimento' %}selected{% endif %}>Investimento</option>
+            </select>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Saldo Inicial *</label>
+            <input type="number" name="saldo" value="{{ conta.saldo|default:'0' }}" required step="0.01"
+                   style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;"
+                   placeholder="0.00">
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Banco</label>
+            <input type="text" name="banco" value="{{ conta.banco|default:'' }}"
+                   style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;"
+                   placeholder="Nome do banco (opcional)">
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Cor</label>
+            <input type="color" name="cor" value="{{ conta.cor|default:'#007AFF' }}"
+                   style="width: 100px; height: 50px; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer;">
+            <p style="color: #666; font-size: 0.85rem; margin-top: 0.5rem;">Escolha uma cor para identificar a conta</p>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary">
+                {% if conta %}💾 Salvar Alterações{% else %}➕ Criar Conta{% endif %}
+            </button>
+            <a href="{% url 'contas' %}" class="btn" style="background: #f3f4f6; color: #333; text-decoration: none;">
+                ❌ Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,6 +1,6 @@
-# 🌐 Landing Page - Roncav Budget
+﻿# 🌐 Landing Page - Roncav Budget
 
-**URL**: https://roncavbudget.avila.inc
+**URL**: https://Orcamento.avila.inc
 
 ---
 
@@ -397,4 +397,4 @@ button: Inter 16px SemiBold
 
 **Responsável**: Squad de Growth Avila
 **Deadline**: 15 dias após kickoff
-**URL Staging**: https://staging-roncavbudget.avila.inc
+**URL Staging**: https://staging-Orcamento.avila.inc

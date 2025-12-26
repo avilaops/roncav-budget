@@ -1,0 +1,261 @@
+{% extends 'base.html' %}
+
+{% block title %}Planos e Preços - Budget{% endblock %}
+
+{% block content %}
+<div class="pricing-header">
+    <h1>💎 Escolha Seu Plano</h1>
+    <p>Escolha o plano perfeito para suas necessidades financeiras</p>
+</div>
+
+<div class="pricing-container">
+    {% for plano in planos %}
+    <div class="pricing-card {% if plano.popular %}popular{% endif %} {% if plano.current %}current-plan{% endif %}">
+        {% if plano.popular %}
+        <div class="popular-badge">🔥 Mais Popular</div>
+        {% endif %}
+
+        {% if plano.current %}
+        <div class="current-badge">✓ Plano Atual</div>
+        {% endif %}
+
+        <div class="plan-header">
+            <h2>{{ plano.nome }}</h2>
+            <div class="plan-price">
+                <span class="price">{{ plano.preco }}</span>
+                <span class="period">{{ plano.periodo }}</span>
+            </div>
+            <p class="plan-description">{{ plano.descricao }}</p>
+        </div>
+
+        <ul class="features-list">
+            {% for feature in plano.features %}
+            <li>{{ feature }}</li>
+            {% endfor %}
+        </ul>
+
+        <div class="plan-action">
+            {% if plano.current %}
+            <button class="btn btn-secondary btn-block" disabled>
+                Plano Atual
+            </button>
+            {% elif plano.id == 'free' %}
+            <form method="post" action="{% url 'upgrade_plano' plano.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline btn-block">
+                    Downgrade para Free
+                </button>
+            </form>
+            {% else %}
+            <form method="post" action="{% url 'upgrade_plano' plano.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary btn-block">
+                    Escolher {{ plano.nome }}
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="faq-section">
+    <h2>Perguntas Frequentes</h2>
+
+    <div class="faq-item">
+        <h3>💳 Quais formas de pagamento vocês aceitam?</h3>
+        <p>Aceitamos cartões de crédito (Visa, Mastercard, American Express) e PIX.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>🔄 Posso cancelar a qualquer momento?</h3>
+        <p>Sim! Você pode cancelar sua assinatura a qualquer momento sem multas ou taxas.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>📊 Meus dados ficam salvos se eu cancelar?</h3>
+        <p>Sim, todos os seus dados ficam salvos. Você pode reativar sua conta a qualquer momento.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>🔐 Meus dados estão seguros?</h3>
+        <p>Absolutamente! Utilizamos criptografia de ponta e seguimos as melhores práticas de segurança.</p>
+    </div>
+</div>
+
+<style>
+.pricing-header {
+    text-align: center;
+    padding: 3rem 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.pricing-header h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.pricing-header p {
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.pricing-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto 4rem;
+    padding: 0 1rem;
+}
+
+.pricing-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.pricing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+.pricing-card.popular {
+    border: 3px solid #667eea;
+    transform: scale(1.05);
+}
+
+.pricing-card.current-plan {
+    border: 3px solid #00B894;
+}
+
+.popular-badge {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.current-badge {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #00B894 0%, #00D2A5 100%);
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.plan-header {
+    text-align: center;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #f0f0f0;
+    margin-bottom: 1.5rem;
+}
+
+.plan-header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.plan-price {
+    margin-bottom: 0.5rem;
+}
+
+.price {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.period {
+    display: block;
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.25rem;
+}
+
+.plan-description {
+    color: #666;
+    font-size: 1rem;
+}
+
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+}
+
+.features-list li {
+    padding: 0.75rem 0;
+    color: #333;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.features-list li:last-child {
+    border-bottom: none;
+}
+
+.plan-action {
+    margin-top: auto;
+}
+
+.btn-block {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.faq-section {
+    max-width: 800px;
+    margin: 4rem auto;
+    padding: 0 1rem;
+}
+
+.faq-section h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.faq-item {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.faq-item h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.faq-item p {
+    color: #666;
+    margin: 0;
+    line-height: 1.6;
+}
+</style>
+{% endblock %}

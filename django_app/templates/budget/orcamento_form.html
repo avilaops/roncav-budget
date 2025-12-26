@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if orcamento %}Editar{% else %}Novo{% endif %} Orçamento - Budget{% endblock %}
+
+{% block content %}
+<h1 style="color: white; margin-bottom: 2rem; font-size: 2.5rem;">
+    {% if orcamento %}✏️ Editar Orçamento{% else %}➕ Novo Orçamento{% endif %}
+</h1>
+
+<div class="card">
+    <form method="post" style="max-width: 600px;">
+        {% csrf_token %}
+
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Categoria *</label>
+            <select name="categoria" required style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;">
+                <option value="">Selecione uma categoria</option>
+                {% for categoria in categorias %}
+                <option value="{{ categoria.id }}" {% if orcamento.categoria.id == categoria.id %}selected{% endif %}>
+                    {{ categoria.icone }} {{ categoria.nome }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Limite *</label>
+            <input type="number" name="limite" value="{{ orcamento.limite|default:'' }}" required step="0.01" min="0"
+                   style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;"
+                   placeholder="0.00">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
+            <div>
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Mês *</label>
+                <select name="mes" required style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;">
+                    {% for i in "123456789012" %}
+                    <option value="{{ forloop.counter }}" {% if orcamento.mes == forloop.counter %}selected{% endif %}>
+                        {% if forloop.counter == 1 %}Janeiro
+                        {% elif forloop.counter == 2 %}Fevereiro
+                        {% elif forloop.counter == 3 %}Março
+                        {% elif forloop.counter == 4 %}Abril
+                        {% elif forloop.counter == 5 %}Maio
+                        {% elif forloop.counter == 6 %}Junho
+                        {% elif forloop.counter == 7 %}Julho
+                        {% elif forloop.counter == 8 %}Agosto
+                        {% elif forloop.counter == 9 %}Setembro
+                        {% elif forloop.counter == 10 %}Outubro
+                        {% elif forloop.counter == 11 %}Novembro
+                        {% elif forloop.counter == 12 %}Dezembro
+                        {% endif %}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Ano *</label>
+                <input type="number" name="ano" value="{{ orcamento.ano|default:'2025' }}" required min="2020" max="2050"
+                       style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;">
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary">
+                {% if orcamento %}💾 Salvar Alterações{% else %}➕ Criar Orçamento{% endif %}
+            </button>
+            <a href="{% url 'orcamentos' %}" class="btn" style="background: #f3f4f6; color: #333; text-decoration: none;">
+                ❌ Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

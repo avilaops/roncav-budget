@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Orcamento.ViewModels"
+             x:Class="Orcamento.Views.LoginPage"
+             x:DataType="viewmodels:LoginViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource PrimaryBackground}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="40,80,40,40"
+                Spacing="24"
+                VerticalOptions="Center">
+
+            <!-- Logo e Título -->
+            <VerticalStackLayout Spacing="12"
+                    Margin="0,0,0,40">
+                <Image Source="dotnet_bot.svg"
+                       HeightRequest="80"
+                       WidthRequest="80"
+                       HorizontalOptions="Center"/>
+                <Label Text="Roncav Budget"
+                       FontSize="32"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="{StaticResource PrimaryText}"/>
+                <Label Text="Controle financeiro inteligente"
+                       FontSize="16"
+                       HorizontalOptions="Center"
+                       TextColor="{StaticResource SecondaryText}"/>
+            </VerticalStackLayout>
+
+            <!-- Formulário de Login -->
+            <VerticalStackLayout Spacing="16">
+
+                <!-- Email -->
+                <Border StrokeThickness="1"
+                        Stroke="{StaticResource CardBorder}"
+                        BackgroundColor="{StaticResource CardBackground}"
+                        Padding="16,12">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12"/>
+                    </Border.StrokeShape>
+
+                    <Entry Text="{Binding Email}"
+                           Placeholder="E-mail"
+                           Keyboard="Email"
+                           TextColor="{StaticResource PrimaryText}"
+                           PlaceholderColor="{StaticResource SecondaryText}"/>
+                </Border>
+
+                <!-- Senha -->
+                <Border StrokeThickness="1"
+                        Stroke="{StaticResource CardBorder}"
+                        BackgroundColor="{StaticResource CardBackground}"
+                        Padding="16,12">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12"/>
+                    </Border.StrokeShape>
+
+                    <Entry Text="{Binding Senha}"
+                           Placeholder="Senha"
+                           IsPassword="True"
+                           TextColor="{StaticResource PrimaryText}"
+                           PlaceholderColor="{StaticResource SecondaryText}"/>
+                </Border>
+
+                <!-- Esqueci a senha -->
+                <Label Text="Esqueci minha senha"
+                       TextColor="{StaticResource AccentPrimary}"
+                       FontSize="14"
+                       HorizontalOptions="End">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+
+                <!-- Botão Entrar -->
+                <Button Text="Entrar"
+                        Command="{Binding LoginCommand}"
+                        IsEnabled="{Binding IsNotBusy}"
+                        BackgroundColor="{StaticResource AccentPrimary}"
+                        TextColor="White"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        HeightRequest="54"
+                        CornerRadius="12"
+                        Margin="0,8,0,0">
+                    <Button.Shadow>
+                        <Shadow Brush="{StaticResource AccentPrimary}"
+                                Opacity="0.3"
+                                Radius="12"
+                                Offset="0,4"/>
+                    </Button.Shadow>
+                </Button>
+
+                <!-- Loading Indicator -->
+                <ActivityIndicator IsRunning="{Binding IsBusy}"
+                                   IsVisible="{Binding IsBusy}"
+                                   Color="{StaticResource AccentPrimary}"
+                                   HeightRequest="40"/>
+
+                <!-- Mensagem de erro -->
+                <Label Text="{Binding ErrorMessage}"
+                       IsVisible="{Binding HasError}"
+                       TextColor="{StaticResource ErrorRed}"
+                       FontSize="14"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"/>
+
+            </VerticalStackLayout>
+
+            <!-- Divisor -->
+            <Grid ColumnDefinitions="*,Auto,*"
+                    Margin="0,24,0,24">
+                <BoxView Grid.Column="0"
+                         HeightRequest="1"
+                         BackgroundColor="{StaticResource CardBorder}"
+                         VerticalOptions="Center"
+                         Margin="0,0,12,0"/>
+                <Label Grid.Column="1"
+                       Text="ou"
+                       TextColor="{StaticResource SecondaryText}"
+                       FontSize="14"/>
+                <BoxView Grid.Column="2"
+                         HeightRequest="1"
+                         BackgroundColor="{StaticResource CardBorder}"
+                         VerticalOptions="Center"
+                         Margin="12,0,0,0"/>
+            </Grid>
+
+            <!-- Criar conta -->
+            <Border StrokeThickness="2"
+                    Stroke="{StaticResource AccentPrimary}"
+                    BackgroundColor="Transparent"
+                    Padding="16,12">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12"/>
+                </Border.StrokeShape>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoToRegisterCommand}"/>
+                </Border.GestureRecognizers>
+
+                <Label Text="Criar nova conta"
+                       TextColor="{StaticResource AccentPrimary}"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+            </Border>
+
+            <!-- Continuar sem login -->
+            <Label Text="Continuar sem login"
+                   TextColor="{StaticResource SecondaryText}"
+                   FontSize="14"
+                   HorizontalOptions="Center"
+                   Margin="0,16,0,0">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ContinueOfflineCommand}"/>
+                </Label.GestureRecognizers>
+            </Label>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

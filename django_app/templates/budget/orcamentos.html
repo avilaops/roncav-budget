@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Orçamentos - Budget{% endblock %}
+
+{% block content %}
+<h1 style="color: white; margin-bottom: 2rem; font-size: 2.5rem;">📊 Orçamentos</h1>
+
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2>Orçamentos do Mês</h2>
+        <a href="{% url 'orcamento_criar' %}" class="btn btn-primary" style="text-decoration: none;">+ Novo Orçamento</a>
+    </div>
+
+    {% if orcamentos %}
+    <div style="display: grid; gap: 2rem;">
+        {% for orcamento in orcamentos %}
+        <div style="background: #f9fafb; padding: 1.5rem; border-radius: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                <div>
+                    <h3 style="font-size: 1.2rem; color: #333; margin-bottom: 0.5rem;">
+                        {{ orcamento.categoria.icone }} {{ orcamento.categoria.nome }}
+                    </h3>
+                    <p style="color: #666; font-size: 0.9rem;">
+                        R$ {{ orcamento.gasto|floatformat:2 }} de R$ {{ orcamento.limite|floatformat:2 }}
+                    </p>
+                </div>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <span class="badge" style="background: {% if orcamento.percentual > 100 %}#ef4444{% elif orcamento.percentual > 80 %}#f59e0b{% else %}#10b981{% endif %}; color: white;">
+                        {{ orcamento.percentual }}%
+                    </span>
+                    <a href="{% url 'orcamento_editar' orcamento.id %}" class="btn" style="padding: 0.25rem 0.75rem; background: #f3f4f6; text-decoration: none;">✏️</a>
+                    <form method="post" action="{% url 'orcamento_deletar' orcamento.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn" style="padding: 0.25rem 0.75rem; background: #fee2e2;"
+                                onclick="return confirm('Tem certeza que deseja deletar este orçamento?')">🗑️</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="progress-bar" style="height: 12px; margin-bottom: 0.5rem;">
+                <div class="progress-fill"
+                     style="width: {{ orcamento.percentual }}%;
+                            background: {% if orcamento.percentual > 100 %}#ef4444{% elif orcamento.percentual > 80 %}#f59e0b{% else %}#10b981{% endif %};">
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: #666;">
+                <span>Gasto: R$ {{ orcamento.gasto|floatformat:2 }}</span>
+                <span>Disponível: R$ {{ orcamento.disponivel|floatformat:2 }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align: center; padding: 3rem; color: #999;">
+        <p style="font-size: 1.2rem; margin-bottom: 1rem;">📊</p>
+        <p>Nenhum orçamento definido para este mês.</p>
+        <p style="margin-top: 0.5rem;">Comece criando seu primeiro orçamento!</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

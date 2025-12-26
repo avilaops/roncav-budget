@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Orcamento.Views.LoadingPage"
+             BackgroundColor="{StaticResource Primary}">
+    
+    <VerticalStackLayout 
+        VerticalOptions="Center"
+        HorizontalOptions="Center"
+        Spacing="20">
+        
+        <ActivityIndicator 
+            IsRunning="True"
+            Color="White"
+            WidthRequest="50"
+            HeightRequest="50"/>
+        
+        <Label 
+            Text="Roncav Budget"
+            FontSize="32"
+            FontAttributes="Bold"
+            TextColor="White"
+            HorizontalOptions="Center"/>
+        
+        <Label 
+            Text="Carregando..."
+            FontSize="16"
+            TextColor="White"
+            Opacity="0.8"
+            HorizontalOptions="Center"/>
+    </VerticalStackLayout>
+</ContentPage>

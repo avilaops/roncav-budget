@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+
+{% block title %}Termos de Uso - Budget{% endblock %}
+
+{% block content %}
+<div class="legal-container">
+    <div class="legal-content">
+        <h1>📜 Termos de Uso</h1>
+        <p class="last-updated">Última atualização: 26 de dezembro de 2025</p>
+
+        <section>
+            <h2>1. Aceitação dos Termos</h2>
+            <p>Ao acessar e usar o Budget ("Serviço"), você concorda em cumprir e estar vinculado aos seguintes termos e condições de uso.</p>
+        </section>
+
+        <section>
+            <h2>2. Descrição do Serviço</h2>
+            <p>O Budget é uma plataforma online de gestão financeira pessoal que permite aos usuários:</p>
+            <ul>
+                <li>Registrar e categorizar transações financeiras</li>
+                <li>Criar e monitorar orçamentos mensais</li>
+                <li>Estabelecer e acompanhar metas financeiras</li>
+                <li>Gerar relatórios e análises financeiras</li>
+                <li>Exportar dados em formatos CSV/Excel</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>3. Registro e Conta</h2>
+            <h3>3.1 Elegibilidade</h3>
+            <p>Você deve ter pelo menos 18 anos de idade para usar este Serviço.</p>
+
+            <h3>3.2 Informações da Conta</h3>
+            <p>Ao criar uma conta, você concorda em:</p>
+            <ul>
+                <li>Fornecer informações precisas, atuais e completas</li>
+                <li>Manter e atualizar suas informações</li>
+                <li>Manter a segurança de sua senha</li>
+                <li>Notificar-nos imediatamente sobre qualquer uso não autorizado</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>4. Planos e Pagamentos</h2>
+            <h3>4.1 Planos Disponíveis</h3>
+            <ul>
+                <li><strong>Free:</strong> Acesso limitado a 50 transações por mês e 3 orçamentos</li>
+                <li><strong>Pro:</strong> R$ 19,90/mês - Acesso a 1.000 transações por mês e 20 orçamentos</li>
+                <li><strong>Enterprise:</strong> R$ 49,90/mês - Transações e orçamentos ilimitados</li>
+            </ul>
+
+            <h3>4.2 Cobrança</h3>
+            <p>As assinaturas são cobradas mensalmente no método de pagamento fornecido. Ao assinar, você autoriza cobranças recorrentes.</p>
+
+            <h3>4.3 Cancelamento</h3>
+            <p>Você pode cancelar sua assinatura a qualquer momento. O cancelamento terá efeito no final do período de cobrança atual.</p>
+
+            <h3>4.4 Reembolso</h3>
+            <p>Oferecemos garantia de 30 dias. Se não estiver satisfeito, solicite reembolso total dentro de 30 dias da compra.</p>
+        </section>
+
+        <section>
+            <h2>5. Uso Aceitável</h2>
+            <p>Você concorda em NÃO:</p>
+            <ul>
+                <li>Usar o Serviço para qualquer propósito ilegal</li>
+                <li>Violar quaisquer leis em sua jurisdição</li>
+                <li>Transmitir vírus ou códigos maliciosos</li>
+                <li>Tentar obter acesso não autorizado</li>
+                <li>Interferir com o funcionamento do Serviço</li>
+                <li>Copiar, modificar ou distribuir conteúdo do Serviço</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>6. Propriedade Intelectual</h2>
+            <p>O Serviço e seu conteúdo original, recursos e funcionalidades são propriedade exclusiva do Budget e estão protegidos por leis de direitos autorais internacionais.</p>
+        </section>
+
+        <section>
+            <h2>7. Seus Dados</h2>
+            <h3>7.1 Propriedade</h3>
+            <p>Você mantém todos os direitos sobre seus dados financeiros inseridos no Serviço.</p>
+
+            <h3>7.2 Privacidade</h3>
+            <p>Sua privacidade é importante para nós. Consulte nossa <a href="{% url 'politica_privacidade' %}">Política de Privacidade</a> para entender como coletamos e usamos seus dados.</p>
+
+            <h3>7.3 Backup</h3>
+            <p>Embora façamos backups regulares, recomendamos que você exporte seus dados periodicamente.</p>
+        </section>
+
+        <section>
+            <h2>8. Limitação de Responsabilidade</h2>
+            <p>O Serviço é fornecido "como está". Não garantimos que o Serviço será ininterrupto, oportuno, seguro ou livre de erros.</p>
+            <p>Em nenhum caso seremos responsáveis por quaisquer danos indiretos, incidentais, especiais, consequenciais ou punitivos.</p>
+        </section>
+
+        <section>
+            <h2>9. Isenção de Garantia</h2>
+            <p>O Budget é uma ferramenta de organização financeira e não oferece aconselhamento financeiro, jurídico ou fiscal. Consulte um profissional qualificado para aconselhamento específico.</p>
+        </section>
+
+        <section>
+            <h2>10. Modificações</h2>
+            <p>Reservamos o direito de modificar ou substituir estes Termos a qualquer momento. Notificaremos sobre mudanças significativas com 30 dias de antecedência.</p>
+        </section>
+
+        <section>
+            <h2>11. Rescisão</h2>
+            <p>Podemos encerrar ou suspender sua conta imediatamente, sem aviso prévio, por violação destes Termos.</p>
+        </section>
+
+        <section>
+            <h2>12. Lei Aplicável</h2>
+            <p>Estes Termos serão regidos pelas leis do Brasil, sem consideração a conflitos de disposições legais.</p>
+        </section>
+
+        <section>
+            <h2>13. Contato</h2>
+            <p>Se você tiver dúvidas sobre estes Termos, entre em contato:</p>
+            <ul>
+                <li>Email: suporte@budget.avila.inc</li>
+                <li>Website: https://budget.avila.inc</li>
+            </ul>
+        </section>
+
+        <div class="acceptance">
+            <p><strong>Ao usar o Budget, você confirma que leu, compreendeu e concordou com estes Termos de Uso.</strong></p>
+        </div>
+    </div>
+</div>
+
+<style>
+.legal-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.legal-content {
+    background: white;
+    border-radius: 16px;
+    padding: 3rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.legal-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.last-updated {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+section {
+    margin-bottom: 2.5rem;
+}
+
+section h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+section h3 {
+    font-size: 1.2rem;
+    color: #555;
+    margin: 1.5rem 0 0.75rem;
+}
+
+section p {
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+section ul {
+    margin: 1rem 0 1rem 2rem;
+    line-height: 1.8;
+}
+
+section ul li {
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+
+section a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+section a:hover {
+    text-decoration: underline;
+}
+
+.acceptance {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border-left: 4px solid #667eea;
+    margin-top: 3rem;
+}
+
+.acceptance p {
+    margin: 0;
+    color: #333;
+    font-size: 1rem;
+}
+</style>
+{% endblock %}

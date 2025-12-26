@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:Orcamento.Behaviors"
+             x:Class="Orcamento.Views.Skeletons.ListSkeleton">
+
+    <VerticalStackLayout Spacing="12" Padding="16">
+        <!-- Item 1 -->
+        <Frame CornerRadius="8" Padding="12" HasShadow="False" BackgroundColor="#F5F5F5">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                <BoxView Grid.Column="0" HeightRequest="40" WidthRequest="40" CornerRadius="20" Color="#E0E0E0">
+                    <BoxView.Behaviors>
+                        <behaviors:SkeletonLoaderBehavior/>
+                    </BoxView.Behaviors>
+                </BoxView>
+                
+                <VerticalStackLayout Grid.Column="1" Spacing="8" VerticalOptions="Center">
+                    <BoxView HeightRequest="16" WidthRequest="120" CornerRadius="4" Color="#E0E0E0">
+                        <BoxView.Behaviors>
+                            <behaviors:SkeletonLoaderBehavior/>
+                        </BoxView.Behaviors>
+                    </BoxView>
+                    <BoxView HeightRequest="12" WidthRequest="80" CornerRadius="4" Color="#E0E0E0">
+                        <BoxView.Behaviors>
+                            <behaviors:SkeletonLoaderBehavior/>
+                        </BoxView.Behaviors>
+                    </BoxView>
+                </VerticalStackLayout>
+                
+                <BoxView Grid.Column="2" HeightRequest="20" WidthRequest="60" CornerRadius="4" Color="#E0E0E0" VerticalOptions="Center">
+                    <BoxView.Behaviors>
+                        <behaviors:SkeletonLoaderBehavior/>
+                    </BoxView.Behaviors>
+                </BoxView>
+            </Grid>
+        </Frame>
+
+        <!-- Item 2 -->
+        <Frame CornerRadius="8" Padding="12" HasShadow="False" BackgroundColor="#F5F5F5">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                <BoxView Grid.Column="0" HeightRequest="40" WidthRequest="40" CornerRadius="20" Color="#E0E0E0">
+                    <BoxView.Behaviors>
+                        <behaviors:SkeletonLoaderBehavior/>
+                    </BoxView.Behaviors>
+                </BoxView>
+                
+                <VerticalStackLayout Grid.Column="1" Spacing="8" VerticalOptions="Center">
+                    <BoxView HeightRequest="16" WidthRequest="100" CornerRadius="4" Color="#E0E0E0">
+                        <BoxView.Behaviors>
+                            <behaviors:SkeletonLoaderBehavior/>
+                        </BoxView.Behaviors>
+                    </BoxView>
+                    <BoxView HeightRequest="12" WidthRequest="70" CornerRadius="4" Color="#E0E0E0">
+                        <BoxView.Behaviors>
+                            <behaviors:SkeletonLoaderBehavior/>
+                        </BoxView.Behaviors>
+                    </BoxView>
+                </VerticalStackLayout>
+                
+                <BoxView Grid.Column="2" HeightRequest="20" WidthRequest="50" CornerRadius="4" Color="#E0E0E0" VerticalOptions="Center">
+                    <BoxView.Behaviors>
+                        <behaviors:SkeletonLoaderBehavior/>
+                    </BoxView.Behaviors>
+                </BoxView>
+            </Grid>
+        </Frame>
+
+        <!-- Item 3 -->
+        <Frame CornerRadius="8" Padding="12" HasShadow="False" BackgroundColor="#F5F5F5">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                <BoxView Grid.Column="0" HeightRequest="40" WidthRequest="40" CornerRadius="20" Color="#E0E0E0">
+                    <BoxView.Behaviors>
+                        <behaviors:SkeletonLoaderBehavior/>
+                    </BoxView.Behaviors>
+                </BoxView>
+                
+                <VerticalStackLayout Grid.Column="1" Spacing="8" VerticalOptions="Center">
+                    <BoxView HeightRequest="16" WidthRequest="110" CornerRadius="4" Color="#E0E0E0">
+                        <BoxView.Behaviors>
+                            <behaviors:SkeletonLoaderBehavior/>
+                        </BoxView.Behaviors>
+                    </BoxView>
+                    <BoxView HeightRequest="12" WidthRequest="90" CornerRadius="4" Color="#E0E0E0">
+                        <BoxView.Behaviors>
+                            <behaviors:SkeletonLoaderBehavior/>
+                        </BoxView.Behaviors>
+                    </BoxView>
+                </VerticalStackLayout>
+                
+                <BoxView Grid.Column="2" HeightRequest="20" WidthRequest="55" CornerRadius="4" Color="#E0E0E0" VerticalOptions="Center">
+                    <BoxView.Behaviors>
+                        <behaviors:SkeletonLoaderBehavior/>
+                    </BoxView.Behaviors>
+                </BoxView>
+            </Grid>
+        </Frame>
+    </VerticalStackLayout>
+</ContentView>

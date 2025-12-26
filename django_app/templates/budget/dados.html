@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Dados - Budget{% endblock %}
+
+{% block content %}
+<h1 style="color: white; margin-bottom: 2rem; font-size: 2.5rem;">💾 Exportar & Importar Dados</h1>
+
+<div class="stats-grid" style="margin-bottom: 2rem;">
+    <div class="stat-card">
+        <div class="stat-label">Contas cadastradas</div>
+        <div class="stat-value">{{ contas_count }}</div>
+    </div>
+    <div class="stat-card" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+        <div class="stat-label">Categorias</div>
+        <div class="stat-value">{{ categorias_count }}</div>
+    </div>
+    <div class="stat-card" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+        <div class="stat-label">Transações</div>
+        <div class="stat-value">{{ transacoes_count }}</div>
+    </div>
+    <div class="stat-card" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+        <div class="stat-label">Orçamentos ativos</div>
+        <div class="stat-value">{{ orcamentos_count }}</div>
+    </div>
+    <div class="stat-card" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
+        <div class="stat-label">Metas</div>
+        <div class="stat-value">{{ metas_count }}</div>
+    </div>
+</div>
+
+{% if ultima_transacao %}
+<div class="card" style="margin-bottom: 2rem;">
+    <h2>Última transação registrada</h2>
+    <p style="margin-top: 0.75rem; color: #4b5563;">
+        {{ ultima_transacao.data|date:"d/m/Y" }} • {{ ultima_transacao.descricao }} •
+        {% if ultima_transacao.tipo == 'receita' %}+{% else %}-{% endif %}
+        R$ {{ ultima_transacao.valor|floatformat:2 }}
+    </p>
+</div>
+{% endif %}
+
+<div class="card" style="margin-bottom: 2rem;">
+    <h2>Exportar dados</h2>
+    <p style="margin: 0.75rem 0 1.5rem; color: #4b5563;">
+        Baixe um arquivo JSON completo com contas, categorias, transações, orçamentos e metas.
+        Você poderá importar o mesmo arquivo posteriormente ou em outro dispositivo.
+    </p>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="exportar" value="1"/>
+        <button type="submit" class="btn btn-primary">⬇️ Baixar dados (.json)</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>Importar dados</h2>
+    <p style="margin: 0.75rem 0 1.5rem; color: #4b5563;">
+        Escolha um arquivo exportado pelo Budget para restaurar ou sincronizar seus dados.
+        As informações serão combinadas com os dados atuais (sem apagar os existentes).
+    </p>
+    <form method="post" enctype="multipart/form-data" style="display: grid; gap: 1rem; max-width: 480px;">
+        {% csrf_token %}
+        <input type="hidden" name="importar" value="1"/>
+        <input type="file" name="arquivo" accept="application/json" required
+               style="padding: 0.75rem; border-radius: 8px; border: 1px solid #d1d5db; background: #fff;"/>
+        <button type="submit" class="btn btn-primary">⬆️ Importar arquivo</button>
+    </form>
+    <small style="display: block; margin-top: 1rem; color: #6b7280;">
+        Dica: mantenha um backup atualizado exportando seus dados periodicamente.
+    </small>
+</div>
+{% endblock %}

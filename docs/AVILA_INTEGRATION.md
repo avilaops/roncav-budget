@@ -1,4 +1,4 @@
-# 🔌 Integração com Ecossistema Avila
+﻿# 🔌 Integração com Ecossistema Avila
 
 ## 📋 Visão Geral
 
@@ -424,7 +424,7 @@ Disponível em: `https://portal.avila.inc/dev/console`
 
 **Equipe de Integração Avila**
 - Email: dev@avila.inc
-- Slack: #roncav-budget
+- Slack: #Orcamento
 - Docs: https://docs.api.avila.inc
 
 **Status da API**

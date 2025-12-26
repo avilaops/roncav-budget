@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+
+{% block title %}Criar Conta - Budget{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>💰 Criar Conta</h1>
+            <p>Comece a controlar suas finanças hoje</p>
+        </div>
+
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="username">Nome de Usuário *</label>
+                <input type="text" id="username" name="username" required
+                       class="form-control" placeholder="seu_usuario"
+                       minlength="3" maxlength="150">
+                <small>Apenas letras, números e @/./+/-/_</small>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email *</label>
+                <input type="email" id="email" name="email" required
+                       class="form-control" placeholder="seu@email.com">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Senha *</label>
+                <input type="password" id="password" name="password" required
+                       class="form-control" placeholder="Mínimo 8 caracteres"
+                       minlength="8">
+            </div>
+
+            <div class="form-group">
+                <label for="password_confirm">Confirmar Senha *</label>
+                <input type="password" id="password_confirm" name="password_confirm" required
+                       class="form-control" placeholder="Digite a senha novamente"
+                       minlength="8">
+            </div>
+
+            <div class="form-check">
+                <input type="checkbox" id="terms" required class="form-check-input">
+                <label for="terms" class="form-check-label">
+                    Eu aceito os <a href="#" target="_blank">Termos de Uso</a> e
+                    <a href="#" target="_blank">Política de Privacidade</a>
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">
+                Criar Conta Grátis
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Já tem uma conta? <a href="{% url 'login' %}">Fazer Login</a></p>
+        </div>
+
+        <div class="features-preview">
+            <h3>O que você ganha:</h3>
+            <ul>
+                <li>✅ <strong>50 transações</strong> por mês</li>
+                <li>✅ <strong>3 orçamentos</strong> personalizados</li>
+                <li>✅ <strong>Relatórios</strong> detalhados</li>
+                <li>✅ <strong>Exportação</strong> em CSV</li>
+                <li>✅ <strong>100% Gratuito</strong></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<style>
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.auth-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    max-width: 500px;
+    width: 100%;
+    padding: 3rem;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.auth-header p {
+    color: #666;
+    font-size: 1rem;
+}
+
+.auth-form {
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 0.25rem;
+    color: #666;
+    font-size: 0.875rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-check {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: start;
+    gap: 0.5rem;
+}
+
+.form-check-input {
+    margin-top: 0.25rem;
+}
+
+.form-check-label {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.form-check-label a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.form-check-label a:hover {
+    text-decoration: underline;
+}
+
+.btn-block {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.auth-footer {
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid #e0e0e0;
+}
+
+.auth-footer p {
+    margin: 0;
+    color: #666;
+}
+
+.auth-footer a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+.features-preview {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-top: 2rem;
+}
+
+.features-preview h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.features-preview ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.features-preview li {
+    padding: 0.5rem 0;
+    color: #666;
+    font-size: 0.95rem;
+}
+</style>
+{% endblock %}

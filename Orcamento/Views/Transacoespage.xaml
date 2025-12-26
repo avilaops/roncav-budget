@@ -1,0 +1,323 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Orcamento.ViewModels"
+             xmlns:models="clr-namespace:Orcamento.Models"
+             xmlns:converters="clr-namespace:Orcamento.Converters"
+             x:Class="Orcamento.Views.TransacoesPage"
+             x:DataType="viewmodels:TransacoesViewModel"
+             Title="Transacoes"
+             BackgroundColor="#F2F2F7">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:SaldoToColorConverter x:Key="SaldoToColorConverter"/>
+            <converters:TipoToColorConverter x:Key="TipoToColorConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Filtros em estilo iOS -->
+        <Border Grid.Row="0"
+                BackgroundColor="White"
+                StrokeThickness="0"
+                Margin="20,20,20,16"
+                StrokeShape="RoundRectangle 16">
+            <Border.Shadow>
+                <Shadow Brush="#000000"
+                        Offset="0,4"
+                        Radius="12"
+                        Opacity="0.08"/>
+            </Border.Shadow>
+
+            <VerticalStackLayout Padding="20"
+                    Spacing="20">
+                <!-- Filtro de Tipo -->
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Tipo de Transação"
+                           FontSize="15"
+                           FontAttributes="Bold"
+                           TextColor="#000000"/>
+
+                    <Grid ColumnDefinitions="*,*,*"
+                            ColumnSpacing="8">
+                        <Border Grid.Column="0"
+                                BackgroundColor="#007AFF"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 10">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding AplicarFiltroCommand}" CommandParameter="Todas"/>
+                            </Border.GestureRecognizers>
+                            <Label Text="Todas"
+                                   FontSize="15"
+                                   FontAttributes="Bold"
+                                   TextColor="White"
+                                   HorizontalOptions="Center"
+                                   Padding="0,12"/>
+                        </Border>
+
+                        <Border Grid.Column="1"
+                                BackgroundColor="#F2F2F7"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 10">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding AplicarFiltroCommand}" CommandParameter="Receita"/>
+                            </Border.GestureRecognizers>
+                            <Label Text="Receitas"
+                                   FontSize="15"
+                                   TextColor="#8E8E93"
+                                   HorizontalOptions="Center"
+                                   Padding="0,12"/>
+                        </Border>
+
+                        <Border Grid.Column="2"
+                                BackgroundColor="#F2F2F7"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 10">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding AplicarFiltroCommand}" CommandParameter="Despesa"/>
+                            </Border.GestureRecognizers>
+                            <Label Text="Despesas"
+                                   FontSize="15"
+                                   TextColor="#8E8E93"
+                                   HorizontalOptions="Center"
+                                   Padding="0,12"/>
+                        </Border>
+                    </Grid>
+                </VerticalStackLayout>
+
+                <!-- Filtro de Data -->
+                <Grid ColumnDefinitions="*,*"
+                        ColumnSpacing="12">
+                    <VerticalStackLayout Grid.Column="0"
+                            Spacing="8">
+                        <Label Text="Data Início"
+                               FontSize="13"
+                               TextColor="#8E8E93"/>
+                        <Border BackgroundColor="#F2F2F7"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 10">
+                            <DatePicker Date="{Binding DataInicio}"
+                                        DateSelected="OnDataChanged"
+                                        Format="dd/MM/yyyy"
+                                        TextColor="#000000"
+                                        BackgroundColor="Transparent"
+                                        HorizontalOptions="Center"
+                                        Margin="12,8"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="1"
+                            Spacing="8">
+                        <Label Text="Data Fim"
+                               FontSize="13"
+                               TextColor="#8E8E93"/>
+                        <Border BackgroundColor="#F2F2F7"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 10">
+                            <DatePicker Date="{Binding DataFim}"
+                                        DateSelected="OnDataChanged"
+                                        Format="dd/MM/yyyy"
+                                        TextColor="#000000"
+                                        BackgroundColor="Transparent"
+                                        HorizontalOptions="Center"
+                                        Margin="12,8"/>
+                        </Border>
+                    </VerticalStackLayout>
+                </Grid>
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- Lista de Transacoes -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,0,20,20"
+                    Spacing="16">
+
+                <!-- Resumo Financeiro -->
+                <Border BackgroundColor="White"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 16">
+                    <Border.Shadow>
+                        <Shadow Brush="#000000"
+                                Offset="0,4"
+                                Radius="12"
+                                Opacity="0.08"/>
+                    </Border.Shadow>
+
+                    <Grid Padding="20"
+                            ColumnDefinitions="*,*,*"
+                            ColumnSpacing="16">
+                        <VerticalStackLayout Grid.Column="0"
+                                Spacing="8">
+                            <Label Text="&#x1F4C8;"
+                                   FontSize="24"/>
+                            <Label Text="Receitas"
+                                   FontSize="13"
+                                   TextColor="#8E8E93"/>
+                            <Label Text="{Binding TotalReceitas, StringFormat='{0:C2}'}"
+                                   FontSize="20"
+                                   FontAttributes="Bold"
+                                   TextColor="#34C759"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Column="1"
+                                Spacing="8">
+                            <Label Text="&#x1F4C9;"
+                                   FontSize="24"/>
+                            <Label Text="Despesas"
+                                   FontSize="13"
+                                   TextColor="#8E8E93"/>
+                            <Label Text="{Binding TotalDespesas, StringFormat='{0:C2}'}"
+                                   FontSize="20"
+                                   FontAttributes="Bold"
+                                   TextColor="#FF3B30"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Column="2"
+                                Spacing="8">
+                            <Label Text="&#x1F4B5;"
+                                   FontSize="24"/>
+                            <Label Text="Saldo"
+                                   FontSize="13"
+                                   TextColor="#8E8E93"/>
+                            <Label Text="{Binding SaldoPeriodo, StringFormat='{0:C2}'}"
+                                   FontSize="20"
+                                   FontAttributes="Bold"
+                                   TextColor="{Binding SaldoPeriodo, Converter={StaticResource SaldoToColorConverter}}"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <!-- Lista de Transacoes -->
+                <CollectionView ItemsSource="{Binding Transacoes}"
+                                SelectionMode="None">
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout HorizontalOptions="Center"
+                                             VerticalOptions="Center"
+                                             Padding="40"
+                                             Spacing="16">
+                            <Label Text="&#x1F4ED;"
+                                   FontSize="64"
+                                   Opacity="0.3"
+                                   HorizontalOptions="Center"/>
+                            <Label Text="Nenhuma transação"
+                                   FontSize="17"
+                                   FontAttributes="Bold"
+                                   TextColor="#8E8E93"
+                                   HorizontalOptions="Center"/>
+                            <Label Text="Adicione sua primeira transação"
+                                   FontSize="15"
+                                   TextColor="#AEAEB2"
+                                   HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Transacao">
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Editar"
+                                                  BackgroundColor="#007AFF"
+                                                  Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TransacoesViewModel}}, Path=EditarTransacaoCommand}"
+                                                  CommandParameter="{Binding .}"/>
+                                        <SwipeItem Text="Excluir"
+                                                  BackgroundColor="#FF3B30"
+                                                  Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TransacoesViewModel}}, Path=ExcluirTransacaoCommand}"
+                                                  CommandParameter="{Binding .}"/>
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+
+                                <Border BackgroundColor="White"
+                                    StrokeThickness="0"
+                                    Margin="0,0,0,12"
+                                    StrokeShape="RoundRectangle 12">
+                                <Border.Shadow>
+                                    <Shadow Brush="#000000"
+                                            Offset="0,2"
+                                            Radius="8"
+                                            Opacity="0.06"/>
+                                </Border.Shadow>
+
+                                <Grid Padding="16"
+                                        ColumnDefinitions="Auto,*,Auto"
+                                        RowDefinitions="Auto,Auto"
+                                        ColumnSpacing="16"
+                                        RowSpacing="8">
+                                    <!-- Icone -->
+                                    <Border Grid.Column="0"
+                                            Grid.RowSpan="2"
+                                            BackgroundColor="#F2F2F7"
+                                            WidthRequest="48"
+                                            HeightRequest="48"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 12"
+                                            VerticalOptions="Center">
+                                        <Label Text="{Binding TipoIcone}"
+                                               FontSize="24"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center"/>
+                                    </Border>
+
+                                    <!-- Descricao -->
+                                    <Label Grid.Row="0"
+                                            Grid.Column="1"
+                                           Text="{Binding Descricao}"
+                                           FontSize="17"
+                                           FontAttributes="Bold"
+                                           TextColor="#000000"
+                                           VerticalOptions="Center"/>
+
+                                    <!-- Data -->
+                                    <Label Grid.Row="1"
+                                            Grid.Column="1"
+                                           Text="{Binding DataFormatada}"
+                                           FontSize="13"
+                                           TextColor="#8E8E93"/>
+
+                                    <!-- Valor -->
+                                    <Label Grid.Column="2"
+                                            Grid.RowSpan="2"
+                                           Text="{Binding ValorFormatado}"
+                                           FontSize="20"
+                                           FontAttributes="Bold"
+                                           VerticalOptions="Center"
+                                           TextColor="{Binding Tipo, Converter={StaticResource TipoToColorConverter}}"/>
+                                </Grid>
+                            </Border>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Botao Adicionar Transacao (Floating Action Button estilo iOS) -->
+        <Border Grid.Row="2"
+                BackgroundColor="#007AFF"
+                StrokeThickness="0"
+                Margin="20,0,20,40"
+                StrokeShape="RoundRectangle 14">
+            <Border.Shadow>
+                <Shadow Brush="#007AFF"
+                        Offset="0,8"
+                        Radius="24"
+                        Opacity="0.4"/>
+            </Border.Shadow>
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding AdicionarTransacaoCommand}"/>
+            </Border.GestureRecognizers>
+
+            <Label Text="&#x2795; Nova Transação"
+                   FontSize="17"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   HorizontalOptions="Center"
+                   Padding="0,16"/>
+        </Border>
+
+    </Grid>
+
+</ContentPage>

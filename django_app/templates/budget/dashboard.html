@@ -1,0 +1,316 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Budget{% endblock %}
+
+{% block extra_css %}
+<style>
+    .chart-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .chart-card canvas {
+        width: 100%;
+        height: 320px;
+    }
+
+    @media (max-width: 768px) {
+        .chart-card canvas {
+            height: 260px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1 style="color: white; margin-bottom: 2rem; font-size: 2.5rem;">📊 Dashboard</h1>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-label">💰 Saldo Total</div>
+        <div class="stat-value">R$ {{ saldo_total|floatformat:2 }}</div>
+    </div>
+
+    <div class="stat-card" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+        <div class="stat-label">⬆️ Receitas do Mês</div>
+        <div class="stat-value">R$ {{ receitas_mes|floatformat:2 }}</div>
+    </div>
+
+    <div class="stat-card" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+        <div class="stat-label">⬇️ Despesas do Mês</div>
+        <div class="stat-value">R$ {{ despesas_mes|floatformat:2 }}</div>
+    </div>
+
+    <div class="stat-card" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+        <div class="stat-label">📈 Saldo do Mês</div>
+        <div class="stat-value">R$ {{ saldo_mes|floatformat:2 }}</div>
+    </div>
+</div>
+
+<div class="chart-grid">
+    <div class="card chart-card">
+        <h2 style="margin-bottom: 1.5rem;">📉 Fluxo Financeiro (6 meses)</h2>
+        <canvas id="fluxoFinanceiroChart" aria-label="Gráfico de receitas e despesas" role="img"></canvas>
+    </div>
+
+    <div class="card chart-card">
+        <h2 style="margin-bottom: 1.5rem;">🍕 Gastos por Categoria</h2>
+        {% if has_category_data %}
+        <canvas id="despesasCategoriaChart" aria-label="Gráfico de despesas por categoria" role="img"></canvas>
+        {% else %}
+        <p style="color: #666;">Nenhuma despesa lançada neste mês.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Contas -->
+<div class="card">
+    <h2 style="margin-bottom: 1.5rem;">🏦 Minhas Contas</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Tipo</th>
+                <th>Banco</th>
+                <th>Saldo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for conta in contas %}
+            <tr>
+                <td>{{ conta.nome }}</td>
+                <td>{{ conta.get_tipo_display }}</td>
+                <td>{{ conta.banco|default:"—" }}</td>
+                <td style="font-weight: bold;">R$ {{ conta.saldo|floatformat:2 }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="text-align: center; color: #999;">Nenhuma conta cadastrada</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Orçamentos -->
+{% if orcamentos %}
+<div class="card">
+    <h2 style="margin-bottom: 1.5rem;">📊 Orçamentos do Mês</h2>
+    {% for orcamento in orcamentos %}
+    <div style="margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+            <strong>{{ orcamento.categoria.icone }} {{ orcamento.categoria.nome }}</strong>
+            <span>R$ {{ orcamento.gasto|floatformat:2 }} / R$ {{ orcamento.limite|floatformat:2 }}</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: {{ orcamento.percentual }}%; background: {% if orcamento.percentual > 100 %}#ef4444{% elif orcamento.percentual > 80 %}#f59e0b{% else %}#10b981{% endif %};"></div>
+        </div>
+        <small style="color: #666;">{{ orcamento.percentual }}% usado</small>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Metas -->
+{% if metas %}
+<div class="card">
+    <h2 style="margin-bottom: 1.5rem;">🎯 Metas Ativas</h2>
+    {% for meta in metas %}
+    <div style="margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+            <strong>{{ meta.nome }}</strong>
+            <span>R$ {{ meta.valor_atual|floatformat:2 }} / R$ {{ meta.valor_alvo|floatformat:2 }}</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: {{ meta.percentual_completo }}%;"></div>
+        </div>
+        <small style="color: #666;">{{ meta.percentual_completo }}% completo • Até {{ meta.data_alvo|date:"d/m/Y" }}</small>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Transações Recentes -->
+<div class="card">
+    <h2 style="margin-bottom: 1.5rem;">📝 Transações Recentes</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Descrição</th>
+                <th>Categoria</th>
+                <th>Conta</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transacao in transacoes_recentes %}
+            <tr>
+                <td>{{ transacao.data|date:"d/m/Y" }}</td>
+                <td>{{ transacao.descricao }}</td>
+                <td>{{ transacao.categoria.icone }} {{ transacao.categoria.nome }}</td>
+                <td>{{ transacao.conta.nome }}</td>
+                <td>
+                    <span class="badge {% if transacao.tipo == 'receita' %}badge-success{% else %}badge-danger{% endif %}">
+                        {% if transacao.tipo == 'receita' %}+{% else %}-{% endif %}
+                        R$ {{ transacao.valor|floatformat:2 }}
+                    </span>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align: center; color: #999;">Nenhuma transação registrada</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div style="margin-top: 1rem;">
+        <a href="{% url 'transacoes' %}" class="btn btn-primary">Ver Todas</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js" integrity="sha384-WwsGdUT0Q4VY3bFH0ZpXsjkCl+ai5sAs0KqEjitcDxsdpcG4q3FXWh79pe7SY7qS" crossorigin="anonymous"></script>
+{{ chart_month_labels|json_script:"chart-month-labels-data" }}
+{{ chart_month_receitas|json_script:"chart-month-receitas-data" }}
+{{ chart_month_despesas|json_script:"chart-month-despesas-data" }}
+{{ chart_category_labels|json_script:"chart-category-labels-data" }}
+{{ chart_category_values|json_script:"chart-category-values-data" }}
+{{ chart_category_colors|json_script:"chart-category-colors-data" }}
+{{ has_category_data|json_script:"chart-has-category-data" }}
+<script>
+    const monthLabels = JSON.parse(document.getElementById('chart-month-labels-data').textContent);
+    const monthReceitas = JSON.parse(document.getElementById('chart-month-receitas-data').textContent);
+    const monthDespesas = JSON.parse(document.getElementById('chart-month-despesas-data').textContent);
+    const categoriaLabels = JSON.parse(document.getElementById('chart-category-labels-data').textContent);
+    const categoriaValores = JSON.parse(document.getElementById('chart-category-values-data').textContent);
+    const categoriaCores = JSON.parse(document.getElementById('chart-category-colors-data').textContent);
+    const hasCategoryData = JSON.parse(document.getElementById('chart-has-category-data').textContent);
+
+    const formatCurrency = (value) => {
+        return 'R$ ' + Number(value).toLocaleString('pt-BR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    };
+
+    const fluxoElement = document.getElementById('fluxoFinanceiroChart');
+    if (fluxoElement) {
+        new Chart(fluxoElement, {
+            type: 'line',
+            data: {
+                labels: monthLabels,
+                datasets: [
+                    {
+                        label: 'Receitas',
+                        data: monthReceitas,
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                        tension: 0.35,
+                        fill: true,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#10b981'
+                    },
+                    {
+                        label: 'Despesas',
+                        data: monthDespesas,
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.15)',
+                        tension: 0.35,
+                        fill: true,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#ef4444'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            color: '#111827',
+                            boxWidth: 12,
+                            boxHeight: 12
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: ${formatCurrency(context.parsed.y)}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#6b7280'
+                        },
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: '#6b7280',
+                            callback: function(value) {
+                                return formatCurrency(value);
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(229, 231, 235, 0.4)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    if (hasCategoryData) {
+        const categoriaElement = document.getElementById('despesasCategoriaChart');
+        if (categoriaElement) {
+            new Chart(categoriaElement, {
+                type: 'doughnut',
+                data: {
+                    labels: categoriaLabels,
+                    datasets: [
+                        {
+                            data: categoriaValores,
+                            backgroundColor: categoriaCores,
+                            borderWidth: 1,
+                            hoverOffset: 8
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: 12,
+                                color: '#111827'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    return `${label}: ${formatCurrency(value)}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Transações - Budget{% endblock %}
+
+{% block content %}
+<h1 style="color: white; margin-bottom: 2rem; font-size: 2.5rem;">📝 Transações</h1>
+
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2>Minhas Transações</h2>
+        <div style="display: flex; gap: 1rem;">
+            <select style="padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 8px;">
+                <option value="">Todas</option>
+                <option value="receita">Receitas</option>
+                <option value="despesa">Despesas</option>
+            </select>
+            <a href="{% url 'transacao_criar' %}" class="btn btn-primary" style="text-decoration: none;">+ Nova Transação</a>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Descrição</th>
+                <th>Categoria</th>
+                <th>Conta</th>
+                <th>Valor</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transacao in transacoes %}
+            <tr>
+                <td>{{ transacao.data|date:"d/m/Y" }}</td>
+                <td>{{ transacao.descricao }}</td>
+                <td>{{ transacao.categoria.icone }} {{ transacao.categoria.nome }}</td>
+                <td>{{ transacao.conta.nome }}</td>
+                <td>
+                    <span class="badge {% if transacao.tipo == 'receita' %}badge-success{% else %}badge-danger{% endif %}">
+                        {% if transacao.tipo == 'receita' %}+{% else %}-{% endif %}
+                        R$ {{ transacao.valor|floatformat:2 }}
+                    </span>
+                </td>
+                <td>
+                    <a href="{% url 'transacao_editar' transacao.id %}" class="btn" style="padding: 0.25rem 0.75rem; background: #f3f4f6; text-decoration: none;">✏️</a>
+                    <form method="post" action="{% url 'transacao_deletar' transacao.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn" style="padding: 0.25rem 0.75rem; background: #fee2e2;"
+                                onclick="return confirm('Tem certeza que deseja deletar esta transação?')">🗑️</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align: center; color: #999; padding: 3rem;">
+                    Nenhuma transação registrada. Comece adicionando uma nova!
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

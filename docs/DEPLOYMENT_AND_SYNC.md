@@ -1,4 +1,4 @@
-# Deploy em www.budget.avila.inc — Roncav Budget
+﻿# Deploy em www.budget.avila.inc — Roncav Budget
 
 Este documento reúne os passos operacionais para colocar o front-end e as integrações em produção em `https://www.budget.avila.inc`, garantindo sincronização segura com `api.avila.inc`, coordenação com o portal do usuário (`portal.avila.inc`) e visibilidade no portal da equipe (`avila.inc`).
 
@@ -19,8 +19,8 @@ Este documento reúne os passos operacionais para colocar o front-end e as integ
 | --- | --- |
 | Domínio | `www.budget.avila.inc` já registrado no DNS da Avila Ops
 | Certificado TLS | Gerado automaticamente pelo provedor (Azure Static Web App ou App Service), ou importado via Azure Key Vault
-| Repositório GitHub | `avilaops/roncav-budget` com branch `main`
-| Ambiente Azure | Subscription com Resource Group (`rg-roncav-budget`) e permissões para:
+| Repositório GitHub | `avilaops/Orcamento` com branch `main`
+| Ambiente Azure | Subscription com Resource Group (`rg-Orcamento`) e permissões para:
 - Static Web Apps (para landing page)
 - App Service (caso precise hospedar API complementar)
 - Front Door ou CDN (opcional)
@@ -68,7 +68,7 @@ Este documento reúne os passos operacionais para colocar o front-end e as integ
 1. **Configurações de ambiente** do front-end e dos artefatos MAUI:
 ```env
 AVILA_API_BASE_URL=https://api.avila.inc/v1/
-AVILA_CLIENT_ID=roncav-budget
+AVILA_CLIENT_ID=Orcamento
 AVILA_CLIENT_SECRET=${{ secrets.AVILA_CLIENT_SECRET }}
 ```
 
@@ -91,7 +91,7 @@ AVILA_CLIENT_SECRET=${{ secrets.AVILA_CLIENT_SECRET }}
 ## 6. Integração com `portal.avila.inc`
 
 - Links principais no topo do landing page e dentro do App:
-  - `portal.avila.inc/upgrades/roncav-budget` (botão "Subir para Premium").
+  - `portal.avila.inc/upgrades/Orcamento` (botão "Subir para Premium").
   - `portal.avila.inc/reports/budget` (relatórios e metas avançadas).
   - `portal.avila.inc/support` (suporte Avila Ops).
 - Autenticação compartilhada:

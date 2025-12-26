@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Orcamento.ViewModels"
+             x:Class="Orcamento.Views.NovaContaPage"
+             x:DataType="vm:NovaContaViewModel"
+             Title="Nova Conta"
+             BackgroundColor="#F5F5F7">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="24">
+
+            <!-- Header -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="💳 Adicionar Conta" 
+                       FontSize="28" 
+                       FontAttributes="Bold"
+                       TextColor="#1C1C1E"/>
+                <Label Text="Cadastre uma nova conta bancária, poupança ou carteira" 
+                       FontSize="14" 
+                       TextColor="#8E8E93"/>
+            </VerticalStackLayout>
+
+            <!-- Formulário -->
+            <Frame CornerRadius="20" Padding="20" HasShadow="True" BackgroundColor="White">
+                <VerticalStackLayout Spacing="20">
+
+                    <!-- Nome da Conta -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Nome da Conta *" 
+                               FontSize="14" 
+                               FontAttributes="Bold"
+                               TextColor="#1C1C1E"/>
+                        <Border StrokeThickness="2"
+                                Stroke="#E5E5EA"
+                                StrokeShape="RoundRectangle 12"
+                                BackgroundColor="#F9F9FB">
+                            <Entry Text="{Binding Nome}"
+                                   Placeholder="Ex: Banco do Brasil - Corrente"
+                                   PlaceholderColor="#AEAEB2"
+                                   TextColor="#1C1C1E"
+                                   FontSize="16"
+                                   Margin="12,8"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Tipo de Conta -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Tipo de Conta *" 
+                               FontSize="14" 
+                               FontAttributes="Bold"
+                               TextColor="#1C1C1E"/>
+                        <Border StrokeThickness="2"
+                                Stroke="#E5E5EA"
+                                StrokeShape="RoundRectangle 12"
+                                BackgroundColor="#F9F9FB">
+                            <Picker ItemsSource="{Binding TiposContaDisponiveis}"
+                                    SelectedItem="{Binding TipoContaSelecionado}"
+                                    Title="Selecione o tipo"
+                                    TextColor="#1C1C1E"
+                                    TitleColor="#AEAEB2"
+                                    FontSize="16"
+                                    Margin="8,4"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Banco -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Banco (Opcional)" 
+                               FontSize="14" 
+                               FontAttributes="Bold"
+                               TextColor="#1C1C1E"/>
+                        <Border StrokeThickness="2"
+                                Stroke="#E5E5EA"
+                                StrokeShape="RoundRectangle 12"
+                                BackgroundColor="#F9F9FB">
+                            <Entry Text="{Binding Banco}"
+                                   Placeholder="Ex: Banco do Brasil, Caixa, Nubank"
+                                   PlaceholderColor="#AEAEB2"
+                                   TextColor="#1C1C1E"
+                                   FontSize="16"
+                                   Margin="12,8"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Grid: Agência e Conta -->
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="8">
+                            <Label Text="Agência" 
+                                   FontSize="14" 
+                                   FontAttributes="Bold"
+                                   TextColor="#1C1C1E"/>
+                            <Border StrokeThickness="2"
+                                    Stroke="#E5E5EA"
+                                    StrokeShape="RoundRectangle 12"
+                                    BackgroundColor="#F9F9FB">
+                                <Entry Text="{Binding Agencia}"
+                                       Placeholder="0000"
+                                       PlaceholderColor="#AEAEB2"
+                                       TextColor="#1C1C1E"
+                                       Keyboard="Numeric"
+                                       FontSize="16"
+                                       Margin="12,8"/>
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Column="1" Spacing="8">
+                            <Label Text="Conta" 
+                                   FontSize="14" 
+                                   FontAttributes="Bold"
+                                   TextColor="#1C1C1E"/>
+                            <Border StrokeThickness="2"
+                                    Stroke="#E5E5EA"
+                                    StrokeShape="RoundRectangle 12"
+                                    BackgroundColor="#F9F9FB">
+                                <Entry Text="{Binding NumeroConta}"
+                                       Placeholder="00000-0"
+                                       PlaceholderColor="#AEAEB2"
+                                       TextColor="#1C1C1E"
+                                       Keyboard="Numeric"
+                                       FontSize="16"
+                                       Margin="12,8"/>
+                            </Border>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <!-- Saldo Inicial -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Saldo Inicial" 
+                               FontSize="14" 
+                               FontAttributes="Bold"
+                               TextColor="#1C1C1E"/>
+                        <Border StrokeThickness="2"
+                                Stroke="#E5E5EA"
+                                StrokeShape="RoundRectangle 12"
+                                BackgroundColor="#F9F9FB">
+                            <Entry Text="{Binding SaldoInicial, StringFormat='{0:N2}'}"
+                                   Placeholder="0,00"
+                                   PlaceholderColor="#AEAEB2"
+                                   TextColor="#1C1C1E"
+                                   Keyboard="Numeric"
+                                   FontSize="20"
+                                   FontAttributes="Bold"
+                                   Margin="12,8"/>
+                        </Border>
+                        <Label Text="💡 Informe o saldo atual da conta" 
+                               FontSize="12" 
+                               TextColor="#8E8E93"/>
+                    </VerticalStackLayout>
+
+                    <!-- Cor -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Cor de Identificação" 
+                               FontSize="14" 
+                               FontAttributes="Bold"
+                               TextColor="#1C1C1E"/>
+                        <HorizontalStackLayout Spacing="12">
+                            <RadioButton GroupName="cores" 
+                                        Value="#007AFF" 
+                                        IsChecked="{Binding CorSelecionada, Converter={StaticResource ColorEqualityConverter}, ConverterParameter=#007AFF}">
+                                <RadioButton.Content>
+                                    <Frame WidthRequest="40" HeightRequest="40" CornerRadius="20" Padding="0" BackgroundColor="#007AFF" HasShadow="False"/>
+                                </RadioButton.Content>
+                            </RadioButton>
+                            <RadioButton GroupName="cores" Value="#34C759">
+                                <RadioButton.Content>
+                                    <Frame WidthRequest="40" HeightRequest="40" CornerRadius="20" Padding="0" BackgroundColor="#34C759" HasShadow="False"/>
+                                </RadioButton.Content>
+                            </RadioButton>
+                            <RadioButton GroupName="cores" Value="#FF3B30">
+                                <RadioButton.Content>
+                                    <Frame WidthRequest="40" HeightRequest="40" CornerRadius="20" Padding="0" BackgroundColor="#FF3B30" HasShadow="False"/>
+                                </RadioButton.Content>
+                            </RadioButton>
+                            <RadioButton GroupName="cores" Value="#FF9500">
+                                <RadioButton.Content>
+                                    <Frame WidthRequest="40" HeightRequest="40" CornerRadius="20" Padding="0" BackgroundColor="#FF9500" HasShadow="False"/>
+                                </RadioButton.Content>
+                            </RadioButton>
+                            <RadioButton GroupName="cores" Value="#AF52DE">
+                                <RadioButton.Content>
+                                    <Frame WidthRequest="40" HeightRequest="40" CornerRadius="20" Padding="0" BackgroundColor="#AF52DE" HasShadow="False"/>
+                                </RadioButton.Content>
+                            </RadioButton>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+
+                    <!-- Opções -->
+                    <VerticalStackLayout Spacing="12">
+                        <Frame Padding="16" 
+                               CornerRadius="12" 
+                               BackgroundColor="#F9F9FB"
+                               HasShadow="False">
+                            <HorizontalStackLayout Spacing="12">
+                                <CheckBox IsChecked="{Binding Ativa}" 
+                                         Color="#667eea"/>
+                                <Label Text="Conta ativa" 
+                                      FontSize="15"
+                                      TextColor="#1C1C1E"
+                                      VerticalOptions="Center"/>
+                            </HorizontalStackLayout>
+                        </Frame>
+
+                        <Frame Padding="16" 
+                               CornerRadius="12" 
+                               BackgroundColor="#F9F9FB"
+                               HasShadow="False">
+                            <HorizontalStackLayout Spacing="12">
+                                <CheckBox IsChecked="{Binding IncluirNoTotal}" 
+                                         Color="#667eea"/>
+                                <Label Text="Incluir no saldo total" 
+                                      FontSize="15"
+                                      TextColor="#1C1C1E"
+                                      VerticalOptions="Center"/>
+                            </HorizontalStackLayout>
+                        </Frame>
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Botões -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                <Button Grid.Column="0"
+                        Text="Cancelar"
+                        Command="{Binding CancelarCommand}"
+                        BackgroundColor="#F2F2F7"
+                        TextColor="#1C1C1E"
+                        CornerRadius="12"
+                        HeightRequest="50"
+                        FontSize="16"
+                        FontAttributes="Bold"/>
+
+                <Button Grid.Column="1"
+                        Text="Salvar"
+                        Command="{Binding SalvarCommand}"
+                        BackgroundColor="#667eea"
+                        TextColor="White"
+                        CornerRadius="12"
+                        HeightRequest="50"
+                        FontSize="16"
+                        FontAttributes="Bold"/>
+            </Grid>
+
+            <!-- Loading -->
+            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                              IsVisible="{Binding IsLoading}"
+                              Color="#667eea"
+                              HeightRequest="50"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

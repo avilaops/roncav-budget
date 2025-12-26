@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if transacao %}Editar{% else %}Nova{% endif %} Transação - Budget{% endblock %}
+
+{% block content %}
+<h1 style="color: white; margin-bottom: 2rem; font-size: 2.5rem;">
+    {% if transacao %}✏️ Editar Transação{% else %}➕ Nova Transação{% endif %}
+</h1>
+
+<div class="card">
+    <form method="post" style="max-width: 600px;">
+        {% csrf_token %}
+
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Tipo *</label>
+            <select name="tipo" required style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;">
+                <option value="receita" {% if transacao.tipo == 'receita' %}selected{% endif %}>💰 Receita</option>
+                <option value="despesa" {% if transacao.tipo == 'despesa' %}selected{% endif %}>💸 Despesa</option>
+            </select>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Descrição *</label>
+            <input type="text" name="descricao" value="{{ transacao.descricao|default:'' }}" required
+                   style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;"
+                   placeholder="Ex: Salário, Conta de luz, Supermercado">
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Valor *</label>
+            <input type="number" name="valor" value="{{ transacao.valor|default:'' }}" required step="0.01" min="0"
+                   style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;"
+                   placeholder="0.00">
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Data *</label>
+            <input type="date" name="data" value="{{ transacao.data|date:'Y-m-d'|default:'' }}" required
+                   style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;">
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Conta *</label>
+            <select name="conta" required style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;">
+                <option value="">Selecione uma conta</option>
+                {% for conta in contas %}
+                <option value="{{ conta.id }}" {% if transacao.conta.id == conta.id %}selected{% endif %}>
+                    {{ conta.nome }} - R$ {{ conta.saldo|floatformat:2 }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Categoria *</label>
+            <select name="categoria" required style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;">
+                <option value="">Selecione uma categoria</option>
+                {% for categoria in categorias %}
+                <option value="{{ categoria.id }}" {% if transacao.categoria.id == categoria.id %}selected{% endif %}>
+                    {{ categoria.icone }} {{ categoria.nome }} ({{ categoria.get_tipo_display }})
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Observações</label>
+            <textarea name="observacoes" rows="3"
+                      style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; resize: vertical;"
+                      placeholder="Observações adicionais...">{{ transacao.observacoes|default:'' }}</textarea>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+            <label style="display: flex; align-items: center; cursor: pointer;">
+                <input type="checkbox" name="recorrente" {% if transacao.recorrente %}checked{% endif %}
+                       style="margin-right: 0.5rem; width: 18px; height: 18px; cursor: pointer;">
+                <span style="font-weight: 600;">Transação recorrente</span>
+            </label>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary">
+                {% if transacao %}💾 Salvar Alterações{% else %}➕ Criar Transação{% endif %}
+            </button>
+            <a href="{% url 'transacoes' %}" class="btn" style="background: #f3f4f6; color: #333; text-decoration: none;">
+                ❌ Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

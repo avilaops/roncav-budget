@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Budget{% endblock %}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --page-background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --text-color: #1f2937;
+            --card-background: #ffffff;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --navbar-background: rgba(255, 255, 255, 0.95);
+            --navbar-link-color: #333333;
+            --navbar-link-hover-background: #667eea;
+            --navbar-link-hover-color: #ffffff;
+            --brand-color: #667eea;
+            --btn-text-color: #ffffff;
+            --btn-primary-background: #667eea;
+            --btn-primary-background-hover: #5568d3;
+            --btn-secondary-background: rgba(102, 126, 234, 0.15);
+            --btn-secondary-background-hover: rgba(102, 126, 234, 0.3);
+            --btn-secondary-text-color: #1f2937;
+            --btn-danger-background: #ef4444;
+            --table-header-background: #f9fafb;
+            --table-border-color: #e5e7eb;
+            --alert-error-background: #fee2e2;
+            --alert-error-text: #991b1b;
+            --alert-success-background: #d1fae5;
+            --alert-success-text: #065f46;
+            --message-shadow: rgba(0, 0, 0, 0.15);
+            --input-background: #ffffff;
+            --input-border-color: #d1d5db;
+        }
+
+        :root[data-theme='dark'] {
+            --page-background: linear-gradient(135deg, #0f172a 0%, #1f2937 100%);
+            --text-color: #e5e7eb;
+            --card-background: rgba(15, 23, 42, 0.92);
+            --card-shadow: rgba(15, 23, 42, 0.75);
+            --navbar-background: rgba(15, 23, 42, 0.95);
+            --navbar-link-color: #e5e7eb;
+            --navbar-link-hover-background: rgba(102, 126, 234, 0.35);
+            --navbar-link-hover-color: #ffffff;
+            --brand-color: #a5b4fc;
+            --btn-text-color: #f9fafb;
+            --btn-primary-background: #4f46e5;
+            --btn-primary-background-hover: #4338ca;
+            --btn-secondary-background: rgba(148, 163, 184, 0.18);
+            --btn-secondary-background-hover: rgba(148, 163, 184, 0.32);
+            --btn-secondary-text-color: #e5e7eb;
+            --btn-danger-background: #f87171;
+            --table-header-background: rgba(148, 163, 184, 0.16);
+            --table-border-color: rgba(148, 163, 184, 0.24);
+            --alert-error-background: rgba(239, 68, 68, 0.18);
+            --alert-error-text: #fecaca;
+            --alert-success-background: rgba(34, 197, 94, 0.18);
+            --alert-success-text: #bbf7d0;
+            --message-shadow: rgba(15, 23, 42, 0.85);
+            --input-background: rgba(30, 41, 59, 0.6);
+            --input-border-color: rgba(148, 163, 184, 0.4);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--page-background);
+            min-height: 100vh;
+            color: var(--text-color);
+            transition: background 0.35s ease, color 0.35s ease;
+        }
+
+        .navbar {
+            background: var(--navbar-background);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px var(--card-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--brand-color);
+            text-decoration: none;
+            transition: color 0.35s ease;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .navbar-menu li {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-menu a:not(.btn),
+        .navbar-menu button:not(.btn) {
+            color: var(--navbar-link-color);
+            text-decoration: none;
+            padding: 0.55rem 1.1rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+            border: none;
+            background: transparent;
+            font: inherit;
+            cursor: pointer;
+        }
+
+        .navbar-menu a:not(.btn):hover,
+        .navbar-menu button:not(.btn):hover {
+            background: var(--navbar-link-hover-background);
+            color: var(--navbar-link-hover-color);
+        }
+
+        .navbar-menu a.btn {
+            padding: 0.55rem 1.1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .card {
+            background: var(--card-background);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px var(--card-shadow);
+            margin-bottom: 2rem;
+            color: var(--text-color);
+            transition: background 0.35s ease, box-shadow 0.35s ease, color 0.35s ease;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            color: var(--btn-text-color);
+            line-height: 1.2;
+        }
+
+        .btn-primary {
+            background: var(--btn-primary-background);
+        }
+
+        .btn-primary:hover {
+            background: var(--btn-primary-background-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--btn-secondary-background);
+            color: var(--btn-secondary-text-color);
+            border: 1px solid transparent;
+        }
+
+        .btn-secondary:hover {
+            background: var(--btn-secondary-background-hover);
+        }
+
+        .btn-danger {
+            background: var(--btn-danger-background);
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+            position: relative;
+        }
+
+        .btn-warning:hover {
+            background: #d97706;
+        }
+
+        .badge {
+            background: #dc2626;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-left: 4px;
+        }
+
+        .alertas-container {
+            max-width: 1200px;
+            margin: 1rem auto;
+            padding: 0 1rem;
+        }
+
+        .alert {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border-left: 4px solid #dc2626;
+            color: #991b1b;
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            color: #92400e;
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-left: 4px solid #3b82f6;
+            color: #1e40af;
+        }
+
+        .alert-icon {
+            font-size: 2rem;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-content strong {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-size: 1.1rem;
+        }
+
+        .alert-content p {
+            margin: 0;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .alert-action {
+            padding: 0.5rem 1rem;
+            background: rgba(0,0,0,0.1);
+            border-radius: 8px;
+            text-decoration: none;
+            color: inherit;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .alert-action:hover {
+            background: rgba(0,0,0,0.2);
+            transform: translateX(2px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--table-border-color);
+            color: var(--text-color);
+            transition: color 0.35s ease, border-color 0.35s ease;
+        }
+
+        th {
+            background: var(--table-header-background);
+            font-weight: 600;
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .badge-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #667eea;
+            transition: width 0.3s;
+        }
+
+        .messages {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px var(--message-shadow);
+            transition: background 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        .alert-error {
+            background: var(--alert-error-background);
+            color: var(--alert-error-text);
+        }
+
+        .alert-success {
+            background: var(--alert-success-background);
+            color: var(--alert-success-text);
+        }
+
+        input,
+        select,
+        textarea {
+            background: var(--input-background);
+            border: 1px solid var(--input-border-color);
+            color: var(--text-color);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
+            font: inherit;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: rgba(107, 114, 128, 0.8);
+        }
+
+        :root[data-theme='dark'] input::placeholder,
+        :root[data-theme='dark'] textarea::placeholder {
+            color: rgba(148, 163, 184, 0.9);
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--btn-primary-background);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25);
+        }
+    </style>
+    <script>
+        (function() {
+            try {
+                const storedTheme = localStorage.getItem('theme');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const theme = storedTheme || (prefersDark ? 'dark' : 'light');
+                document.documentElement.dataset.theme = theme;
+            } catch (error) {
+                document.documentElement.dataset.theme = 'light';
+            }
+        })();
+    </script>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <nav class="navbar">
+        <a href="{% url 'dashboard' %}" class="navbar-brand">💰 Budget</a>
+        <ul class="navbar-menu">
+            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'transacoes' %}">Transações</a></li>
+            <li><a href="{% url 'contas' %}">Contas</a></li>
+            <li><a href="{% url 'categorias' %}">Categorias</a></li>
+            <li><a href="{% url 'orcamentos' %}">Orçamentos</a></li>
+            <li><a href="{% url 'metas' %}">Metas</a></li>
+            <li><a href="{% url 'relatorios' %}">📊 Relatórios</a></li>
+            <li><a href="{% url 'dados' %}">Dados</a></li>
+            <li><a href="{% url 'pricing' %}">💎 Planos</a></li>
+            {% if contagem_alertas.total > 0 %}
+            <li>
+                <a href="{% url 'orcamentos' %}" class="btn btn-warning" title="Alertas de Orçamento">
+                    🔔 <span class="badge">{{ contagem_alertas.total }}</span>
+                </a>
+            </li>
+            {% endif %}
+            <li>
+                <button type="button" id="theme-toggle" class="btn btn-secondary" aria-label="Alternar para modo escuro">🌙 Escuro</button>
+            </li>
+            <li><a href="{% url 'logout' %}" class="btn btn-danger">Sair</a></li>
+        </ul>
+    </nav>
+
+    {% if alertas_orcamento %}
+    <div class="alertas-container">
+        {% for alerta in alertas_orcamento %}
+        <div class="alert alert-{{ alerta.tipo }}">
+            <span class="alert-icon">{{ alerta.icone }}</span>
+            <div class="alert-content">
+                <strong>{{ alerta.titulo }}</strong>
+                <p>{{ alerta.mensagem }}</p>
+            </div>
+            <a href="{% url 'orcamentos' %}" class="alert-action">Ver Orçamentos →</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endif %}
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    <script>
+        // Auto-hide messages after 5 seconds
+        setTimeout(function() {
+            const messages = document.querySelector('.messages');
+            if (messages) {
+                messages.style.transition = 'opacity 0.5s';
+                messages.style.opacity = '0';
+                setTimeout(() => messages.remove(), 500);
+            }
+        }, 5000);
+    </script>
+    {% endif %}
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script>
+        (function() {
+            const root = document.documentElement;
+            const toggle = document.getElementById('theme-toggle');
+
+            if (!toggle) {
+                return;
+            }
+
+            const getStoredTheme = () => {
+                try {
+                    return localStorage.getItem('theme');
+                } catch (error) {
+                    return null;
+                }
+            };
+
+            const setTheme = (theme, persist = false) => {
+                root.dataset.theme = theme;
+                const isDark = theme === 'dark';
+                toggle.textContent = isDark ? '☀️ Claro' : '🌙 Escuro';
+                toggle.setAttribute('aria-label', isDark ? 'Alternar para modo claro' : 'Alternar para modo escuro');
+
+                if (persist) {
+                    try {
+                        localStorage.setItem('theme', theme);
+                    } catch (error) {
+                        // ignore storage failures
+                    }
+                }
+            };
+
+            const initialTheme = getStoredTheme() || root.dataset.theme || 'light';
+            setTheme(initialTheme);
+
+            toggle.addEventListener('click', () => {
+                const nextTheme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+                setTheme(nextTheme, true);
+            });
+
+            try {
+                const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+                mediaQuery.addEventListener('change', (event) => {
+                    if (!getStoredTheme()) {
+                        setTheme(event.matches ? 'dark' : 'light');
+                    }
+                });
+            } catch (error) {
+                // matchMedia change not supported
+            }
+        })();
+    </script>
+
+    <footer style="background: var(--navbar-background); padding: 2rem 1rem; text-align: center; margin-top: auto; border-top: 1px solid rgba(0,0,0,0.1);">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+            <a href="{% url 'termos_uso' %}" style="color: var(--navbar-link-color); text-decoration: none;">Termos de Uso</a>
+            <a href="{% url 'politica_privacidade' %}" style="color: var(--navbar-link-color); text-decoration: none;">Política de Privacidade</a>
+            <a href="mailto:suporte@budget.avila.inc" style="color: var(--navbar-link-color); text-decoration: none;">Suporte</a>
+        </div>
+        <p style="margin-top: 1rem; color: #666; font-size: 0.9rem;">© 2025 Budget - Gestão Financeira Inteligente</p>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

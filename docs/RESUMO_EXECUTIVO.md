@@ -1,4 +1,4 @@
-# 🚀 Roncav Budget - Resumo Executivo
+﻿# 🚀 Roncav Budget - Resumo Executivo
 
 ## ✅ Status Atual: PRONTO PARA TESTES
 
@@ -114,7 +114,7 @@
 
 ### Semana 2: Landing Page
 5. ⬜ Desenvolver landing page (Next.js + Tailwind)
-6. ⬜ Configurar domínio: roncavbudget.com.br
+6. ⬜ Configurar domínio: Orcamento.com.br
 7. ⬜ Integrar Google Analytics
 8. ⬜ Otimização SEO
 

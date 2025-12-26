@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Orcamento.ViewModels"
+             x:Class="Orcamento.Views.SyncIndicatorView"
+             x:DataType="vm:SyncIndicatorViewModel">
+
+    <Border StrokeShape="RoundRectangle 20"
+            Padding="12,6"
+            BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2C2C2C}"
+            Stroke="{Binding SyncStatusColor}"
+            StrokeThickness="1"
+            HorizontalOptions="End"
+            VerticalOptions="Center">
+
+        <HorizontalStackLayout Spacing="8">
+            <!-- Ícone de Status -->
+            <Label Text="{Binding SyncStatusIcon}"
+                   FontSize="16"
+                   VerticalOptions="Center"/>
+
+            <!-- Texto de Status -->
+            <Label Text="{Binding SyncStatusText}"
+                   FontSize="12"
+                   TextColor="{Binding SyncStatusColor}"
+                   VerticalOptions="Center"
+                   FontAttributes="Bold"/>
+
+            <!-- Spinner de Sincronização -->
+            <ActivityIndicator IsRunning="{Binding IsSyncing}"
+                              IsVisible="{Binding IsSyncing}"
+                              Color="{Binding SyncStatusColor}"
+                              WidthRequest="16"
+                              HeightRequest="16"
+                              VerticalOptions="Center"/>
+        </HorizontalStackLayout>
+    </Border>
+</ContentView>

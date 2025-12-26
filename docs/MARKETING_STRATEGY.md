@@ -1,4 +1,4 @@
-# 📈 Estratégia de Marketing - Roncav Budget
+﻿# 📈 Estratégia de Marketing - Roncav Budget
 
 ## 🎯 Posicionamento de Mercado
 
@@ -72,7 +72,7 @@ Error: #D32F2F (Vermelho - Alerta)
 
 ## 📱 Canais de Marketing
 
-### 1. **Landing Page** (roncavbudget.avila.inc)
+### 1. **Landing Page** (Orcamento.avila.inc)
 - Hero: "Organize suas finanças em 5 minutos"
 - Features: PIX, Open Banking, Sincronização
 - Social Proof: Depoimentos
@@ -80,7 +80,7 @@ Error: #D32F2F (Vermelho - Alerta)
 
 ### 2. **Redes Sociais**
 
-#### Instagram (@roncavbudget)
+#### Instagram (@Orcamento)
 - **Conteúdo**:
   - Dicas de economia (carrosséis)
   - Desafios financeiros (reels)
@@ -89,7 +89,7 @@ Error: #D32F2F (Vermelho - Alerta)
 - **Frequência**: 3-5x semana
 - **Hashtags**: #FinançasPessoais #Orçamento #PIX #MEI
 
-#### TikTok (@roncavbudget)
+#### TikTok (@Orcamento)
 - **Conteúdo**:
   - Hacks de economia (15-30s)
   - "Gastei quanto esse mês?"
@@ -113,7 +113,7 @@ Error: #D32F2F (Vermelho - Alerta)
   - Notícias do produto
 - **Frequência**: 2-3x semana
 
-### 3. **Blog** (blog.roncavbudget.avila.inc)
+### 3. **Blog** (blog.Orcamento.avila.inc)
 - **Categorias**:
   - Finanças Pessoais
   - Empreendedorismo MEI
@@ -310,10 +310,10 @@ Error: #D32F2F (Vermelho - Alerta)
 
 ## ✅ Próximos Passos Imediatos
 
-- [ ] Criar landing page (roncavbudget.avila.inc)
+- [ ] Criar landing page (Orcamento.avila.inc)
 - [ ] Definir copy e CTAs principais
 - [ ] Produzir screenshots e vídeo demo
-- [ ] Criar perfis sociais (@roncavbudget)
+- [ ] Criar perfis sociais (@Orcamento)
 - [ ] Escrever 10 primeiros posts
 - [ ] Gravar 3 vídeos para YouTube
 - [ ] Configurar Google Analytics e Mixpanel

@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Orcamento.ViewModels"
+             xmlns:models="clr-namespace:Orcamento.Models"
+             x:Class="Orcamento.Views.MetasPage"
+             x:DataType="vm:MetasViewModel"
+             Title="Metas Financeiras"
+             BackgroundColor="#F5F5F7">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Nova"
+                     IconImageSource="add.png"
+                     Command="{Binding NovaMetaCommand}"/>
+    </ContentPage.ToolbarItems>
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                 Command="{Binding RefreshCommand}"
+                 RefreshColor="#667eea"
+                 Margin="20">
+        <CollectionView ItemsSource="{Binding Metas}">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Padding="40"
+                                    Spacing="16"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center">
+                    <Label Text="🎯"
+                           FontSize="80"
+                           HorizontalOptions="Center"/>
+                    <Label Text="Nenhuma meta definida"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="#1C1C1E"/>
+                    <Label Text="Defina seus objetivos financeiros e acompanhe o progresso"
+                           FontSize="14"
+                           HorizontalOptions="Center"
+                           TextColor="#8E8E93"
+                           HorizontalTextAlignment="Center"
+                           MaximumWidthRequest="300"/>
+                    <Button Text="➕ Criar Meta"
+                            Command="{Binding NovaMetaCommand}"
+                            BackgroundColor="#667eea"
+                            TextColor="White"
+                            CornerRadius="12"
+                            Padding="24,12"
+                            Margin="0,16,0,0"/>
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="16"/>
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Meta">
+                    <SwipeView>
+                        <SwipeView.LeftItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Adicionar $"
+                                          BackgroundColor="#34C759"
+                                          Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MetasViewModel}}, Path=AdicionarValorMetaCommand}"
+                                          CommandParameter="{Binding .}"/>
+                            </SwipeItems>
+                        </SwipeView.LeftItems>
+
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Editar"
+                                          BackgroundColor="#667eea"
+                                          Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MetasViewModel}}, Path=EditarMetaCommand}"
+                                          CommandParameter="{Binding .}"/>
+                                <SwipeItem Text="Excluir"
+                                          BackgroundColor="#FF3B30"
+                                          Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MetasViewModel}}, Path=ExcluirMetaCommand}"
+                                          CommandParameter="{Binding .}"/>
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <Frame Padding="24"
+                               CornerRadius="20"
+                               HasShadow="True"
+                               BackgroundColor="White">
+                            <Grid RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="16">
+
+                                <!-- Título e Ícone -->
+                                <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">
+                                    <Frame Grid.Column="0"
+                                           WidthRequest="48"
+                                           HeightRequest="48"
+                                           CornerRadius="12"
+                                           Padding="0"
+                                           HasShadow="False"
+                                           BackgroundColor="#667eea">
+                                        <Label Text="🎯"
+                                               FontSize="28"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center"/>
+                                    </Frame>
+
+                                    <VerticalStackLayout Grid.Column="1"
+                                                        Spacing="4"
+                                                        VerticalOptions="Center"
+                                                        Margin="16,0,0,0">
+                                        <Label Text="{Binding Titulo}"
+                                               FontSize="18"
+                                               FontAttributes="Bold"
+                                               TextColor="#1C1C1E"/>
+                                        <Label Text="{Binding PrioridadeTexto}"
+                                               FontSize="12"
+                                               TextColor="{Binding CorPrioridade}"/>
+                                    </VerticalStackLayout>
+
+                                    <Frame Grid.Column="2"
+                                           Padding="12,6"
+                                           CornerRadius="12"
+                                           HasShadow="False"
+                                           BackgroundColor="{Binding CorStatusBg}"
+                                           VerticalOptions="Center">
+                                        <Label Text="{Binding Status}"
+                                               FontSize="12"
+                                               FontAttributes="Bold"
+                                               TextColor="{Binding CorStatus}"/>
+                                    </Frame>
+                                </Grid>
+
+                                <!-- Valores -->
+                                <Grid Grid.Row="1" ColumnDefinitions="*,Auto">
+                                    <VerticalStackLayout Grid.Column="0" Spacing="4">
+                                        <Label Text="Economizado"
+                                               FontSize="12"
+                                               TextColor="#8E8E93"/>
+                                        <Label Text="{Binding ValorAtualFormatado}"
+                                               FontSize="24"
+                                               FontAttributes="Bold"
+                                               TextColor="#667eea"/>
+                                    </VerticalStackLayout>
+
+                                    <VerticalStackLayout Grid.Column="1"
+                                                        Spacing="4"
+                                                        HorizontalOptions="End">
+                                        <Label Text="Meta"
+                                               FontSize="12"
+                                               TextColor="#8E8E93"
+                                               HorizontalOptions="End"/>
+                                        <Label Text="{Binding ValorAlvoFormatado}"
+                                               FontSize="20"
+                                               FontAttributes="Bold"
+                                               TextColor="#1C1C1E"
+                                               HorizontalOptions="End"/>
+                                    </VerticalStackLayout>
+                                </Grid>
+
+                                <!-- Barra de Progresso -->
+                                <VerticalStackLayout Grid.Row="2" Spacing="8">
+                                    <ProgressBar Progress="{Binding PercentualConcluido}"
+                                                ProgressColor="#667eea"
+                                                HeightRequest="12"/>
+                                    <Label Text="{Binding PercentualTexto}"
+                                           FontSize="14"
+                                           FontAttributes="Bold"
+                                           TextColor="#667eea"
+                                           HorizontalOptions="Center"/>
+                                </VerticalStackLayout>
+
+                                <!-- Informações Adicionais -->
+                                <Grid Grid.Row="3" ColumnDefinitions="*,*" ColumnSpacing="12">
+                                    <Frame Grid.Column="0"
+                                           Padding="12"
+                                           CornerRadius="12"
+                                           BackgroundColor="#F9F9FB"
+                                           HasShadow="False">
+                                        <VerticalStackLayout Spacing="4">
+                                            <Label Text="Falta"
+                                                   FontSize="11"
+                                                   TextColor="#8E8E93"/>
+                                            <Label Text="{Binding ValorFaltanteFormatado}"
+                                                   FontSize="14"
+                                                   FontAttributes="Bold"
+                                                   TextColor="#FF3B30"/>
+                                        </VerticalStackLayout>
+                                    </Frame>
+
+                                    <Frame Grid.Column="1"
+                                           Padding="12"
+                                           CornerRadius="12"
+                                           BackgroundColor="#F9F9FB"
+                                           HasShadow="False">
+                                        <VerticalStackLayout Spacing="4">
+                                            <Label Text="Prazo"
+                                                   FontSize="11"
+                                                   TextColor="#8E8E93"/>
+                                            <Label Text="{Binding PrazoTexto}"
+                                                   FontSize="14"
+                                                   FontAttributes="Bold"
+                                                   TextColor="#1C1C1E"/>
+                                        </VerticalStackLayout>
+                                    </Frame>
+                                </Grid>
+
+                            </Grid>
+                        </Frame>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+
+    <!-- Loading -->
+    <ActivityIndicator IsRunning="{Binding IsLoading}"
+                      IsVisible="{Binding IsLoading}"
+                      Color="#667eea"
+                      HeightRequest="60"
+                      VerticalOptions="Center"
+                      HorizontalOptions="Center"/>
+
+    <!-- Botão Flutuante -->
+    <Button Text="➕"
+            FontSize="32"
+            WidthRequest="64"
+            HeightRequest="64"
+            CornerRadius="32"
+            BackgroundColor="#667eea"
+            TextColor="White"
+            Command="{Binding NovaMetaCommand}"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            Margin="0,0,20,20"/>
+</ContentPage>

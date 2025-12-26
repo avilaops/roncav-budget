@@ -1,4 +1,4 @@
-# 🤖 Instruções para GitHub Copilot - Roncav Budget
+﻿# 🤖 Instruções para GitHub Copilot - Roncav Budget
 
 ## 📋 Visão Geral do Projeto
 
@@ -23,18 +23,18 @@
 ### Antes de Fazer Alterações
 
 1. **Ler a arquitetura existente**
-   - Verificar `Readme_Roncav_Budget.md`
+   - Verificar `Readme_Orcamento.md`
    - Revisar `Como_Executar.md` e `Executar_Agora.md`
    - Consultar `Guia_Visual_Completo.md` para entender o design
 
 2. **Analisar dependências**
-   - Verificar `Roncav_Budget.sln` para estrutura do solution
+   - Verificar `Orcamento.sln` para estrutura do solution
    - Revisar arquivos `.csproj` de cada projeto
    - Identificar NuGet packages instalados
 
 3. **Verificar compilação atual**
    ```powershell
-   dotnet build Roncav_Budget.sln
+   dotnet build Orcamento.sln
    ```
 
 ### Padrões de Código
@@ -118,7 +118,7 @@ public class AvilaApiService
         {
             email,
             password,
-            clientId = "roncav-budget",
+            clientId = "Orcamento",
             platform = DeviceInfo.Platform.ToString()
         });
 
@@ -141,7 +141,7 @@ public class AvilaApiService
 // MauiProgram.cs
 builder.Services.AddHttpClient<AvilaApiService>(client =>
 {
-    client.DefaultRequestHeaders.Add("X-Client-App", "Roncav-Budget");
+    client.DefaultRequestHeaders.Add("X-Client-App", "Orcamento");
     client.DefaultRequestHeaders.Add("X-Client-Version", AppInfo.VersionString);
     client.Timeout = TimeSpan.FromSeconds(30);
 });
@@ -283,7 +283,7 @@ public abstract class AvilaEntity
 {
   "AvilaApi": {
     "BaseUrl": "https://api.avila.inc",
-    "ClientId": "roncav-budget-{ENV}",
+    "ClientId": "Orcamento-{ENV}",
     "Timeout": 30
   },
   "Features": {
@@ -362,10 +362,10 @@ Antes de qualquer deploy, garantir:
 2. **Testar em modo Release**
    ```powershell
    # Windows
-   dotnet build Roncav_Budget.winui/Roncav_Budget.winui.csproj -c Release
+   dotnet build Orcamento.winui/Orcamento.winui.csproj -c Release
 
    # Android
-   dotnet build Roncav_Budget.droid/Roncav_Budget.droid.csproj -c Release
+   dotnet build Orcamento.droid/Orcamento.droid.csproj -c Release
    ```
 
 ### Deploy por Plataforma
@@ -374,7 +374,7 @@ Antes de qualquer deploy, garantir:
 
 ```powershell
 # Publicar para Windows
-dotnet publish Roncav_Budget.winui/Roncav_Budget.winui.csproj `
+dotnet publish Orcamento.winui/Orcamento.winui.csproj `
   -c Release `
   -f net8.0-windows10.0.19041.0 `
   -p:RuntimeIdentifierOverride=win10-x64 `
@@ -382,31 +382,31 @@ dotnet publish Roncav_Budget.winui/Roncav_Budget.winui.csproj `
   -p:GenerateAppxPackageOnBuild=true
 ```
 
-**Arquivos gerados**: `Roncav_Budget.winui/AppPackages/`
+**Arquivos gerados**: `Orcamento.winui/AppPackages/`
 
 #### 🤖 Android
 
 ```powershell
 # Publicar APK
-dotnet publish Roncav_Budget.droid/Roncav_Budget.droid.csproj `
+dotnet publish Orcamento.droid/Orcamento.droid.csproj `
   -c Release `
   -f net8.0-android `
   -p:AndroidPackageFormat=apk
 
 # Publicar AAB (Google Play)
-dotnet publish Roncav_Budget.droid/Roncav_Budget.droid.csproj `
+dotnet publish Orcamento.droid/Orcamento.droid.csproj `
   -c Release `
   -f net8.0-android `
   -p:AndroidPackageFormat=aab
 ```
 
-**Arquivos gerados**: `Roncav_Budget.droid/bin/Release/`
+**Arquivos gerados**: `Orcamento.droid/bin/Release/`
 
 #### 🍎 iOS
 
 ```powershell
 # Publicar para iOS (requer macOS)
-dotnet publish Roncav_Budget.ios/Roncav_Budget.ios.csproj `
+dotnet publish Orcamento.ios/Orcamento.ios.csproj `
   -c Release `
   -f net8.0-ios
 ```
@@ -417,7 +417,7 @@ dotnet publish Roncav_Budget.ios/Roncav_Budget.ios.csproj `
 
 ```powershell
 # Publicar para macOS
-dotnet publish Roncav_Budget.mac/Roncav_Budget.mac.csproj `
+dotnet publish Orcamento.mac/Orcamento.mac.csproj `
   -c Release `
   -f net8.0-maccatalyst
 ```
@@ -485,7 +485,7 @@ dotnet workload install maccatalyst
 ```powershell
 # Limpar cache e restaurar
 dotnet nuget locals all --clear
-dotnet restore Roncav_Budget.sln
+dotnet restore Orcamento.sln
 ```
 
 ### Build lento ou travando
@@ -503,7 +503,7 @@ dotnet restore
 ### Desenvolvimento
 ```powershell
 # Rodar no Windows
-dotnet run --project Roncav_Budget.winui
+dotnet run --project Orcamento.winui
 
 # Rodar no Android (emulador)
 dotnet build -t:Run -f net8.0-android
@@ -512,7 +512,7 @@ dotnet build -t:Run -f net8.0-android
 adb devices
 
 # Hot Reload ativado
-dotnet watch run --project Roncav_Budget.winui
+dotnet watch run --project Orcamento.winui
 ```
 
 ### Análise de Código

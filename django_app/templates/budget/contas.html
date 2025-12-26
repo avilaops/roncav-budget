@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Contas - Budget{% endblock %}
+
+{% block content %}
+<h1 style="color: white; margin-bottom: 2rem; font-size: 2.5rem;">🏦 Minhas Contas</h1>
+
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2>Contas Bancárias</h2>
+        <a href="{% url 'conta_criar' %}" class="btn btn-primary" style="text-decoration: none;">+ Nova Conta</a>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+        {% for conta in contas %}
+        <div style="background: linear-gradient(135deg, {{ conta.cor }}22 0%, {{ conta.cor }}44 100%);
+                    padding: 1.5rem; border-radius: 12px; border: 2px solid {{ conta.cor }}; position: relative;">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                <div>
+                    <h3 style="color: #333; margin-bottom: 0.5rem;">{{ conta.nome }}</h3>
+                    <p style="color: #666; font-size: 0.9rem;">{{ conta.get_tipo_display }}</p>
+                </div>
+                <span style="font-size: 2rem;">💰</span>
+            </div>
+
+            <div style="margin-top: 1.5rem;">
+                <p style="color: #666; font-size: 0.85rem; margin-bottom: 0.25rem;">Saldo Atual</p>
+                <h2 style="color: {{ conta.cor }}; font-size: 2rem;">R$ {{ conta.saldo|floatformat:2 }}</h2>
+            </div>
+
+            {% if conta.banco %}
+            <p style="color: #999; font-size: 0.85rem; margin-top: 1rem;">🏦 {{ conta.banco }}</p>
+            {% endif %}
+
+            <div style="display: flex; gap: 0.5rem; margin-top: 1.5rem;">
+                <a href="{% url 'conta_editar' conta.id %}" class="btn" style="flex: 1; padding: 0.5rem; background: white; text-decoration: none; text-align: center;">✏️ Editar</a>
+                <form method="post" action="{% url 'conta_deletar' conta.id %}" style="flex: 1;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn" style="width: 100%; padding: 0.5rem; background: #fee2e2;"
+                            onclick="return confirm('Tem certeza que deseja desativar esta conta?')">🗑️ Desativar</button>
+                </form>
+            </div>
+        </div>
+        {% empty %}
+        <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #999;">
+            Nenhuma conta cadastrada. Adicione sua primeira conta!
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

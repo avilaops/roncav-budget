@@ -1,4 +1,4 @@
-{
+﻿{
   "version": "1.0.0",
   "producer": ".NET AppCAT CLI",
   "metadata": {
@@ -47,11 +47,11 @@
   },
   "projects": [
     {
-      "path": "roncav-budget\\roncav-budget.csproj",
+      "path": "Orcamento\\Orcamento.csproj",
       "issues": 1,
       "storyPoints": 6,
       "properties": {
-        "appName": "roncav-budget",
+        "appName": "Orcamento",
         "frameworks": [
           "net9.0"
         ],
@@ -66,7 +66,7 @@
         {
           "ruleId": "Local.0003",
           "incidentId": "3015f52e-d777-4f2e-93f6-7e4245283260",
-          "location": "roncav-budget\\Services\\ImportacaoExtratoService.cs",
+          "location": "Orcamento\\Services\\ImportacaoExtratoService.cs",
           "locationKind": "File",
           "snippet": "System.IO.File",
           "line": 31,
@@ -110,7 +110,7 @@
         {
           "ruleId": "Local.0003",
           "incidentId": "89716cc0-31aa-45ad-ba74-ce2a9a06af2a",
-          "location": "roncav-budget\\Services\\ImportacaoExtratoService.cs",
+          "location": "Orcamento\\Services\\ImportacaoExtratoService.cs",
           "locationKind": "File",
           "snippet": "System.IO.File",
           "line": 37,
@@ -154,11 +154,11 @@
       ]
     },
     {
-      "path": "roncav-budget.Droid\\roncav-budget.Droid.csproj",
+      "path": "Orcamento.Droid\\Orcamento.Droid.csproj",
       "issues": 0,
       "storyPoints": 0,
       "properties": {
-        "appName": "roncav-budget.Droid",
+        "appName": "Orcamento.Droid",
         "frameworks": [
           "net9.0-android"
         ],
@@ -172,11 +172,11 @@
       "incidents": []
     },
     {
-      "path": "roncav-budget.iOS\\roncav-budget.iOS.csproj",
+      "path": "Orcamento.iOS\\Orcamento.iOS.csproj",
       "issues": 0,
       "storyPoints": 0,
       "properties": {
-        "appName": "roncav-budget.iOS",
+        "appName": "Orcamento.iOS",
         "frameworks": [
           "net9.0-ios"
         ],
@@ -190,11 +190,11 @@
       "incidents": []
     },
     {
-      "path": "roncav-budget.Mac\\roncav-budget.Mac.csproj",
+      "path": "Orcamento.Mac\\Orcamento.Mac.csproj",
       "issues": 0,
       "storyPoints": 0,
       "properties": {
-        "appName": "roncav-budget.Mac",
+        "appName": "Orcamento.Mac",
         "frameworks": [
           "net9.0-maccatalyst"
         ],
@@ -208,11 +208,11 @@
       "incidents": []
     },
     {
-      "path": "roncav-budget.WinUI\\roncav-budget.WinUI.csproj",
+      "path": "Orcamento.WinUI\\Orcamento.WinUI.csproj",
       "issues": 1,
       "storyPoints": 3,
       "properties": {
-        "appName": "roncav-budget.WinUI",
+        "appName": "Orcamento.WinUI",
         "frameworks": [
           "net9.0-windows10.0.19041.0"
         ],
@@ -227,7 +227,7 @@
         {
           "ruleId": "Scale.0001",
           "incidentId": "627cac38-f0a9-4127-9897-7857ecb0a14d",
-          "location": "roncav-budget.WinUI\\roncav-budget.WinUI.csproj",
+          "location": "Orcamento.WinUI\\Orcamento.WinUI.csproj",
           "locationKind": "File",
           "snippet": "Foram encontrados 12 arquivos que correspondem \u00E0 regra:\r\n\r\nAssets\\Images\\dotnet_bot_devices.scale-100.png\r\nAssets\\Images\\dotnet_bot_devices.scale-125.png\r\nAssets\\Images\\dotnet_bot_devices.scale-150.png\r\nAssets\\Images\\dotnet_bot_devices.scale-200.png\r\nAssets\\Images\\dotnet_bot_devices.scale-400.png\r\nAssets\\LockScreenLogo.scale-200.png\r\nAssets\\SplashScreen.scale-200.png\r\nAssets\\Square150x150Logo.scale-200.png\r\nAssets\\Square44x44Logo.scale-200.png\r\nAssets\\Square44x44Logo.targetsize-24_altform-unplated.png\r\nAssets\\StoreLogo.png\r\nAssets\\Wide310x150Logo.scale-200.png\r\n",
           "targets": {

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - Budget{% endblock %}
+
+{% block content %}
+<div style="max-width: 400px; margin: 4rem auto;">
+    <div class="card">
+        <h1 style="text-align: center; margin-bottom: 2rem; color: #667eea;">🔐 Login</h1>
+
+        {% if messages %}
+        <div style="margin-bottom: 1.5rem;">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" style="position: static;">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Usuário</label>
+                <input type="text" name="username" required
+                       style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;"
+                       placeholder="Seu nome de usuário">
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Senha</label>
+                <input type="password" name="password" required
+                       style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;"
+                       placeholder="Sua senha">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                🚀 Entrar
+            </button>
+        </form>
+
+        <div style="margin-top: 1rem; text-align: center;">
+            <a href="{% url 'recuperar_senha' %}" style="color: #667eea; text-decoration: none; font-size: 0.9rem;">
+                Esqueceu sua senha?
+            </a>
+        </div>
+
+        <div style="margin-top: 1.5rem; text-align: center; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
+            <p style="color: #666; margin-bottom: 0.5rem;">Não tem uma conta?</p>
+            <a href="{% url 'registro' %}" class="btn btn-secondary" style="display: inline-block; width: 100%;">
+                ✨ Criar Conta Grátis
+            </a>
+        </div>
+
+        <div style="margin-top: 2rem; padding: 1rem; background: #f0f9ff; border-radius: 8px; border-left: 4px solid #3b82f6;">
+            <p style="color: #1e40af; font-weight: 600; margin-bottom: 0.5rem;">💡 Primeira vez aqui?</p>
+            <p style="color: #1e3a8a; font-size: 0.9rem;">
+                Use as credenciais padrão:<br>
+                <strong>Usuário:</strong> admin<br>
+                <strong>Senha:</strong> admin
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

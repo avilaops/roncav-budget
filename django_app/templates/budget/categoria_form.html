@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Nova Categoria - Budget{% endblock %}
+
+{% block content %}
+<h1 style="color: white; margin-bottom: 2rem; font-size: 2.5rem;">➕ Nova Categoria</h1>
+
+<div class="card">
+    <form method="post" style="max-width: 600px;">
+        {% csrf_token %}
+
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Nome *</label>
+            <input type="text" name="nome" required
+                   style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;"
+                   placeholder="Ex: Alimentação, Salário, Transporte">
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Tipo *</label>
+            <select name="tipo" required style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;">
+                <option value="receita">💰 Receita</option>
+                <option value="despesa">💸 Despesa</option>
+            </select>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Ícone</label>
+            <input type="text" name="icone" value="💰"
+                   style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;"
+                   placeholder="Escolha um emoji">
+            <p style="color: #666; font-size: 0.85rem; margin-top: 0.5rem;">
+                Sugestões: 🍔 🏠 🚗 💊 🎓 🎮 💼 📱 ✈️ 🛒 💡 📺 👕 🎁
+            </p>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Cor</label>
+            <input type="color" name="cor" value="#007AFF"
+                   style="width: 100px; height: 50px; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer;">
+            <p style="color: #666; font-size: 0.85rem; margin-top: 0.5rem;">Escolha uma cor para identificar a categoria</p>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary">
+                ➕ Criar Categoria
+            </button>
+            <a href="{% url 'categorias' %}" class="btn" style="background: #f3f4f6; color: #333; text-decoration: none;">
+                ❌ Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}
