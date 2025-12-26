@@ -129,3 +129,20 @@ LOGOUT_REDIRECT_URL = '/'
 
 # Avila API
 AVILA_API_URL = os.getenv('AVILA_API_URL', 'https://api.avila.inc')
+
+# Email Configuration - Porkbun
+# Em desenvolvimento: emails aparecem no console
+# Em produção: usa Porkbun SMTP (mail.porkbun.com)
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = os.getenv('EMAIL_HOST', 'mail.porkbun.com')
+    EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
+    EMAIL_USE_TLS = True
+    EMAIL_USE_SSL = False  # TLS na porta 587
+    EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'dev@avila.inc')
+    EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+    EMAIL_TIMEOUT = 10
+
+DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER', 'Budget <dev@avila.inc>')
